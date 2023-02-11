@@ -1,0 +1,17 @@
+.admin-input::placeholder{
+    color: rgb(110, 105, 105)
+}
+.admin-label{
+    color: rgb(8, 90, 0);
+    text-align: center;
+    max-width: 12em;
+}
+.admin-back{
+    background-color: rgb(88, 21, 21);
+    padding: 0.2em;
+    border-radius: 1em;
+    color: white;
+}
+.admin-back:hover{
+    background-color: rgb(22, 187, 44);
+}
