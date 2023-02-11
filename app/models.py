@@ -1,5 +1,5 @@
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import UserMixin
+from flask_login import UserMixin, AnonymousUserMixin
 from app import db, login
 
 
@@ -7,6 +7,7 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
+    role = db.Column(db.String(64), default='user')
     password_hash = db.Column(db.String(128))
 
     def __repr__(self) -> str:
@@ -19,12 +20,26 @@ class User(UserMixin, db.Model):
     def password(self):
         raise AttributeError('password is not a readable attribute')
 
-    @password.setter
-    def password(self, password):
+    def set_password(self, password):
         self.password_hash = generate_password_hash(password)
     
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+    # Currently only 2 roles: admin and user so this is fine
+    def has_permission(self, permission):
+        return self.role == permission
+
+
+class AnonymousUser(AnonymousUserMixin):
+    def has_permission(self, permission):
+        return False
+    
+    def is_administrator(self):
+        return False
+
+login.anonymous_user = AnonymousUser
+
 
 @login.user_loader
 def load_user(id):

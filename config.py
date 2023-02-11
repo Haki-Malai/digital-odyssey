@@ -3,12 +3,21 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 class Config:
+    # General Configs
+    TITLE = "Flask Boilerplate"
+
     SECRET_KEY = os.environ.get("SECRET_KEY")
     SQLALCHEMY_TRACK_NOTIFICATIONS = False
 
     @staticmethod
     def init_app(app):
         pass
+
+    @classmethod
+    def update_config(cls, app):
+        for key in dir(cls):
+            if key.isupper():
+                app.config[key] = getattr(cls, key)
 
  
 class DevelopmentConfig(Config):
