@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <title>{{ config['TITLE'] }}</title>
+    <meta name="description" content="Morden Bootstrap HTML5 Template">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+      
+    <!-- ======= All CSS Plugins here ======== -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/plugins/swiper-bundle.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/plugins/glightbox.min.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+    <!-- Plugin css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/vendor/bootstrap.min.css') }}">
+
+    <!-- Custom Style CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+  </head>
+
+  <body style="align-items: center;">
+
+    {% include 'preloader.html' %}
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div style="position: fixed; z-index: 9999; width: 100%; margin: auto;">
+            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert" style="position: relative; margin-bottom: 10px;">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    {% block body %}
+    {% endblock %}  
+
+    <!-- All Script JS Plugins here  -->
+    <script src="{{ url_for('static', filename='js/vendor/popper.js') }}" defer="defer"></script>
+    <script src="{{ url_for('static', filename='js/vendor/bootstrap.min.js') }}" defer="defer"></script>
+    <script src="{{ url_for('static', filename='js/plugins/swiper-bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/plugins/glightbox.min.js') }}"></script>
+    <!-- Customscript js -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+  </body>
+
+</html>
