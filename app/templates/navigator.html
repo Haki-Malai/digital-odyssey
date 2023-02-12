@@ -96,7 +96,7 @@
                     </g>
                     </g>
                   </svg>  
-                  <span class="items__count">{{ current_user.cart.products|length }}</span>
+                  <span class="items__count">{{ current_user.cart.cart_products|length }}</span>
                 </a>
               </li>
               <!-- wishlist button -->
@@ -105,7 +105,7 @@
                   <svg xmlns="http://www.w3.org/2000/svg" width="18.541" height="15.557" viewBox="0 0 18.541 15.557">
                     <path  d="M71.775,135.51a5.153,5.153,0,0,1,1.267-1.524,4.986,4.986,0,0,1,6.584.358,4.728,4.728,0,0,1,1.174,4.914,10.458,10.458,0,0,1-2.132,3.808,22.591,22.591,0,0,1-5.4,4.558c-.445.282-.9.549-1.356.812a.306.306,0,0,1-.254.013,25.491,25.491,0,0,1-6.279-4.8,11.648,11.648,0,0,1-2.52-4.009,4.957,4.957,0,0,1,.028-3.787,4.629,4.629,0,0,1,3.744-2.863,4.782,4.782,0,0,1,5.086,2.447c.013.019.025.034.057.076Z" transform="translate(-62.498 -132.915)" fill="currentColor"/>
                   </svg>
-                  <span class="items__count">{{ current_user.cart.products|length }}</span> 
+                  <span class="items__count">{{ current_user.cart.cart_products|length }}</span> 
                 </a>
               </li>
             {% endif %}
@@ -436,7 +436,7 @@
               </svg> 
             </span>
             <span class="offcanvas__stikcy--toolbar__label">Cart</span>
-            <span class="items__count">{{ current_user.cart.products|length }}</span> 
+            <span class="items__count">{{ current_user.cart.cart_products|length }}</span> 
           </a>
         </li>
         <!-- wishlist bottom scren small -->
@@ -458,61 +458,59 @@
 
   <!-- Start offCanvas minicart -->
   {% if current_user.is_authenticated %}
-  <div class="offCanvas__minicart">
-    <div class="minicart__header ">
-      <div class="minicart__header--top d-flex justify-content-between align-items-center">
-        <h3 class="minicart__title">Shopping Cart</h3>
-        <button class="minicart__close--btn" aria-label="minicart close btn" data-offcanvas>
-          <svg class="minicart__close--icon" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 512 512"><path fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M368 368L144 144M368 144L144 368"/></svg>
-        </button>
+    <div class="offCanvas__minicart">
+      <div class="minicart__header ">
+        <div class="minicart__header--top d-flex justify-content-between align-items-center">
+          <h3 class="minicart__title">Shopping Cart</h3>
+          <button class="minicart__close--btn" aria-label="minicart close btn" data-offcanvas>
+            <svg class="minicart__close--icon" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 512 512"><path fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M368 368L144 144M368 144L144 368"/></svg>
+          </button>
+        </div>
+        <p class="minicart__header--desc">{{ config['TITLE'] }}</p>
       </div>
-      <p class="minicart__header--desc">{{ config['TITLE'] }}</p>
-    </div>
-    {% for cart_product in current_user.cart.products %}
-      {% with product=cart_product.product %}
-        <div class="minicart__product">
-          <div class="minicart__product--items d-flex">
-            <div class="minicart__thumb">
-              <a href="{{ url_for('main.product', product_id=product.id) }}"><img src="assets/img/product/product1.png" alt="prduct-img"></a>
-            </div>
-            <div class="minicart__text">
-              <h4 class="minicart__subtitle"><a href="{{ url_for('main.product', product_id=product.id) }}">{{ product.name }}</a></h4>
-              {% for variation in product.variations %}
-                <span class="color__variant"><b>{{ variation.name }}:</b> {{ cart_product.variation_value }}</span>
-              {% endfor %}
-              <div class="minicart__price">
-                <span class="current__price">$125.00</span>
-                <span class="old__price">$140.00</span>
+      {% for cart_product in current_user.cart.cart_products %}
+        {% with product=cart_product.product %}
+          <div class="minicart__product" id="minicartProduct{{ product.id }}">
+            <div class="minicart__product--items d-flex">
+              <div class="minicart__thumb">
+                <a href="{{ url_for('main.product', product_id=product.id) }}"><img src="assets/img/product/product1.png" alt="prduct-img"></a>
               </div>
-              <div class="minicart__text--footer d-flex align-items-center">
-                <div class="quantity__box minicart__quantity">
-                  <button type="button" class="quantity__value decrease" aria-label="quantity value" value="Decrease Value">-</button>
-                  <label>
-                    <input type="number" class="quantity__number" value="1" data-counter />
-                  </label>
-                  <button type="button" class="quantity__value increase" aria-label="quantity value" value="Increase Value">+</button>
+              <div class="minicart__text">
+                <h4 class="minicart__subtitle"><a href="{{ url_for('main.product', product_id=product.id) }}">{{ product.name }}</a></h4>
+                {% for variation in product.variations %}
+                  <span class="color__variant"><b>{{ variation.name }}:</b> {{ cart_product.variation_value.name }}</span>
+                {% endfor %}
+                <div class="minicart__price">
+                  <span class="current__price" id="totalPrice{{ product.id }}">{{ cart_product.total_price }} €</span>
+                  {% if cart_product.total_sale_price %}
+                    <span class="old__price" id="salePrice{{ product.id }}">{{ cart_product.total_sale_price }} €</span>
+                  {% endif %}
                 </div>
-                <button class="minicart__product--remove" type="button">Remove</button>
+                <div class="minicart__text--footer d-flex align-items-center">
+                  <div class="quantity__box minicart__quantity">
+                    <button type="button" class="quantity__value decrease" aria-label="quantity value" value="{{ product.id }}">-</button>
+                    <label>
+                      <input type="number" class="quantity__number" id="cartProductQuantity{{ product.id }}" value="{{ cart_product.quantity }}" data-counter />
+                    </label>
+                    <button type="button" class="quantity__value increase" aria-label="quantity value" value="{{ product.id }}">+</button>
+                  </div>
+                  <button class="minicart__product--remove remove__button" id="removeButton" value="{{ product.id }}" type="button">Remove</button>
+                </div>
               </div>
             </div>
           </div>
+        {% endwith %}
+      {% endfor %}
+      <div class="minicart__amount">
+        <div class="minicart__amount_list d-flex justify-content-between">
+          <span>Total:</span>
+          <span><b id="offsetCartTotal">{{ current_user.cart.total_price }} €</b></span>
         </div>
-        <div class="minicart__amount">
-          <div class="minicart__amount_list d-flex justify-content-between">
-            <span>Sub Total:</span>
-            <span><b>$240.00</b></span>
-          </div>
-          <div class="minicart__amount_list d-flex justify-content-between">
-            <span>Total:</span>
-            <span><b>$240.00</b></span>
-          </div>
-        </div>
-        <div class="minicart__button d-flex justify-content-center">
-          <a class="btn minicart__button--link" href="{{ url_for('main.cart') }}">View cart</a>
-          <a class="btn minicart__button--link" href="{{ url_for('main.checkout') }}">Checkout</a>
-        </div>
-      {% endwith %}
-    {% endfor %}
+      </div>
+      <div class="minicart__button d-flex justify-content-center">
+        <a class="btn minicart__button--link" href="{{ url_for('main.cart') }}">View cart</a>
+        <a class="btn minicart__button--link" href="{{ url_for('main.checkout') }}">Checkout</a>
+      </div>
     </div>
   {% endif %}
   <!-- End offCanvas minicart -->
