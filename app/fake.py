@@ -1,7 +1,7 @@
 from faker import Faker
 from sqlalchemy.exc import IntegrityError
 from app import db
-from app.models import User, Category, Subcategory, Brand, Product
+from app.models import User, Category, Subcategory, Brand, Product, Cart
 
 fake = Faker()
 
@@ -11,7 +11,6 @@ def create_users(count=10):
         user = User(
             username=fake.user_name(),
             email=fake.email(),
-            password=fake.password()
         )
         db.session.add(user)
         try:
@@ -69,5 +68,27 @@ def create_products(count=10):
         db.session.add(product)
         try:
             db.session.commit()
+            variation = product.create_variation(fake.word())
+            db.session.commit()
+            try:
+                variation.create_value(fake.word())
+                db.session.commit()
+            except IntegrityError:
+                db.session.rollback()
         except IntegrityError:
             db.session.commit()
+
+
+def create_fake_admin():
+    user = User(
+        username='asdf',
+        email='asdf@asdf.gr',
+        role='admin'
+    )
+    user.set_password('asdf')
+    db.session.add(user)
+    db.session.commit()
+    user.add_to_cart(Product.query.first(), 1)
+    user.add_to_wishlist(Product.query.first())
+    db.session.commit()
+         
