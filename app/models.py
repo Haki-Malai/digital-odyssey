@@ -11,6 +11,7 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
 
     cart = db.relationship('Cart', back_populates='user', uselist=False)
+    wishlist = db.relationship('Wishlist', back_populates='user', uselist=False)
 
     def __repr__(self) -> str:
         return '<User %r>' % self.username
@@ -45,6 +46,16 @@ class User(UserMixin, db.Model):
     def empty_cart(self):
         if self.cart:
             self.cart.empty_cart()
+    
+    # Wishlist methods
+    def add_to_wishlist(self, product):
+        if not self.wishlist:
+            self.wishlist = Wishlist(user=self)
+        self.wishlist.add_product(product)
+
+    def remove_from_wishlist(self, product):
+        if product in self.wishlist:
+            self.wishlist.remove(product)
 
 
 class AnonymousUser(AnonymousUserMixin):
@@ -72,9 +83,6 @@ class Category(db.Model):
     def __repr__(self):
         return '<Category %r>' % self.name
 
-    def __init__(self, **kwargs):
-        super(Category, self).__init__(**kwargs)
-
 
 class Subcategory(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -87,9 +95,6 @@ class Subcategory(db.Model):
     def __repr__(self):
         return '<Subcategory %r>' % self.name
 
-    def __init__(self, **kwargs):
-        super(Subcategory, self).__init__(**kwargs)
-
 
 class Brand(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -100,9 +105,6 @@ class Brand(db.Model):
         
     def __repr__(self):
         return '<Brand %r>' % self.name
-
-    def __init__(self, **kwargs):
-        super(Brand, self).__init__(**kwargs)
 
 
 class Product(db.Model):
@@ -120,15 +122,30 @@ class Product(db.Model):
         
     def __repr__(self):
         return '<Product %r>' % self.name
+     
 
-    def __init__(self, **kwargs):
-        super(Product, self).__init__(**kwargs)
+class WishlistProduct(db.Model):
+    wishlist_id = db.Column(db.Integer, db.ForeignKey('wishlist.id'), primary_key=True)
+    product_id = db.Column(db.Integer, db.ForeignKey('product.id'), primary_key=True)
+
+    product = db.relationship('Product', lazy='joined')
+    wishlist = db.relationship('Wishlist', back_populates='products')
 
 
-cart_products = db.Table('cart_products', db.Model.metadata,
-    db.Column('cart_id', db.Integer, db.ForeignKey('cart.id')),
-    db.Column('product_id', db.Integer, db.ForeignKey('product.id'))
-)
+class Wishlist(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+    user = db.relationship('User', back_populates='wishlist')
+    products = db.relationship('WishlistProduct', back_populates='wishlist')
+
+    def __repr__(self):
+        return '<Wishlist %r>' % self.user.username
+    
+    def add_product(self, product):
+        cp = WishlistProduct(wishlist=self, product=product)
+        db.session.add(cp)
+            
 
 
 class Cart(db.Model):
@@ -136,24 +153,26 @@ class Cart(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     user = db.relationship('User', back_populates='cart')
-    cart_products = db.relationship('CartProduct', back_populates='cart')
+    products = db.relationship('CartProduct', back_populates='cart')
 
-    @property
-    def products(self):
-        return [cp.product for cp in self.cart_products]
+    def __repr__(self):
+        return '<Cart %r>' % self.user.username
 
     @property
     def total_price(self):
-        return sum(cp.total_price for cp in self.cart_products)
+        return sum(cp.total_price for cp in self.products)
 
     def add_product(self, product, quantity=1):
-        for cp in self.cart_products:
+        for cp in self.products:
             if cp.product == product:
                 cp.quantity += quantity
                 cp.total_price += (quantity * product.price)
                 return
         cp = CartProduct(cart=self, product=product, quantity=quantity, total_price=(quantity * product.price))
         db.session.add(cp)
+
+    def empty_cart(self):
+        self.products = []
         
 
 class CartProduct(db.Model):
@@ -163,5 +182,5 @@ class CartProduct(db.Model):
     quantity = db.Column(db.Integer, nullable=False, default=0)
     total_price = db.Column(db.Float, nullable=False, default=0.0)
 
-    cart = db.relationship('Cart', back_populates='cart_products')
+    cart = db.relationship('Cart', back_populates='products')
     product = db.relationship('Product', lazy='joined')

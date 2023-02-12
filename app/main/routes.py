@@ -1,5 +1,5 @@
 from flask import current_app, render_template
-from flask_login import current_user
+from flask_login import current_user, login_required
 from app.main import bp
 from app.models import User, Category, Subcategory, Product
 
@@ -11,7 +11,30 @@ def index():
                            categories=Category.query.all(),
                            current_user=current_user)
 
-                           
+
+@bp.route('/user', methods=['GET'])
+@login_required
+def user():
+    return current_user.username
+
+
+@bp.route('/wishlist', methods=['GET'])
+@login_required
+def wishlist():
+    return current_user.wishlist.products
+
+@bp.route('/cart', methods=['GET'])
+@login_required
+def cart():
+    return current_user.cart.products
+
+
+@bp.route('/checkout', methods=['GET'])
+@login_required
+def checkout():
+    return current_user.cart.products
+
+
 @bp.route('/products', methods=['GET'])
 def products():
     return Product.query.first().name
