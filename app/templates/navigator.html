@@ -69,7 +69,7 @@
         </div>
         <div class="header__account header__sticky--none">
           <ul class="d-flex">
-            <!-- search button small screen -->
+            <!-- search button small screen header -->
             <li class="header__account--items  header__account--search__items mobile__d--block d-sm-2-none">
               <a class="header__account--btn search__open--btn" href="javascript:void(0)" data-offcanvas>
                 <svg class="product__items--action__btn--svg" xmlns="http://www.w3.org/2000/svg" width="22.51" height="20.443" viewBox="0 0 512 512"><path d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M338.29 338.29L448 448"/></svg>
@@ -79,7 +79,7 @@
             {% if current_user.is_authenticated %}
               <!-- account button -->
               <li class="header__account--items">
-                <a class="header__account--btn" href="my-account.html">
+                <a class="header__account--btn" href="{{ url_for('main.user') }}">
                   <svg xmlns="http://www.w3.org/2000/svg"  width="20.51" height="19.443" viewBox="0 0 512 512"><path d="M344 144c-3.92 52.87-44 96-88 96s-84.15-43.12-88-96c-4-55 35-96 88-96s92 42 88 96z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path d="M256 304c-87 0-175.3 48-191.64 138.6C62.39 453.52 68.57 464 80 464h352c11.44 0 17.62-10.48 15.65-21.4C431.3 352 343 304 256 304z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/></svg>
                   <span class="visually-hidden">My account</span> 
                 </a>
@@ -96,15 +96,16 @@
                     </g>
                     </g>
                   </svg>  
-                  <span class="items__count">3</span> 
+                  <span class="items__count">{{ current_user.cart.products|length }}</span>
                 </a>
               </li>
+              <!-- wishlist button -->
               <li class="header__account--items d-none d-lg-block">
-                <a class="header__account--btn" href="wishlist.html">
+                <a class="header__account--btn" href="{{ url_for('main.wishlist') }}">
                   <svg xmlns="http://www.w3.org/2000/svg" width="18.541" height="15.557" viewBox="0 0 18.541 15.557">
                     <path  d="M71.775,135.51a5.153,5.153,0,0,1,1.267-1.524,4.986,4.986,0,0,1,6.584.358,4.728,4.728,0,0,1,1.174,4.914,10.458,10.458,0,0,1-2.132,3.808,22.591,22.591,0,0,1-5.4,4.558c-.445.282-.9.549-1.356.812a.306.306,0,0,1-.254.013,25.491,25.491,0,0,1-6.279-4.8,11.648,11.648,0,0,1-2.52-4.009,4.957,4.957,0,0,1,.028-3.787,4.629,4.629,0,0,1,3.744-2.863,4.782,4.782,0,0,1,5.086,2.447c.013.019.025.034.057.076Z" transform="translate(-62.498 -132.915)" fill="currentColor"/>
                   </svg>
-                  <span class="items__count">3</span> 
+                  <span class="items__count">{{ current_user.cart.products|length }}</span> 
                 </a>
               </li>
             {% endif %}
@@ -119,7 +120,7 @@
               </a>
             </li>
             <li class="header__account--items d-none d-lg-block">
-              <a class="header__account--btn" href="wishlist.html">
+              <a class="header__account--btn" href="{{ url_for('main.wishlist') }}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18.541" height="15.557" viewBox="0 0 18.541 15.557">
                   <path  d="M71.775,135.51a5.153,5.153,0,0,1,1.267-1.524,4.986,4.986,0,0,1,6.584.358,4.728,4.728,0,0,1,1.174,4.914,10.458,10.458,0,0,1-2.132,3.808,22.591,22.591,0,0,1-5.4,4.558c-.445.282-.9.549-1.356.812a.306.306,0,0,1-.254.013,25.491,25.491,0,0,1-6.279-4.8,11.648,11.648,0,0,1-2.52-4.009,4.957,4.957,0,0,1,.028-3.787,4.629,4.629,0,0,1,3.744-2.863,4.782,4.782,0,0,1,5.086,2.447c.013.019.025.034.057.076Z" transform="translate(-62.498 -132.915)" fill="currentColor"/>
                 </svg>
@@ -127,7 +128,7 @@
               </a>
             </li>
             <li class="header__account--items d-none d-lg-block">
-              <a class="header__account--btn" href="my-account.html">
+              <a class="header__account--btn" href="{{ url_for('main.user') }}">
                 <svg xmlns="http://www.w3.org/2000/svg"  width="20.51" height="19.443" viewBox="0 0 512 512"><path d="M344 144c-3.92 52.87-44 96-88 96s-84.15-43.12-88-96c-4-55 35-96 88-96s92 42 88 96z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path d="M256 304c-87 0-175.3 48-191.64 138.6C62.39 453.52 68.57 464 80 464h352c11.44 0 17.62-10.48 15.65-21.4C431.3 352 343 304 256 304z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/></svg>
                 <span class="visually-hidden">My account</span> 
               </a>
@@ -425,33 +426,38 @@
         <span class="offcanvas__stikcy--toolbar__label">Search</span>
         </a>
       </li>
-      <li class="offcanvas__stikcy--toolbar__list">
-        <a class="offcanvas__stikcy--toolbar__btn minicart__open--btn" href="javascript:void(0)" data-offcanvas>
-          <span class="offcanvas__stikcy--toolbar__icon"> 
-            <svg xmlns="http://www.w3.org/2000/svg" width="18.51" height="15.443" viewBox="0 0 18.51 15.443">
-            <path  d="M79.963,138.379l-13.358,0-.56-1.927a.871.871,0,0,0-.6-.592l-1.961-.529a.91.91,0,0,0-.226-.03.864.864,0,0,0-.226,1.7l1.491.4,3.026,10.919a1.277,1.277,0,1,0,1.844,1.144.358.358,0,0,0,0-.049h6.163c0,.017,0,.034,0,.049a1.277,1.277,0,1,0,1.434-1.267c-1.531-.247-7.783-.55-7.783-.55l-.205-.8h7.8a.9.9,0,0,0,.863-.651l1.688-5.943h.62a.936.936,0,1,0,0-1.872Zm-9.934,6.474H68.568c-.04,0-.1.008-.125-.085-.034-.118-.082-.283-.082-.283l-1.146-4.037a.061.061,0,0,1,.011-.057.064.064,0,0,1,.053-.025h1.777a.064.064,0,0,1,.063.051l.969,4.34,0,.013a.058.058,0,0,1,0,.019A.063.063,0,0,1,70.03,144.853Zm3.731-4.41-.789,4.359a.066.066,0,0,1-.063.051h-1.1a.064.064,0,0,1-.063-.051l-.789-4.357a.064.064,0,0,1,.013-.055.07.07,0,0,1,.051-.025H73.7a.06.06,0,0,1,.051.025A.064.064,0,0,1,73.76,140.443Zm3.737,0L76.26,144.8a.068.068,0,0,1-.063.049H74.684a.063.063,0,0,1-.051-.025.064.064,0,0,1-.013-.055l.973-4.357a.066.066,0,0,1,.063-.051h1.777a.071.071,0,0,1,.053.025A.076.076,0,0,1,77.5,140.448Z" transform="translate(-62.393 -135.3)" fill="currentColor"/>
-            </svg> 
-          </span>
-          <span class="offcanvas__stikcy--toolbar__label">Cart</span>
-          <span class="items__count">3</span> 
-        </a>
-      </li>
-      <li class="offcanvas__stikcy--toolbar__list">
-        <a class="offcanvas__stikcy--toolbar__btn" href="wishlist.html">
-          <span class="offcanvas__stikcy--toolbar__icon"> 
-            <svg xmlns="http://www.w3.org/2000/svg" width="18.541" height="15.557" viewBox="0 0 18.541 15.557">
-            <path  d="M71.775,135.51a5.153,5.153,0,0,1,1.267-1.524,4.986,4.986,0,0,1,6.584.358,4.728,4.728,0,0,1,1.174,4.914,10.458,10.458,0,0,1-2.132,3.808,22.591,22.591,0,0,1-5.4,4.558c-.445.282-.9.549-1.356.812a.306.306,0,0,1-.254.013,25.491,25.491,0,0,1-6.279-4.8,11.648,11.648,0,0,1-2.52-4.009,4.957,4.957,0,0,1,.028-3.787,4.629,4.629,0,0,1,3.744-2.863,4.782,4.782,0,0,1,5.086,2.447c.013.019.025.034.057.076Z" transform="translate(-62.498 -132.915)" fill="currentColor"/>
-            </svg> 
-          </span>
-          <span class="offcanvas__stikcy--toolbar__label">Wishlist</span>
-          <span class="items__count">3</span> 
-        </a>
-      </li>
+      {% if current_user.is_authenticated %}
+        <!-- cart bottom screen small-->
+        <li class="offcanvas__stikcy--toolbar__list">
+          <a class="offcanvas__stikcy--toolbar__btn minicart__open--btn" href="javascript:void(0)" data-offcanvas>
+            <span class="offcanvas__stikcy--toolbar__icon"> 
+              <svg xmlns="http://www.w3.org/2000/svg" width="18.51" height="15.443" viewBox="0 0 18.51 15.443">
+              <path  d="M79.963,138.379l-13.358,0-.56-1.927a.871.871,0,0,0-.6-.592l-1.961-.529a.91.91,0,0,0-.226-.03.864.864,0,0,0-.226,1.7l1.491.4,3.026,10.919a1.277,1.277,0,1,0,1.844,1.144.358.358,0,0,0,0-.049h6.163c0,.017,0,.034,0,.049a1.277,1.277,0,1,0,1.434-1.267c-1.531-.247-7.783-.55-7.783-.55l-.205-.8h7.8a.9.9,0,0,0,.863-.651l1.688-5.943h.62a.936.936,0,1,0,0-1.872Zm-9.934,6.474H68.568c-.04,0-.1.008-.125-.085-.034-.118-.082-.283-.082-.283l-1.146-4.037a.061.061,0,0,1,.011-.057.064.064,0,0,1,.053-.025h1.777a.064.064,0,0,1,.063.051l.969,4.34,0,.013a.058.058,0,0,1,0,.019A.063.063,0,0,1,70.03,144.853Zm3.731-4.41-.789,4.359a.066.066,0,0,1-.063.051h-1.1a.064.064,0,0,1-.063-.051l-.789-4.357a.064.064,0,0,1,.013-.055.07.07,0,0,1,.051-.025H73.7a.06.06,0,0,1,.051.025A.064.064,0,0,1,73.76,140.443Zm3.737,0L76.26,144.8a.068.068,0,0,1-.063.049H74.684a.063.063,0,0,1-.051-.025.064.064,0,0,1-.013-.055l.973-4.357a.066.066,0,0,1,.063-.051h1.777a.071.071,0,0,1,.053.025A.076.076,0,0,1,77.5,140.448Z" transform="translate(-62.393 -135.3)" fill="currentColor"/>
+              </svg> 
+            </span>
+            <span class="offcanvas__stikcy--toolbar__label">Cart</span>
+            <span class="items__count">{{ current_user.cart.products|length }}</span> 
+          </a>
+        </li>
+        <!-- wishlist bottom scren small -->
+        <li class="offcanvas__stikcy--toolbar__list">
+          <a class="offcanvas__stikcy--toolbar__btn" href="{{ url_for('main.wishlist') }}">
+            <span class="offcanvas__stikcy--toolbar__icon"> 
+              <svg xmlns="http://www.w3.org/2000/svg" width="18.541" height="15.557" viewBox="0 0 18.541 15.557">
+              <path  d="M71.775,135.51a5.153,5.153,0,0,1,1.267-1.524,4.986,4.986,0,0,1,6.584.358,4.728,4.728,0,0,1,1.174,4.914,10.458,10.458,0,0,1-2.132,3.808,22.591,22.591,0,0,1-5.4,4.558c-.445.282-.9.549-1.356.812a.306.306,0,0,1-.254.013,25.491,25.491,0,0,1-6.279-4.8,11.648,11.648,0,0,1-2.52-4.009,4.957,4.957,0,0,1,.028-3.787,4.629,4.629,0,0,1,3.744-2.863,4.782,4.782,0,0,1,5.086,2.447c.013.019.025.034.057.076Z" transform="translate(-62.498 -132.915)" fill="currentColor"/>
+              </svg> 
+            </span>
+            <span class="offcanvas__stikcy--toolbar__label">Wishlist</span>
+            <span class="items__count">{{ current_user.wishlist.products|length }}</span> 
+          </a>
+        </li>
+      {% endif %}
     </ul>
   </div>
   <!-- End Offcanvas stikcy toolbar -->
 
   <!-- Start offCanvas minicart -->
+  {% if current_user.is_authenticated %}
   <div class="offCanvas__minicart">
     <div class="minicart__header ">
       <div class="minicart__header--top d-flex justify-content-between align-items-center">
@@ -460,75 +466,55 @@
           <svg class="minicart__close--icon" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 512 512"><path fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M368 368L144 144M368 144L144 368"/></svg>
         </button>
       </div>
-      <p class="minicart__header--desc">The organic foods products are limited</p>
+      <p class="minicart__header--desc">{{ config['TITLE'] }}</p>
     </div>
-    <div class="minicart__product">
-      <div class="minicart__product--items d-flex">
-        <div class="minicart__thumb">
-          <a href="product-details.html"><img src="assets/img/product/product1.png" alt="prduct-img"></a>
-        </div>
-        <div class="minicart__text">
-          <h4 class="minicart__subtitle"><a href="product-details.html">The is Garden Vegetable.</a></h4>
-          <span class="color__variant"><b>Color:</b> Beige</span>
-          <div class="minicart__price">
-            <span class="current__price">$125.00</span>
-            <span class="old__price">$140.00</span>
+    {% for product in current_user.cart.products %}
+      <div class="minicart__product">
+        <div class="minicart__product--items d-flex">
+          <div class="minicart__thumb">
+            <a href="{{ url_for('main.product', product_id=product.id) }}"><img src="assets/img/product/product1.png" alt="prduct-img"></a>
           </div>
-          <div class="minicart__text--footer d-flex align-items-center">
-            <div class="quantity__box minicart__quantity">
-              <button type="button" class="quantity__value decrease" aria-label="quantity value" value="Decrease Value">-</button>
-              <label>
-                <input type="number" class="quantity__number" value="1" data-counter />
-              </label>
-              <button type="button" class="quantity__value increase" aria-label="quantity value" value="Increase Value">+</button>
+          <div class="minicart__text">
+            <h4 class="minicart__subtitle"><a href="{{ url_for('main.product', product_id=product.id) }}">The is Garden Vegetable.</a></h4>
+            <span class="color__variant"><b>Color:</b> Beige</span>
+            <div class="minicart__price">
+              <span class="current__price">$125.00</span>
+              <span class="old__price">$140.00</span>
             </div>
-            <button class="minicart__product--remove" type="button">Remove</button>
-          </div>
-        </div>
-      </div>
-      <div class="minicart__product--items d-flex">
-        <div class="minicart__thumb">
-          <a href="product-details.html"><img src="assets/img/product/product2.png" alt="prduct-img"></a>
-        </div>
-        <div class="minicart__text">
-          <h4 class="minicart__subtitle"><a href="product-details.html">Fresh Tomatoe is organic.</a></h4>
-          <span class="color__variant"><b>Color:</b> Green</span>
-          <div class="minicart__price">
-            <span class="current__price">$115.00</span>
-            <span class="old__price">$130.00</span>
-          </div>
-          <div class="minicart__text--footer d-flex align-items-center">
-            <div class="quantity__box minicart__quantity">
-              <button type="button" class="quantity__value decrease" aria-label="quantity value" value="Decrease Value">-</button>
-              <label>
-                <input type="number" class="quantity__number" value="1" data-counter />
-              </label>
-              <button type="button" class="quantity__value increase" aria-label="quantity value" value="Increase Value">+</button>
+            <div class="minicart__text--footer d-flex align-items-center">
+              <div class="quantity__box minicart__quantity">
+                <button type="button" class="quantity__value decrease" aria-label="quantity value" value="Decrease Value">-</button>
+                <label>
+                  <input type="number" class="quantity__number" value="1" data-counter />
+                </label>
+                <button type="button" class="quantity__value increase" aria-label="quantity value" value="Increase Value">+</button>
+              </div>
+              <button class="minicart__product--remove" type="button">Remove</button>
             </div>
-            <button class="minicart__product--remove" type="button">Remove</button>
           </div>
         </div>
       </div>
-    </div>
-    <div class="minicart__amount">
-      <div class="minicart__amount_list d-flex justify-content-between">
-        <span>Sub Total:</span>
-        <span><b>$240.00</b></span>
+      <div class="minicart__amount">
+        <div class="minicart__amount_list d-flex justify-content-between">
+          <span>Sub Total:</span>
+          <span><b>$240.00</b></span>
+        </div>
+        <div class="minicart__amount_list d-flex justify-content-between">
+          <span>Total:</span>
+          <span><b>$240.00</b></span>
+        </div>
       </div>
-      <div class="minicart__amount_list d-flex justify-content-between">
-        <span>Total:</span>
-        <span><b>$240.00</b></span>
+      <div class="minicart__conditions text-center">
+        <input class="minicart__conditions--input" id="accept" type="checkbox">
+        <label class="minicart__conditions--label" for="accept">I agree with the <a class="minicart__conditions--link" href="privacy-policy.html">Privacy Policy</a></label>
       </div>
+      <div class="minicart__button d-flex justify-content-center">
+        <a class="btn minicart__button--link" href="{{ url_for('main.cart') }}">View cart</a>
+        <a class="btn minicart__button--link" href="{{ url_for('main.checkout') }}">Checkout</a>
+      </div>
+    {% endfor %}
     </div>
-    <div class="minicart__conditions text-center">
-      <input class="minicart__conditions--input" id="accept" type="checkbox">
-      <label class="minicart__conditions--label" for="accept">I agree with the <a class="minicart__conditions--link" href="privacy-policy.html">Privacy Policy</a></label>
-    </div>
-    <div class="minicart__button d-flex justify-content-center">
-      <a class="btn minicart__button--link" href="cart.html">View cart</a>
-      <a class="btn minicart__button--link" href="checkout.html">Checkout</a>
-    </div>
-  </div>
+  {% endif %}
   <!-- End offCanvas minicart -->
 
   <!-- Start serch box area -->
