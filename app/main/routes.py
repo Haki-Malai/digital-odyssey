@@ -7,7 +7,7 @@ from app.models import User, Category, Subcategory, Product
 def index():
     return render_template('index.html',
                            config=current_app.config,
-                           Category=Category)
+                           categories=Category.query.all())
 
                            
 @bp.route('/products', methods=['GET'])
