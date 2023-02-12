@@ -112,6 +112,7 @@ class Product(db.Model):
     name = db.Column(db.String(255), nullable=False, index=True)
     description = db.Column(db.Text)
     price = db.Column(db.Float, nullable=False)
+    sale_price = db.Column(db.Float)
     brand_id = db.Column(db.Integer, db.ForeignKey('brand.id'), nullable=False)
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)
     subcategory_id = db.Column(db.Integer, db.ForeignKey('subcategory.id'), nullable=False)
@@ -186,31 +187,71 @@ class Cart(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     user = db.relationship('User', back_populates='cart')
-    products = db.relationship('CartProduct', back_populates='cart')
+    cart_products = db.relationship('CartProduct', back_populates='cart')
 
     def __repr__(self):
         return '<Cart %r>' % self.user.username
 
     @property
     def total_price(self):
-        return sum(cp.total_price for cp in self.products)
+        return sum(cp.total_price for cp in self.cart_products)
 
     def add_product(self, product, quantity=1, variation_value_id=None):
         # Need to add self to session first
         db.session.add(self)
-        for cp in self.products:
+        for cp in self.cart_products:
             if cp.product == product:
                 cp.quantity += quantity
                 cp.total_price += (quantity * product.price)
                 return
-        if not variation_value_id: variation_value_id = product.variations[0].values[0].id
+        # Select first variation value if none is selected
+        if not variation_value_id and product.variations \
+            and product.variations[0].values:
+            variation_value_id = product.variations[0].values[0].id
         cp = CartProduct(cart=self, product=product, quantity=quantity, \
-            total_price=(quantity * product.price), variation_value_id=variation_value_id)
+            total_price=(quantity * product.price), variation_value_id=variation_value_id, \
+            total_sale_price=(quantity * product.sale_price) if product.sale_price else 0)
         db.session.add(cp)
 
+    def remove_product(self, product):
+        for cp in self.cart_products:
+            if cp.product == product:
+                self.cart_products.remove(cp)
+                db.session.delete(cp)
+                return
+    
+    def update_quantity(self, product, quantity):
+        for cp in self.cart_products:
+            if cp.product == product:
+                if quantity == 0:
+                    self.cart_products.remove(cp)
+                    db.session.delete(cp)
+                    return
+                cp.quantity = quantity
+                cp.total_price = quantity * product.price
+                cp.total_sale_price = quantity * product.sale_price if product.sale_price else 0
+                return
+
     def empty_cart(self):
-        self.products = []
-        
+        self.cart_products = []
+
+    def cart_product_total_price(self, product):
+        for cp in self.cart_products:
+            if cp.product == product:
+                return cp.total_price
+        return 0
+
+    def cart_product_total_sale_price(self, product):
+        for cp in self.cart_products:
+            if cp.product == product:
+                return cp.total_sale_price
+        return 0
+
+    def cart_product_quantity(self, product):
+        for cp in self.cart_products:
+            if cp.product == product:
+                return cp.quantity
+        return 0
 
 class CartProduct(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -218,8 +259,9 @@ class CartProduct(db.Model):
     product_id = db.Column(db.Integer, db.ForeignKey('product.id'))
     quantity = db.Column(db.Integer, nullable=False, default=0)
     total_price = db.Column(db.Float, nullable=False, default=0.0)
+    total_sale_price = db.Column(db.Float)
     variation_value_id = db.Column(db.Integer, db.ForeignKey('variation_value.id'))
 
-    cart = db.relationship('Cart', back_populates='products')
+    cart = db.relationship('Cart', back_populates='cart_products')
     product = db.relationship('Product', lazy='joined')
     variation_value = db.relationship('VariationValue', lazy='joined')
