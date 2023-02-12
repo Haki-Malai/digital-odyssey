@@ -468,50 +468,50 @@
       </div>
       <p class="minicart__header--desc">{{ config['TITLE'] }}</p>
     </div>
-    {% for product in current_user.cart.products %}
-      <div class="minicart__product">
-        <div class="minicart__product--items d-flex">
-          <div class="minicart__thumb">
-            <a href="{{ url_for('main.product', product_id=product.id) }}"><img src="assets/img/product/product1.png" alt="prduct-img"></a>
-          </div>
-          <div class="minicart__text">
-            <h4 class="minicart__subtitle"><a href="{{ url_for('main.product', product_id=product.id) }}">The is Garden Vegetable.</a></h4>
-            <span class="color__variant"><b>Color:</b> Beige</span>
-            <div class="minicart__price">
-              <span class="current__price">$125.00</span>
-              <span class="old__price">$140.00</span>
+    {% for cart_product in current_user.cart.products %}
+      {% with product=cart_product.product %}
+        <div class="minicart__product">
+          <div class="minicart__product--items d-flex">
+            <div class="minicart__thumb">
+              <a href="{{ url_for('main.product', product_id=product.id) }}"><img src="assets/img/product/product1.png" alt="prduct-img"></a>
             </div>
-            <div class="minicart__text--footer d-flex align-items-center">
-              <div class="quantity__box minicart__quantity">
-                <button type="button" class="quantity__value decrease" aria-label="quantity value" value="Decrease Value">-</button>
-                <label>
-                  <input type="number" class="quantity__number" value="1" data-counter />
-                </label>
-                <button type="button" class="quantity__value increase" aria-label="quantity value" value="Increase Value">+</button>
+            <div class="minicart__text">
+              <h4 class="minicart__subtitle"><a href="{{ url_for('main.product', product_id=product.id) }}">{{ product.name }}</a></h4>
+              {% for variation in product.variations %}
+                <span class="color__variant"><b>{{ variation.name }}:</b> {{ cart_product.variation_value }}</span>
+              {% endfor %}
+              <div class="minicart__price">
+                <span class="current__price">$125.00</span>
+                <span class="old__price">$140.00</span>
               </div>
-              <button class="minicart__product--remove" type="button">Remove</button>
+              <div class="minicart__text--footer d-flex align-items-center">
+                <div class="quantity__box minicart__quantity">
+                  <button type="button" class="quantity__value decrease" aria-label="quantity value" value="Decrease Value">-</button>
+                  <label>
+                    <input type="number" class="quantity__number" value="1" data-counter />
+                  </label>
+                  <button type="button" class="quantity__value increase" aria-label="quantity value" value="Increase Value">+</button>
+                </div>
+                <button class="minicart__product--remove" type="button">Remove</button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="minicart__amount">
-        <div class="minicart__amount_list d-flex justify-content-between">
-          <span>Sub Total:</span>
-          <span><b>$240.00</b></span>
+        <div class="minicart__amount">
+          <div class="minicart__amount_list d-flex justify-content-between">
+            <span>Sub Total:</span>
+            <span><b>$240.00</b></span>
+          </div>
+          <div class="minicart__amount_list d-flex justify-content-between">
+            <span>Total:</span>
+            <span><b>$240.00</b></span>
+          </div>
         </div>
-        <div class="minicart__amount_list d-flex justify-content-between">
-          <span>Total:</span>
-          <span><b>$240.00</b></span>
+        <div class="minicart__button d-flex justify-content-center">
+          <a class="btn minicart__button--link" href="{{ url_for('main.cart') }}">View cart</a>
+          <a class="btn minicart__button--link" href="{{ url_for('main.checkout') }}">Checkout</a>
         </div>
-      </div>
-      <div class="minicart__conditions text-center">
-        <input class="minicart__conditions--input" id="accept" type="checkbox">
-        <label class="minicart__conditions--label" for="accept">I agree with the <a class="minicart__conditions--link" href="privacy-policy.html">Privacy Policy</a></label>
-      </div>
-      <div class="minicart__button d-flex justify-content-center">
-        <a class="btn minicart__button--link" href="{{ url_for('main.cart') }}">View cart</a>
-        <a class="btn minicart__button--link" href="{{ url_for('main.checkout') }}">Checkout</a>
-      </div>
+      {% endwith %}
     {% endfor %}
     </div>
   {% endif %}
