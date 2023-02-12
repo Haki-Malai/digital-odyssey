@@ -4,9 +4,9 @@ from app import db, login
 
 
 class User(UserMixin, db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(64), index=True, unique=True)
-    email = db.Column(db.String(120), index=True, unique=True)
+    id = db.Column(db.Integer, primary_key=True, index=True)
+    username = db.Column(db.String(64), unique=True, index=True)
+    email = db.Column(db.String(120), unique=True, index=True)
     role = db.Column(db.String(64), default='user')
     password_hash = db.Column(db.String(128))
 
@@ -23,7 +23,7 @@ class User(UserMixin, db.Model):
     def password(self):
         raise AttributeError('password is not a readable attribute')
 
-    def password(self, password):
+    def set_password(self, password):
         self.password_hash = generate_password_hash(password)
     
     def verify_password(self, password):
@@ -74,7 +74,7 @@ def load_user(id):
 
 
 class Category(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, index=True)
     name = db.Column(db.String(64), unique=True, index=True)
 
     subcategories = db.relationship('Subcategory', back_populates='category')
@@ -85,7 +85,7 @@ class Category(db.Model):
 
 
 class Subcategory(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, index=True)
     name = db.Column(db.String(124), index=True)
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
 
@@ -97,8 +97,8 @@ class Subcategory(db.Model):
 
 
 class Brand(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255), nullable=False)
+    id = db.Column(db.Integer, primary_key=True, index=True)
+    name = db.Column(db.String(255), nullable=False, index=True)
     description = db.Column(db.Text)
 
     products = db.relationship('Product', back_populates='brand')
@@ -108,8 +108,8 @@ class Brand(db.Model):
 
 
 class Product(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255), nullable=False)
+    id = db.Column(db.Integer, primary_key=True, index=True)
+    name = db.Column(db.String(255), nullable=False, index=True)
     description = db.Column(db.Text)
     price = db.Column(db.Float, nullable=False)
     brand_id = db.Column(db.Integer, db.ForeignKey('brand.id'), nullable=False)
@@ -119,10 +119,44 @@ class Product(db.Model):
     category = db.relationship('Category', back_populates='products')
     subcategory = db.relationship('Subcategory', back_populates='products')
     brand = db.relationship('Brand', back_populates='products')
+    variations = db.relationship('Variation', back_populates='product')
         
     def __repr__(self):
         return '<Product %r>' % self.name
-     
+
+    def create_variation(self, name):
+        variation = Variation(name=name, product_id=self.id)
+        db.session.add(variation)
+        return variation
+
+
+class Variation(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255), nullable=False)
+    product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False)
+
+    values = db.relationship('VariationValue', back_populates='variation')
+    product = db.relationship('Product', back_populates='variations')
+
+    def __repr__(self):
+        return '<Variation %r>' % self.name
+
+    def create_value(self, name):
+        variant_value = VariationValue(name=name, variation_id=self.id, product_id=self.product_id)
+        db.session.add(variant_value)
+
+
+class VariationValue(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255), nullable=False)
+    variation_id = db.Column(db.Integer, db.ForeignKey('variation.id'), nullable=False)
+    product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False)
+
+    variation = db.relationship('Variation', back_populates='values')
+
+    def __repr__(self):
+        return '<VariationValue %r>' % self.name
+
 
 class WishlistProduct(db.Model):
     wishlist_id = db.Column(db.Integer, db.ForeignKey('wishlist.id'), primary_key=True)
@@ -145,7 +179,6 @@ class Wishlist(db.Model):
     def add_product(self, product):
         cp = WishlistProduct(wishlist=self, product=product)
         db.session.add(cp)
-            
 
 
 class Cart(db.Model):
@@ -162,13 +195,17 @@ class Cart(db.Model):
     def total_price(self):
         return sum(cp.total_price for cp in self.products)
 
-    def add_product(self, product, quantity=1):
+    def add_product(self, product, quantity=1, variation_value_id=None):
+        # Need to add self to session first
+        db.session.add(self)
         for cp in self.products:
             if cp.product == product:
                 cp.quantity += quantity
                 cp.total_price += (quantity * product.price)
                 return
-        cp = CartProduct(cart=self, product=product, quantity=quantity, total_price=(quantity * product.price))
+        if not variation_value_id: variation_value_id = product.variations[0].values[0].id
+        cp = CartProduct(cart=self, product=product, quantity=quantity, \
+            total_price=(quantity * product.price), variation_value_id=variation_value_id)
         db.session.add(cp)
 
     def empty_cart(self):
@@ -181,6 +218,8 @@ class CartProduct(db.Model):
     product_id = db.Column(db.Integer, db.ForeignKey('product.id'))
     quantity = db.Column(db.Integer, nullable=False, default=0)
     total_price = db.Column(db.Float, nullable=False, default=0.0)
+    variation_value_id = db.Column(db.Integer, db.ForeignKey('variation_value.id'))
 
     cart = db.relationship('Cart', back_populates='products')
     product = db.relationship('Product', lazy='joined')
+    variation_value = db.relationship('VariationValue', lazy='joined')
