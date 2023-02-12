@@ -1,4 +1,5 @@
 from flask import current_app, render_template
+from flask_login import current_user
 from app.main import bp
 from app.models import User, Category, Subcategory, Product
 
@@ -7,7 +8,8 @@ from app.models import User, Category, Subcategory, Product
 def index():
     return render_template('index.html',
                            config=current_app.config,
-                           categories=Category.query.all())
+                           categories=Category.query.all(),
+                           current_user=current_user)
 
                            
 @bp.route('/products', methods=['GET'])
