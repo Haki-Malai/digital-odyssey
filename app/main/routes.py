@@ -1,8 +1,14 @@
-from flask import current_app, render_template, jsonify
+from flask import current_app, render_template, request, g, jsonify
 from flask_login import current_user, login_required
 from app import db
 from app.main import bp
+from app.main.forms import SearchForm
 from app.models import User, Category, Subcategory, Product
+
+
+@bp.before_app_request
+def before_request():
+    g.search_form = SearchForm()
 
 
 @bp.route('/', methods=['GET'])
@@ -69,3 +75,11 @@ def category(category_id):
 @bp.route('/subcategory/<int:subcategory_id>', methods=['GET'])
 def subcategory(subcategory_id):
     return Subcategory.query.get(subcategory_id).name
+
+
+@bp.route('/search')
+def search():
+    page = request.args.get('page', 1, type=int)
+    products, total = Product.search(g.search_form.q.data, page,
+                               current_app.config['ITEMS_PER_PAGE'])
+    return jsonify({ products })
