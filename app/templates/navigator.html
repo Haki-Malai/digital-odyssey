@@ -25,22 +25,24 @@
         </div>
         <div class="header__search--widget d-none d-lg-block header__sticky--none">
           <!-- Search Form -->
-          <form class="d-flex header__search--form" action="#">
-            <div class="header__select--categories select">
-              <select class="header__select--inner">
-                <option selected="selected">Select Categories</option>
-                {% for category in categories %}
-                  <option value="{{ category.id }}">{{ category.name }}</option>
-                {% endfor %}
-              </select>
-            </div>
-            <div class="header__search--box">
-              <label>
-                <input class="header__search--input" placeholder="Search Product" type="text">
-              </label>
-              <button class="header__search--button bg__secondary text-white" type="submit">Search</button>
-            </div>
-          </form>
+          {% if g.search_form %}
+            <form class="d-flex header__search--form" action="{{ url_for('main.search') }}">
+              <div class="header__select--categories select">
+                <select class="header__select--inner">
+                  <option selected="selected">Select Categories</option>
+                  {% for category in categories %}
+                    <option value="{{ category.id }}">{{ category.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="header__search--box">
+                <label>
+                  {{ g.search_form.q(size=20, class='form-control', placeholder=g.search_form.q.label.text) }}
+                </label>
+                <button class="header__search--button bg__secondary text-white" type="submit">Search</button>
+              </div>
+            </form>
+          {% endif %}
         </div>
         <!-- header that im not sure when it shows -->
         <div class="header__menu d-none d-lg-block header__sticky--block">
