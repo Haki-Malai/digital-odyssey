@@ -3,6 +3,9 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_mail import Mail
+from elasticsearch import Elasticsearch
+from redis import Redis
+import rq
 from config import config
 
 db = SQLAlchemy()
@@ -26,6 +29,10 @@ def create_app(config_name='default'):
     mg.init_app(app, db)
     login.init_app(app)
     mail.init_app(app)
+    app.elasticsearch = Elasticsearch([app.config['ELASTICSEARCH_URL']]) \
+        if app.config['ELASTICSEARCH_URL'] else None
+    app.redis = Redis.from_url(app.config['REDIS_URL'])
+    app.task_queue = rq.Queue('app-tasks', connection=app.redis)
 
     # Register blueprints
     from app.cli import bp as cli_bp 
