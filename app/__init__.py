@@ -4,6 +4,7 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_mail import Mail
 from apifairy import APIFairy
+from flask_marshmallow import Marshmallow
 from elasticsearch import Elasticsearch
 from redis import Redis
 import rq
@@ -13,6 +14,7 @@ db = SQLAlchemy()
 mg = Migrate()
 login = LoginManager()
 fairy = APIFairy()
+ma = Marshmallow()
 login.login_view = 'auth.login'
 login.login_message = 'Please log in to access this page.'
 login.login_message_category = 'warning'
@@ -33,6 +35,7 @@ def create_app(config_name='default'):
     login.init_app(app)
     mail.init_app(app)
     fairy.init_app(app)
+    ma.init_app(app)
     app.elasticsearch = Elasticsearch([app.config['ELASTICSEARCH_URL']]) \
         if app.config['ELASTICSEARCH_URL'] else None
     app.redis = Redis.from_url(app.config['REDIS_URL'])
