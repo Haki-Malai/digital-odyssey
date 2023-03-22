@@ -611,7 +611,7 @@ if (quantityWrapper) {
 }
 
 function updateQuantity(productId, quantity) {
-  fetch(`/cart/${productId}/${quantity}`)
+  fetch(`/api/cart/${productId}/${quantity}`)
     .then(response => response.json())
     .then(response => {
       if (response.product_quantity == 0) {
