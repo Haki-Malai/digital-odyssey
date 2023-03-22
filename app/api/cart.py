@@ -1,9 +1,13 @@
 from flask import jsonify
 from flask_login import current_user, login_required
+from apifairy import response, other_responses
 
 from app import db
 from app.api import bp
 from app.models import Product
+from app.api.schemas import CartSchema
+
+cart_schema = CartSchema()
 
 
 @bp.route('/cart', methods=['GET'])
@@ -14,6 +18,8 @@ def cart():
 
 @bp.route('/cart/<int:product_id>/<int:quantity>', methods=['GET'])
 @login_required
+@response(cart_schema)
+@other_responses({ 404: 'Product not found' })
 def cart_quantity(product_id, quantity):
     # Update the quantity in the database
     product = Product.query.get(product_id)
