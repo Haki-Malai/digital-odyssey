@@ -1,7 +1,7 @@
 import click
 from flask import Blueprint
 
-bp = Blueprint('cli', __name__)
+bp = Blueprint('cli', __name__, cli_group=None)
 
 
 @bp.cli.command('fake')
