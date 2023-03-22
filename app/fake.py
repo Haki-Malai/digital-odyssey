@@ -69,10 +69,12 @@ def create_products(count=10):
         db.session.add(product)
         try:
             db.session.commit()
-            variation = product.create_variation(fake.word())
+            product_variation = product.create_product_variation(fake.word())
+            product_image = product.create_product_image(
+                image_url='img/product/default.png')
             db.session.commit()
             try:
-                variation.create_value(fake.word())
+                product_variation.create_value(fake.word())
                 db.session.commit()
             except IntegrityError:
                 db.session.rollback()
