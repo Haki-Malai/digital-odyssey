@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block body %}
+  <div class="col">
+    <div class="account__login register">
+      <h2 class="account__login--header__title h2 mb-10">Create an Account</h2>
+      <div class="account__login--header mb-25">
+        <p class="account__login--header__desc">Register here if you are a new customer</p>
+      </div>
+      <div class="account__login--inner">
+        <form method="POST">
+          {{ form.csrf_token }}
+          <label>
+            {{ form.username.label }}
+            {{ form.username(class_="account__login--input", placeholder="Username") }}
+          </label>
+          <label>
+            {{ form.email.label }}
+            {{ form.email(class_="account__login--input", placeholder="Email address") }}
+          </label>
+          <label>
+            {{ form.password.label }}
+            {{ form.password(class_="account__login--input", placeholder="Password") }}
+          </label>
+          <label>
+            {{ form.password_confirm.label }}
+            {{ form.password_confirm(class_="account__login--input", placeholder="Confirm Password") }}
+          </label>
+          <div class="account__login--remember position__relative">
+            {{ form.agree_to_terms(class_="checkout__checkbox--input", id="terms") }}
+            <span class="checkout__checkbox--checkmark"></span>
+            <label class="checkout__checkbox--label login__remember--label" for="terms">
+              I have read and agree to the terms & conditions</label>
+          </div>
+          <div class="account__login--remember position__relative">
+            {{ form.subscribe(class_="checkout__checkbox--input", id="subscribe") }}
+            <span class="checkout__checkbox--checkmark"></span>
+            <label class="checkout__checkbox--label login__remember--label" for="subscribe">
+              Subscribe to our newsletter</label>
+          </div>
+          <button class="account__login--btn btn mb-10" type="submit">Submit & Register</button>
+          <p class="account__login--signup__text">Already a member?<a href="{{ url_for('auth.login') }}">Sign in</a></p>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}
