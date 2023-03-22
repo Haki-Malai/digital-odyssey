@@ -24,6 +24,11 @@ class Config:
     ELASTICSEARCH_URL = os.environ.get("ELASTICSEARCH_URL") or "http://localhost:9200"
     REDIS_URL = os.environ.get("REDIS_URL") or "redis://"
     ITEMS_PER_PAGE = 10
+    # apifairy configs
+    APIFAIRY_TITLE = 'Flask Boilerplate'
+    APIFAIRY_VERSION = '1.0.0'
+    APIFAIRY_UI = 'redoc'
+    APIFAIRY_UI_PATH = '/api/docs'
 
     @staticmethod
     def init_app(app):
