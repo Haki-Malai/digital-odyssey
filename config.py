@@ -29,6 +29,8 @@ class Config:
     APIFAIRY_VERSION = '1.0.0'
     APIFAIRY_UI = 'redoc'
     APIFAIRY_UI_PATH = '/api/docs'
+    # Admin
+    ADMIN_COLOR = 'dark'
 
     @staticmethod
     def init_app(app):
