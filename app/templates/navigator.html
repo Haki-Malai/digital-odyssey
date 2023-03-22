@@ -4,7 +4,9 @@
       <div class="container">
         <div class="header__topbar--inner d-flex align-items-center justify-content-center">
           <div class="header__shipping">
-            <p class="header__shipping--text text-white"><img class="header__shipping--icon" src="assets/img/icon/car.png" alt="header-shipping-img"> Claim your online FREE Delivery or Shipping today! Expires in</p>
+            <p class="header__shipping--text text-white">
+              Claim your online FREE Delivery or Shipping today! Expires in
+            </p>
           </div>
           <div class="header__topbar--countdown d-flex" data-countdown="Sep 30, 2022 00:00:00"></div>
         </div>
@@ -297,7 +299,6 @@
           <div class="header__right--info d-flex align-items-center">
             <div class="account__currency">
               <a class="account__currency--link text-white" href="javascript:void(0)">
-                <img src="assets/img/icon/usd-icon.png" alt="currency">
                 <span>USD</span> 
                 <svg xmlns="http://www.w3.org/2000/svg" width="9.797" height="6.05" viewBox="0 0 9.797 6.05">
                   <path  d="M14.646,8.59,10.9,12.329,7.151,8.59,6,9.741l4.9,4.9,4.9-4.9Z" transform="translate(-6 -8.59)" fill="currentColor" opacity="0.7"/>
@@ -400,7 +401,6 @@
         </div>
         <div class="offcanvas__account--currency">
           <a class="offcanvas__account--currency__menu text-black" href="javascript:void(0)">
-            <img src="assets/img/icon/usd-icon.png" alt="currency">
             <span>USD</span> 
             <svg xmlns="http://www.w3.org/2000/svg" width="9.797" height="6.05" viewBox="0 0 9.797 6.05">
               <path  d="M14.646,8.59,10.9,12.329,7.151,8.59,6,9.741l4.9,4.9,4.9-4.9Z" transform="translate(-6 -8.59)" fill="currentColor" opacity="0.7"/>
@@ -511,8 +511,8 @@
               </div>
               <div class="minicart__text">
                 <h4 class="minicart__subtitle"><a href="{{ url_for('main.product', product_id=product.id) }}">{{ product.name }}</a></h4>
-                {% for variation in product.variations %}
-                  <span class="color__variant"><b>{{ variation.name }}:</b> {{ cart_product.variation_value.name }}</span>
+                {% for product_variation in product.product_variations %}
+                  <span class="color__variant"><b>{{ product_variation.name }}:</b> {{ cart_product.product_variation_value.name }}</span>
                 {% endfor %}
                 <div class="minicart__price">
                   <span class="current__price" id="totalPrice{{ product.id }}">{{ cart_product.total_price }} €</span>
