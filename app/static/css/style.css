@@ -2106,7 +2106,7 @@ body.overlay__active::before, .predictive__search--box_active::before, .mobile_m
   width: 2rem;
   height: 2rem;
   padding: 0;
-  text-indent: -9999px;
+  margin: 1rem;
   border: none;
   background-color: transparent;
 }
@@ -2509,10 +2509,11 @@ body.overlay__active::before, .predictive__search--box_active::before, .mobile_m
 
 .main__logo--link {
   display: block;
+  max-width: 9rem;
 }
 
 .main__logo--img {
-  max-width: 120px;
+  max-width: 9rem;
   display: block;
 }
 
@@ -13571,4 +13572,17 @@ details > summary::-webkit-details-marker {
   .newsletter__popup--dontshow__again--text {
     font-size: 1.6rem;
   }
+}
+
+.admin__side_bar {
+  max-width: 20rem;
+  height: 100vh;
+  align-items: center;
+}
+
+.sidebar-item {
+  min-width: 18rem;
+  margin: 1rem;
+  font-size: large;
+  text-align: center;
 }
