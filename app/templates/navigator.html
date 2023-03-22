@@ -14,14 +14,22 @@
   <div class="main__header header__sticky">
     <div class="container">
       <div class="main__header--inner position__relative d-flex justify-content-between align-items-center">
-        <div class="offcanvas__header--menu__open ">
+        <!-- side menu togle small screen-->
+        <div class="offcanvas__header--menu__open">
           <a class="offcanvas__header--menu__open--btn" href="javascript:void(0)" data-offcanvas>
-            <svg xmlns="http://www.w3.org/2000/svg" class="ionicon offcanvas__header--menu__open--svg" viewBox="0 0 512 512"><path fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M80 160h352M80 256h352M80 352h352"/></svg>
-            <span class="visually-hidden">Offcanvas Menu Open</span>
+            <svg xmlns="http://www.w3.org/2000/svg"  class="ionicon offcanvas__header--menu__open--svg"
+              viewBox="0 0 512 512">
+            <path fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10"
+              stroke-width="32" d="M80 160h352M80 256h352M80 352h352"></svg>
           </a>
         </div>
         <div class="main__logo">
-          <h1 class="main__logo--title"><a class="main__logo--link" href="{{ url_for('main.index') }}"><img class="main__logo--img" src="assets/img/logo/nav-log.png" alt="logo-img"></a></h1>
+          <h1 class="main__logo--title">
+            <a class="main__logo--link" href="{{ url_for('main.index') }}">
+              <img class="main__logo--img" src="{{ url_for('static', filename='img/general/logo.png') }}"
+                alt="logo-img">
+            </a>
+          </h1>
         </div>
         <div class="header__search--widget d-none d-lg-block header__sticky--none">
           <!-- Search Form -->
@@ -322,11 +330,11 @@
   <!-- navbar when screen small -->
   <div class="offcanvas__header">
     <div class="offcanvas__inner">
+      <button class="offcanvas__close--btn" data-offcanvas></button>
       <div class="offcanvas__logo">
         <a class="offcanvas__logo_link" href="{{ url_for('main.index') }}">
-          <img src="assets/img/logo/nav-log.png" alt="Grocee Logo" width="158" height="36">
+          <img src="{{ url_for('static', filename='img/general/logo.png') }}" alt="Grocee Logo">
         </a>
-        <button class="offcanvas__close--btn" data-offcanvas>close</button>
       </div>
       <nav class="offcanvas__menu">
         <ul class="offcanvas__menu_ul">
