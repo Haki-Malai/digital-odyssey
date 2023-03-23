@@ -68,33 +68,37 @@ class User(UserMixin, db.Model):
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
-    
+
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
 
     # Currently only 2 roles: admin and user so this is fine
     def has_permission(self, permission):
         return self.role == permission
-    
+
     # Cart methods
-    def add_to_cart(self, product, quantity):
+    def add_to_cart(self, product_id, quantity=None):
         if not self.cart:
             self.cart = Cart(user=self)
-        self.cart.add_product(product, quantity)
+        if quantity:
+            self.cart.add_product(product_id, quantity)
+            return
+        if not self.cart.has_product(product_id):
+            self.cart.add_product(product_id, 1)
 
-    def remove_from_cart(self, product):
+    def remove_from_cart(self, product_id):
         if self.cart:
-            self.cart.remove_product(product)
+            self.cart.remove_product(product_id)
 
     def empty_cart(self):
         if self.cart:
             self.cart.empty_cart()
-    
+
     # Wishlist methods
-    def add_to_wishlist(self, product):
+    def add_to_wishlist(self, product_id):
         if not self.wishlist:
             self.wishlist = Wishlist(user=self)
-        self.wishlist.add_product(product)
+        self.wishlist.add_product(product_id)
 
     def remove_from_wishlist(self, product):
         if product in self.wishlist:
@@ -172,19 +176,18 @@ class Product(SearchableMixin, db.Model):
     category = db.relationship('Category', back_populates='products')
     subcategory = db.relationship('Subcategory', back_populates='products')
     brand = db.relationship('Brand', back_populates='products')
-    product_variations = db.relationship('ProductVariation',
-                                         back_populates='product')
-    product_images = db.relationship('ProductImage',
-                                     back_populates='product',
-                                     lazy='dynamic')
+    variations = db.relationship('ProductVariation', back_populates='product')
+    images = db.relationship('ProductImage',
+                             back_populates='product',
+                             lazy='dynamic')
 
     def __repr__(self):
         return '<Product %r>' % self.name
 
     def create_product_variation(self, name):
-        product_variation = ProductVariation(name=name, product_id=self.id)
-        db.session.add(product_variation)
-        return product_variation
+        variation = ProductVariation(name=name, product_id=self.id)
+        db.session.add(variation)
+        return variation
 
     def create_product_image(self, image_url):
         product_image = ProductImage(image_url=image_url, product_id=self.id)
@@ -199,7 +202,7 @@ class ProductImage(db.Model):
                            nullable=False)
     image_url = db.Column(db.String(255), nullable=False)
 
-    product = db.relationship('Product', back_populates='product_images')
+    product = db.relationship('Product', back_populates='images')
 
     def __repr__(self):
         return '<ProductImage %r>' % self.image_url
@@ -212,17 +215,16 @@ class ProductVariation(db.Model):
                            db.ForeignKey('product.id'),
                            nullable=False)
 
-    product_variation_values = db.relationship(
-        'ProductVariationValue',
-        back_populates='product_variation')
-    product = db.relationship('Product', back_populates='product_variations')
+    values = db.relationship('ProductVariationValue',
+                             back_populates='variation')
+    product = db.relationship('Product', back_populates='variations')
 
     def __repr__(self):
         return '<ProductVariation %r>' % self.name
 
     def create_value(self, name):
         variant_value = ProductVariationValue(name=name,
-                                              product_variation_id=self.id,
+                                              variation_id=self.id,
                                               product_id=self.product_id)
         db.session.add(variant_value)
 
@@ -230,30 +232,18 @@ class ProductVariation(db.Model):
 class ProductVariationValue(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
-    product_variation_id = db.Column(db.Integer,
-                                     db.ForeignKey('product_variation.id'),
-                                     nullable=False)
+    variation_id = db.Column(db.Integer,
+                             db.ForeignKey('product_variation.id'),
+                             nullable=False)
     product_id = db.Column(db.Integer,
                            db.ForeignKey('product.id'), 
                            nullable=False)
 
-    product_variation = db.relationship(
-        'ProductVariation',
-        back_populates='product_variation_values')
+    variation = db.relationship('ProductVariation',
+                                back_populates='values')
 
     def __repr__(self):
         return '<ProductVariationValue %r>' % self.name
-
-
-class WishlistProduct(db.Model):
-    wishlist_id = db.Column(db.Integer, db.ForeignKey('wishlist.id'), primary_key=True)
-    product_id = db.Column(db.Integer, db.ForeignKey('product.id'), primary_key=True)
-
-    product = db.relationship('Product', lazy='joined')
-    wishlist = db.relationship('Wishlist', back_populates='products')
-
-    def __repr__(self):
-        return '<WishlistProduct %r>' % self.product.name
 
 
 class Wishlist(db.Model):
@@ -266,9 +256,21 @@ class Wishlist(db.Model):
     def __repr__(self):
         return '<Wishlist %r>' % self.user.username
 
-    def add_product(self, product):
-        cp = WishlistProduct(wishlist=self, product=product)
-        db.session.add(cp)
+    def add_product(self, product_id):
+        wishlist_product = WishlistProduct(wishlist=self,
+                                           product_id=product_id)
+        db.session.add(wishlist_product)
+
+
+class WishlistProduct(db.Model):
+    wishlist_id = db.Column(db.Integer, db.ForeignKey('wishlist.id'), primary_key=True)
+    product_id = db.Column(db.Integer, db.ForeignKey('product.id'), primary_key=True)
+
+    product = db.relationship('Product', lazy='joined')
+    wishlist = db.relationship('Wishlist', back_populates='products')
+
+    def __repr__(self):
+        return '<WishlistProduct %r>' % self.product.name
 
 
 class Cart(db.Model):
@@ -287,8 +289,14 @@ class Cart(db.Model):
     def total_price(self):
         return sum(cp.total_price for cp in self.cart_products)
 
-    def add_product(self, product_id, quantity=1,
-                    product_variation_value_id=None):
+    @property
+    def quantity(self):
+        return self.cart_products.count()
+
+    def add_product(self,
+                    product_id,
+                    quantity=1,
+                    value=None):
         # Need to add self to session first
         db.session.add(self)
         product = Product.query.get(product_id)
@@ -297,59 +305,38 @@ class Cart(db.Model):
                 cp.quantity += quantity
                 cp.total_price += (quantity * product.price)
                 return
-        # Select first product_variation value if none is selected
-        if not product_variation_value_id and product.product_variations \
-            and product.product_variations[0].product_variation_values:
-            product_variation_value_id = product.product_variations[0].product_variation_values[0].id
+        # Select first variation value if none is selected
+        if not value and product.variations \
+            and product.variations[0].values:
+            value = product.variations[0].values[0].id
         cp = CartProduct(
             cart=self,
             product=product,
             quantity=quantity,
             total_price=(quantity * product.price),
-            product_variation_value_id=product_variation_value_id,
+            value_id=value,
             total_sale_price=
                 quantity * product.sale_price if product.sale_price else 0)
         db.session.add(cp)
 
-    def remove_product(self, product):
-        for cp in self.cart_products:
-            if cp.product == product:
-                self.cart_products.remove(cp)
-                db.session.delete(cp)
-                return
-
-    def update_quantity(self, product, quantity):
-        for cp in self.cart_products:
-            if cp.product == product:
-                if quantity == 0:
-                    self.cart_products.remove(cp)
-                    db.session.delete(cp)
-                    return
-                cp.quantity = quantity
-                cp.total_price = quantity * product.price
-                cp.total_sale_price = quantity * product.sale_price if product.sale_price else 0
+    def remove_product(self, product_id):
+        for cart_product in self.cart_products:
+            if cart_product.product_id == product_id:
+                self.cart_products.remove(cart_product)
+                db.session.delete(cart_product)
                 return
 
     def empty_cart(self):
-        self.cart_products = []
+        for cart_product in self.cart_products:
+            self.cart_products.remove(cart_product)
+            db.session.delete(cart_product)
+            return
 
-    def cart_product_total_price(self, product):
-        for cp in self.cart_products:
-            if cp.product == product:
-                return cp.total_price
-        return 0
-
-    def cart_product_total_sale_price(self, product):
-        for cp in self.cart_products:
-            if cp.product == product:
-                return cp.total_sale_price
-        return 0
-
-    def cart_product_quantity(self, product):
-        for cp in self.cart_products:
-            if cp.product == product:
-                return cp.quantity
-        return 0
+    def has_product(self, product_id):
+        for cart_product in self.cart_products:
+            if cart_product.product_id == product_id:
+                return True
+        return False
 
 
 class CartProduct(db.Model):
@@ -359,14 +346,14 @@ class CartProduct(db.Model):
     quantity = db.Column(db.Integer, nullable=False, default=0)
     total_price = db.Column(db.Float, nullable=False, default=0.0)
     total_sale_price = db.Column(db.Float)
-    product_variation_value_id = db.Column(
+    value_id = db.Column(
         db.Integer,
         db.ForeignKey('product_variation_value.id'))
 
     cart = db.relationship('Cart', back_populates='cart_products')
     product = db.relationship('Product', lazy='joined')
-    product_variation_value = db.relationship('ProductVariationValue',
-                                              lazy='joined')
+    value = db.relationship('ProductVariationValue',
+                            lazy='joined')
 
     def __repr__(self):
         return '<CartProduct %r>' % self.product.name
