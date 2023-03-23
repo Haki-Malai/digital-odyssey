@@ -22,6 +22,8 @@ class Config:
     SECRET_KEY = os.environ.get("SECRET_KEY")
     SQLALCHEMY_TRACK_NOTIFICATIONS = False
     JSON_SORT_KEYS = False
+    UPLOAD_FOLDER = 'app/static/uploads'
+    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
     ELASTICSEARCH_URL = os.environ.get("ELASTICSEARCH_URL") or "http://localhost:9200"
     REDIS_URL = os.environ.get("REDIS_URL") or "redis://"
     ITEMS_PER_PAGE = 10
