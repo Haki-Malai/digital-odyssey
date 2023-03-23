@@ -88,6 +88,7 @@ class CartSchema(ma.SQLAlchemySchema):
 
     id = ma.auto_field(load_only=True)
     total_price = ma.Float(dump_only=True)
+    quantity = ma.Integer(dump_only=True)
 
     cart_products = ma.Nested('CartProductSchema', many=True)
 

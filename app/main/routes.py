@@ -37,10 +37,28 @@ def wishlist():
     return current_user.wishlist.products
 
 
+@bp.route('/wishlist/<int:product_id>')
+@login_required
+def wishlist_product(product_id):
+    product = Product.query.get(product_id)
+    current_user.wishlist.add(product)
+    db.session.commit()
+    return current_user.wishlist.products
+
+
 @bp.route('/cart')
 @login_required
 def cart():
     return current_user.cart.cart_products
+
+
+@bp.route('/cart/<int:product_id>')
+@login_required
+@response(cart_schema)
+def product_to_cart(product_id):
+    current_user.add_to_cart(product_id)
+    db.session.commit()
+    return current_user.cart
 
 
 @bp.route('/cart/<int:product_id>/<int:quantity>')
@@ -49,8 +67,7 @@ def cart():
 def cart_quantity(product_id, quantity):
     """Add or update quantity of product in cart.
     """
-    product = Product.query.get(product_id)
-    current_user.cart.update_quantity(product, quantity)
+    current_user.add_to_cart(product_id, quantity)
     db.session.commit()
     return current_user.cart
 
