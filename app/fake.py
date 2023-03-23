@@ -62,6 +62,7 @@ def create_products(count=10):
             description=fake.sentence(),
             price=fake.random_int(100, 1000),
             sale_price=fake.random_int(1000, 2000) if fake.boolean() else None,
+            featured=fake.boolean(),
             category_id=subcategory.category_id,
             subcategory_id=subcategory.id,
             brand_id=brand.id,
@@ -71,7 +72,7 @@ def create_products(count=10):
             db.session.commit()
             product_variation = product.create_product_variation(fake.word())
             product_image = product.create_product_image(
-                image_url='img/product/default.png')
+                image_url='uploads/product/default.png')
             db.session.commit()
             try:
                 product_variation.create_value(fake.word())
@@ -91,7 +92,7 @@ def create_fake_admin():
     user.set_password('asdf')
     db.session.add(user)
     db.session.commit()
-    user.add_to_cart(Product.query.first(), 1)
+    user.add_to_cart(Product.query.first().id, 1)
     user.add_to_wishlist(Product.query.first())
     db.session.commit()
          
