@@ -3,8 +3,6 @@
 
   {% include 'navigator.html' %}
 
-  {% if current_user.is_authenticated %}
-      <h1>HI {{ current_user.username }}</h1>
-  {% endif %}
+  {% include 'featured.html' %}
 
 {% endblock %}

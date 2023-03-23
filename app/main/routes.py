@@ -21,6 +21,7 @@ def index():
     return render_template('index.html',
                            config=current_app.config,
                            categories=Category.query.all(),
+                           products=Product.query.all(),
                            current_user=current_user)
 
 

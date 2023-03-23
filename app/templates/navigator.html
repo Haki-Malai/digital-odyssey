@@ -70,7 +70,11 @@
                     </a>
                     <ul class="header__sub--menu">
                       {% for subkey, subvalue in value.items() %}
-                        <li class="header__sub--menu__items"><a href="{{ subvalue }}" class="header__sub--menu__link">{{ subkey }}</a></li>
+                        <li class="header__sub--menu__items">
+                          <a href="{{ subvalue }}" class="header__sub--menu__link">
+                            {{ subkey }}
+                          </a>
+                        </li>
                       {% endfor %}
                     </ul>
                   </li>
@@ -107,7 +111,7 @@
                       <path  data-name="Path 16789" d="M13.273,478.8a1.294,1.294,0,1,0,1.293-1.353A1.325,1.325,0,0,0,13.273,478.8Zm1.293-.451a.452.452,0,1,1-.431.451A.442.442,0,0,1,14.566,478.352Z" transform="translate(-2.875 -466.622)" fill="#fefefe"/>
                     </g>
                     </g>
-                  </svg>  
+                  </svg>
                   <span class="items__count">{{ current_user.cart.cart_products.all()|length }}</span>
                 </a>
               </li>
