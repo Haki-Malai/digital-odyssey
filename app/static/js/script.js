@@ -611,20 +611,29 @@ if (quantityWrapper) {
 }
 
 function updateQuantity(productId, quantity) {
-  fetch(`/api/cart/${productId}/${quantity}`)
+  fetch(`/cart/${productId}/${quantity}`)
     .then(response => response.json())
     .then(response => {
-      if (response.product_quantity == 0) {
-        document.getElementById(`minicartProduct${productId}`).remove();
-      } else {
-        document.getElementById(`cartProductQuantity${productId}`).value = response.product_quantity;
-        document.getElementById(`totalPrice${productId}`).innerHTML = response.product_total_price + ' €';
-        document.getElementById(`salePrice${productId}`).innerHTML = response.product_total_sale_price + ' €';
-      }
       document.getElementById('offsetCartTotal').innerHTML = response.total_price + ' €';
+      if (quantity > 0) {
+        response.cart_products.forEach((cart_product) => {
+          document.getElementById(
+            `cartProductQuantity${cart_product.product_id}`).value = cart_product.quantity;
+          document.getElementById(
+            `totalPrice${cart_product.product_id}`).innerHTML = cart_product.total_price + ' €';
+          try{
+            document.getElementById(
+              `salePrice${cart_product.product_id}`).innerHTML = cart_product.total_sale_price + ' €';
+          } finally {
+            console.log('No sale price');
+          }
+        });
+      } else {
+        document.getElementById(`minicartProduct${productId}`).remove();
+      }
     })
     .catch(error => {
-      console.log('Quantity update failed');
+      console.log('Quantity update failed (mabe)', error);
     });
 }
 

@@ -273,7 +273,9 @@ class Cart(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     user = db.relationship('User', back_populates='cart')
-    cart_products = db.relationship('CartProduct', back_populates='cart')
+    cart_products = db.relationship('CartProduct',
+                                    back_populates='cart',
+                                    lazy='dynamic')
 
     def __repr__(self):
         return '<Cart %r>' % self.user.username
@@ -282,10 +284,11 @@ class Cart(db.Model):
     def total_price(self):
         return sum(cp.total_price for cp in self.cart_products)
 
-    def add_product(self, product, quantity=1,
+    def add_product(self, product_id, quantity=1,
                     product_variation_value_id=None):
         # Need to add self to session first
         db.session.add(self)
+        product = Product.query.get(product_id)
         for cp in self.cart_products:
             if cp.product == product:
                 cp.quantity += quantity
@@ -293,8 +296,8 @@ class Cart(db.Model):
                 return
         # Select first product_variation value if none is selected
         if not product_variation_value_id and product.product_variations \
-            and product.product_variations[0].values:
-            product_variation_value_id = product.product_variations[0].values[0].id
+            and product.product_variations[0].product_variation_values:
+            product_variation_value_id = product.product_variations[0].product_variation_values[0].id
         cp = CartProduct(
             cart=self,
             product=product,
