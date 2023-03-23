@@ -42,7 +42,6 @@ class SearchableMixin(object):
         for obj in cls.query:
             add_to_index(cls.__tablename__, obj)
 
-
 db.event.listen(db.session, 'before_commit', SearchableMixin.before_commit)
 db.event.listen(db.session, 'after_commit', SearchableMixin.after_commit)
 
@@ -183,7 +182,7 @@ class Product(SearchableMixin, db.Model):
         product_variation = ProductVariation(name=name, product_id=self.id)
         db.session.add(product_variation)
         return product_variation
-    
+
     def create_product_image(self, image_url):
         product_image = ProductImage(image_url=image_url, product_id=self.id)
         db.session.add(product_image)
@@ -263,7 +262,7 @@ class Wishlist(db.Model):
 
     def __repr__(self):
         return '<Wishlist %r>' % self.user.username
-    
+
     def add_product(self, product):
         cp = WishlistProduct(wishlist=self, product=product)
         db.session.add(cp)
@@ -312,7 +311,7 @@ class Cart(db.Model):
                 self.cart_products.remove(cp)
                 db.session.delete(cp)
                 return
-    
+
     def update_quantity(self, product, quantity):
         for cp in self.cart_products:
             if cp.product == product:
