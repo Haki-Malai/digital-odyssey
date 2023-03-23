@@ -16,7 +16,7 @@ def before_request():
     g.search_form = SearchForm()
 
 
-@bp.route('/', methods=['GET'])
+@bp.route('/')
 def index():
     return render_template('index.html',
                            config=current_app.config,
@@ -24,13 +24,13 @@ def index():
                            current_user=current_user)
 
 
-@bp.route('/user', methods=['GET'])
+@bp.route('/user')
 @login_required
 def user():
     return current_user.username
 
 
-@bp.route('/wishlist', methods=['GET'])
+@bp.route('/wishlist')
 @login_required
 def wishlist():
     return current_user.wishlist.products
@@ -54,28 +54,28 @@ def cart_quantity(product_id, quantity):
     return current_user.cart
 
 
-@bp.route('/checkout', methods=['GET'])
+@bp.route('/checkout')
 @login_required
 def checkout():
     return current_user.cart.products
 
 
-@bp.route('/products', methods=['GET'])
+@bp.route('/products')
 def products():
     return Product.query.first().name
 
 
-@bp.route('/product/<int:product_id>', methods=['GET'])
+@bp.route('/product/<int:product_id>')
 def product(product_id):
     return Product.query.get(product_id).name
 
 
-@bp.route('/category/<int:category_id>', methods=['GET'])
+@bp.route('/category/<int:category_id>')
 def category(category_id):
     return Category.query.get(category_id).name
 
 
-@bp.route('/subcategory/<int:subcategory_id>', methods=['GET'])
+@bp.route('/subcategory/<int:subcategory_id>')
 def subcategory(subcategory_id):
     return Subcategory.query.get(subcategory_id).name
 
