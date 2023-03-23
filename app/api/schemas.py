@@ -87,9 +87,7 @@ class CartSchema(ma.SQLAlchemySchema):
         ordered = True
 
     id = ma.auto_field(load_only=True)
-    user = ma.Nested('UserSchema',
-                     only=('id', 'username', 'email'),
-                     dump_only=True)
+    total_price = ma.Float(dump_only=True)
 
     cart_products = ma.Nested('CartProductSchema', many=True)
 
