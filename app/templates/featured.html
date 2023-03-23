@@ -10,8 +10,8 @@
             <div class="product__items product__items2">
               <div class="product__items--thumbnail">
                 <a class="product__items--link" href="#">
-                  <img class="product__items--img product__primary--img" src="{{ url_for('static', filename=product.product_images.first().image_url) }}" alt="product-img">
-                  <img class="product__items--img product__secondary--img" src="{{ url_for('static', filename=product.product_images.first().image_url) }}" alt="product-img">
+                  <img class="product__items--img product__primary--img" src="{{ url_for('static', filename=product.images.first().image_url) }}" alt="product-img">
+                  <img class="product__items--img product__secondary--img" src="{{ url_for('static', filename=product.images.first().image_url) }}" alt="product-img">
                 </a>
                 {% if product.sale_price %}
                   <div class="product__badge">
@@ -40,7 +40,7 @@
                 </ul>
               </div>
               <div class="product__items--content product__items2--content text-center">
-                <a class="add__to--cart__btn" href="#">+ Add to cart</a>
+                <a class="add__to--cart__btn" onclick="addToWishlist('{{ product.id }}')">+ Add to cart</a>
                 <h3 class="product__items--content__title h4"><a href="#">
                   {{ product.name }}
                 </a></h3>

@@ -614,6 +614,7 @@ function updateQuantity(productId, quantity) {
   fetch(`/cart/${productId}/${quantity}`)
     .then(response => response.json())
     .then(response => {
+      console.log(response)
       document.getElementById('offsetCartTotal').innerHTML = response.total_price + ' €';
       if (quantity > 0) {
         response.cart_products.forEach((cart_product) => {
@@ -1030,4 +1031,20 @@ function setQueryParameters(param, value){
   var url = new URL(window.location.href);
   url.searchParams.set(param, value);
   location = url.href;
+}
+
+const addToWishlist = (productId) => {
+  fetch(`/cart/${productId}`)
+    .then(response => response.json())
+    .then(response => {
+      document.querySelectorAll(".cart items__count")
+      .forEach((subMenu) => {
+        subMenu.innerHTML = response.itemsCount;
+        subMenu.nextElementSibling.classList.remove("active");
+        slideUp(subMenu);
+      });
+    })
+    .catch(error => {
+      console.log('Quantity update failed', error);
+    });
 }
