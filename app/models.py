@@ -1,5 +1,5 @@
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import current_user, UserMixin, AnonymousUserMixin
+from flask_login import UserMixin, AnonymousUserMixin
 from app import db, login
 from app.search import add_to_index, remove_from_index, query_index
 
@@ -158,6 +158,7 @@ class Product(SearchableMixin, db.Model):
     description = db.Column(db.Text)
     price = db.Column(db.Float, nullable=False)
     sale_price = db.Column(db.Float)
+    featured = db.Column(db.Boolean, default=False)
     brand_id = db.Column(db.Integer,
                          db.ForeignKey('brand.id'),
                          nullable=False)
@@ -173,7 +174,9 @@ class Product(SearchableMixin, db.Model):
     brand = db.relationship('Brand', back_populates='products')
     product_variations = db.relationship('ProductVariation',
                                          back_populates='product')
-    product_images = db.relationship('ProductImage', back_populates='product')
+    product_images = db.relationship('ProductImage',
+                                     back_populates='product',
+                                     lazy='dynamic')
 
     def __repr__(self):
         return '<Product %r>' % self.name
