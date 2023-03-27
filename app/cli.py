@@ -9,6 +9,9 @@ def fake():
     from app.fake import create_users, create_categories, create_subcategories, \
         create_brands, create_products, create_fake_admin
 
+    click.echo('Creating default admin...')
+    create_fake_admin()
+
     click.echo('Creating users...')
     create_users()
 
@@ -23,8 +26,5 @@ def fake():
 
     click.echo('Creating products...')
     create_products()
-
-    click.echo('Creating default admin...')
-    create_fake_admin()
 
     click.echo('Done.')

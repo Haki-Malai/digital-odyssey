@@ -1,6 +1,5 @@
 from flask import render_template, current_app, redirect, \
-    url_for, flash, request
-from werkzeug.urls import url_parse
+    url_for, flash
 from flask_login import login_required, login_user, logout_user
 from app import db
 from app.auth import bp
@@ -19,12 +18,9 @@ def login():
             User.query.filter_by(username=form.entity.data).first()
         if user is None or not user.verify_password(form.password.data):
             flash('Invalid username or password', 'danger')
-            return redirect(url_for('auth.login'), 401)
+            return redirect(url_for('auth.login'))
         login_user(user, remember=form.remember_me.data)
-        next_page = request.args.get('next')
-        if not next_page or url_parse(next_page).netloc != '':
-            next_page = url_for('main.index')
-        return redirect(next_page)
+        return redirect(url_for('main.index'))
     return render_template('auth/login.html', config=current_app.config, form=form, categories=Category.query.all())
 
 
