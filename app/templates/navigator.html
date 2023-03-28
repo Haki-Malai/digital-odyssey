@@ -1,5 +1,5 @@
 <header class="header__section header__transparent">
-  {% if config.countdown %}
+  {% if g.config.countdown %}
     <div class="header__topbar bg__primary">
       <div class="container">
         <div class="header__topbar--inner d-flex align-items-center justify-content-center">
@@ -36,7 +36,7 @@
         <div class="header__search--widget d-none d-lg-block header__sticky--none">
           <!-- Search Form -->
           {% if g.search_form %}
-            <form class="d-flex header__search--form" action="{{ url_for('main.search') }}">
+            <form class="d-flex header__search--form" action="{{ url_for('main.product_search') }}">
               <div class="header__select--categories select">
                 <select class="header__select--inner">
                   <option selected="selected">Select Categories</option>
@@ -47,7 +47,9 @@
               </div>
               <div class="header__search--box">
                 <label>
-                  {{ g.search_form.q(size=20, class='form-control', placeholder=g.search_form.q.label.text) }}
+                  {{ g.search_form.q(size=20,
+                    class='header__search--input',
+                    placeholder=g.search_form.q.label.text) }}
                 </label>
                 <button class="header__search--button bg__secondary text-white" type="submit">Search</button>
               </div>
@@ -58,7 +60,7 @@
         <div class="header__menu d-none d-lg-block header__sticky--block">
           <nav class="header__menu--navigation">
             <ul class="d-flex">
-              {% for key, value in config['NAVIGATION'].items() %}
+              {% for key, value in g.config['NAVIGATION'].items() %}
                 {% if value is not mapping %}
                   <li><a href="{{ value }}">{{ key }}</a></li>
                 {% else %}
@@ -254,7 +256,7 @@
           <div class="header__menu">
             <nav class="header__menu--navigation">
               <ul class="d-flex">
-                {% for key, value in config['NAVIGATION'].items() %}
+                {% for key, value in g.config['NAVIGATION'].items() %}
                   {% if value is mapping %}
                     <li class="header__menu--items">
                       <a class="header__menu--link text-white">{{ key }}
@@ -340,7 +342,7 @@
       </div>
       <nav class="offcanvas__menu">
         <ul class="offcanvas__menu_ul">
-          {% for key, value in config['NAVIGATION'].items() %}
+          {% for key, value in g.config['NAVIGATION'].items() %}
             {% if value is mapping %}
               <li class="offcanvas__menu_li">
                 <a class="offcanvas__menu_item">{{ key }}</a>
@@ -501,7 +503,7 @@
             <svg class="minicart__close--icon" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 512 512"><path fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M368 368L144 144M368 144L144 368"/></svg>
           </button>
         </div>
-        <p class="minicart__header--desc">{{ config['TITLE'] }}</p>
+        <p class="minicart__header--desc">{{ g.config['TITLE'] }}</p>
       </div>
       {% for cart_product in current_user.cart.cart_products.all() %}
         {% with product=cart_product.product %}
