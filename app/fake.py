@@ -1,7 +1,8 @@
 from faker import Faker
 from sqlalchemy.exc import IntegrityError
+
 from app import db
-from app.models import User, Category, Subcategory, Brand, Product, Cart
+from app.models import User, Category, Subcategory, Brand, Product
 
 fake = Faker()
 
