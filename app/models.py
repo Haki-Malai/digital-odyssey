@@ -61,6 +61,8 @@ class User(UserMixin, db.Model):
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
+        Cart(user=self)
+        Wishlist(user=self)
 
     @property
     def password(self):
@@ -77,14 +79,8 @@ class User(UserMixin, db.Model):
         return self.role == permission
 
     # Cart methods
-    def add_to_cart(self, product_id, quantity=None):
-        if not self.cart:
-            self.cart = Cart(user=self)
-        if quantity:
-            self.cart.add_product(product_id, quantity)
-            return
-        if not self.cart.has_product(product_id):
-            self.cart.add_product(product_id, 1)
+    def add_to_cart(self, product_id, quantity=1):
+        return self.cart.add_product(product_id, quantity)
 
     def remove_from_cart(self, product_id):
         if self.cart:
@@ -176,7 +172,9 @@ class Product(SearchableMixin, db.Model):
     category = db.relationship('Category', back_populates='products')
     subcategory = db.relationship('Subcategory', back_populates='products')
     brand = db.relationship('Brand', back_populates='products')
-    variations = db.relationship('ProductVariation', back_populates='product')
+    variations = db.relationship('ProductVariation',
+                                 back_populates='product',
+                                 lazy='dynamic')
     images = db.relationship('ProductImage',
                              back_populates='product',
                              lazy='dynamic')
@@ -184,15 +182,10 @@ class Product(SearchableMixin, db.Model):
     def __repr__(self):
         return '<Product %r>' % self.name
 
-    def create_product_variation(self, name):
-        variation = ProductVariation(name=name, product_id=self.id)
-        db.session.add(variation)
-        return variation
-
-    def create_product_image(self, image_url):
-        product_image = ProductImage(image_url=image_url, product_id=self.id)
-        db.session.add(product_image)
-        return product_image
+    def __init__(self, **kwargs):
+        super(Product, self).__init__(**kwargs)
+        ProductImage(product=self, image_url='uploads/product/default.png')
+        ProductVariation(product=self, name='Variation')
 
 
 class ProductImage(db.Model):
@@ -216,17 +209,18 @@ class ProductVariation(db.Model):
                            nullable=False)
 
     values = db.relationship('ProductVariationValue',
-                             back_populates='variation')
+                             back_populates='variation',
+                             lazy='dynamic')
     product = db.relationship('Product', back_populates='variations')
 
     def __repr__(self):
         return '<ProductVariation %r>' % self.name
 
-    def create_value(self, name):
-        variant_value = ProductVariationValue(name=name,
-                                              variation_id=self.id,
-                                              product_id=self.product_id)
-        db.session.add(variant_value)
+    def __init__(self, **kwargs):
+        super(ProductVariation, self).__init__(**kwargs)
+        ProductVariationValue(variation=self,
+                              product=self.product,
+                              name='Default')
 
 
 class ProductVariationValue(db.Model):
@@ -241,6 +235,7 @@ class ProductVariationValue(db.Model):
 
     variation = db.relationship('ProductVariation',
                                 back_populates='values')
+    product = db.relationship('Product')
 
     def __repr__(self):
         return '<ProductVariationValue %r>' % self.name
@@ -293,37 +288,39 @@ class Cart(db.Model):
     def quantity(self):
         return self.cart_products.count()
 
-    def add_product(self,
-                    product_id,
-                    quantity=1,
-                    value=None):
-        # Need to add self to session first
-        db.session.add(self)
+    def add_product(self, product_id, quantity=1, product_value_id=None):
         product = Product.query.get(product_id)
-        for cp in self.cart_products:
-            if cp.product == product:
-                cp.quantity += quantity
-                cp.total_price += (quantity * product.price)
-                return
+        if not product:
+            return False
+        if quantity < 1:
+            self.remove_product(product_id)
+            return True
+        for cart_product in self.cart_products:
+            if cart_product.product == product:
+                cart_product.quantity = quantity
+                cart_product.total_price = quantity * product.price
+                db.session.add(cart_product)
+                db.session.commit()
+                return True
         # Select first variation value if none is selected
-        if not value and product.variations \
-            and product.variations[0].values:
-            value = product.variations[0].values[0].id
-        cp = CartProduct(
+        if not product_value_id:
+            product_value_id = product.variations.first().values.first().id
+        cart_product = CartProduct(
             cart=self,
             product=product,
             quantity=quantity,
-            total_price=(quantity * product.price),
-            value_id=value,
-            total_sale_price=
-                quantity * product.sale_price if product.sale_price else 0)
-        db.session.add(cp)
+            total_price=quantity * product.price,
+            value_id=product_value_id)
+        db.session.add(cart_product)
+        db.session.commit()
+        return True
 
     def remove_product(self, product_id):
         for cart_product in self.cart_products:
             if cart_product.product_id == product_id:
                 self.cart_products.remove(cart_product)
                 db.session.delete(cart_product)
+                db.session.commit()
                 return
 
     def empty_cart(self):
@@ -345,7 +342,6 @@ class CartProduct(db.Model):
     product_id = db.Column(db.Integer, db.ForeignKey('product.id'))
     quantity = db.Column(db.Integer, nullable=False, default=0)
     total_price = db.Column(db.Float, nullable=False, default=0.0)
-    total_sale_price = db.Column(db.Float)
     value_id = db.Column(
         db.Integer,
         db.ForeignKey('product_variation_value.id'))

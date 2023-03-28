@@ -3,6 +3,10 @@ from app.models import User, ProductVariation, ProductVariationValue, \
     Product, ProductImage, Cart, CartProduct, Wishlist, WishlistProduct
 
 
+class EmptySchema(ma.Schema):
+    pass
+
+
 class UserSchema(ma.SQLAlchemySchema):
     class Meta:
         model = User
@@ -102,7 +106,6 @@ class CartProductSchema(ma.SQLAlchemySchema):
     product_id = ma.auto_field()
     quantity = ma.auto_field()
     total_price = ma.auto_field(dump_only=True)
-    total_sale_price = ma.auto_field(dump_only=True)
 
     product_variation_value = ma.Nested('ProductVariationValueSchema')
     product = ma.Nested('ProductSchema')
