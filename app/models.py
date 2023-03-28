@@ -253,6 +253,10 @@ class Wishlist(db.Model):
     def __repr__(self):
         return '<Wishlist %r>' % self.user.username
 
+    @property
+    def quantity(self):
+        return len(self.products)
+
     def add_product(self, product_id):
         wishlist_product = WishlistProduct(wishlist=self,
                                            product_id=product_id)
