@@ -1,4 +1,4 @@
-from flask import current_app, render_template, request, g, jsonify
+from flask import current_app, render_template, request, g, jsonify, abort
 from flask_login import current_user, login_required
 from apifairy import response
 
@@ -6,7 +6,7 @@ from app import db
 from app.main import bp
 from app.main.forms import SearchForm
 from app.models import User, Category, Subcategory, Product
-from app.api.schemas import CartSchema
+from app.api.schemas import CartSchema, EmptySchema
 
 cart_schema = CartSchema()
 
@@ -48,28 +48,20 @@ def wishlist_product(product_id):
 
 @bp.route('/cart')
 @login_required
-def cart():
-    return current_user.cart.cart_products
-
-
-@bp.route('/cart/<int:product_id>')
-@login_required
 @response(cart_schema)
-def product_to_cart(product_id):
-    current_user.add_to_cart(product_id)
-    db.session.commit()
+def cart():
     return current_user.cart
 
 
 @bp.route('/cart/<int:product_id>/<int:quantity>')
 @login_required
-@response(cart_schema)
-def cart_quantity(product_id, quantity):
+@response(EmptySchema, 200)
+def cart_quantity(product_id, quantity=1):
     """Add or update quantity of product in cart.
     """
-    current_user.add_to_cart(product_id, quantity)
-    db.session.commit()
-    return current_user.cart
+    if current_user.add_to_cart(product_id, quantity):
+        return {}
+    abort(400, 'There was an error adding the product to the cart')
 
 
 @bp.route('/checkout')
