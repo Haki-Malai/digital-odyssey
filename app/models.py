@@ -1,5 +1,6 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin, AnonymousUserMixin
+
 from app import db, login
 from app.search import add_to_index, remove_from_index, query_index
 
@@ -14,7 +15,7 @@ class SearchableMixin(object):
         for i in range(len(ids)):
             when.append((ids[i], i))
         return cls.query.filter(cls.id.in_(ids)).order_by(
-            db.case(when, value=cls.id)), total
+            db.case(*when, value=cls.id)), total
 
     @classmethod
     def before_commit(cls, session):
@@ -41,6 +42,7 @@ class SearchableMixin(object):
     def reindex(cls):
         for obj in cls.query:
             add_to_index(cls.__tablename__, obj)
+
 
 db.event.listen(db.session, 'before_commit', SearchableMixin.before_commit)
 db.event.listen(db.session, 'after_commit', SearchableMixin.after_commit)
