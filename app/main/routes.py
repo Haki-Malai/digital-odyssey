@@ -1,4 +1,5 @@
-from flask import current_app, render_template, request, g, jsonify, abort
+from flask import current_app, render_template, request, g, abort, \
+    redirect, url_for
 from flask_login import current_user, login_required
 from apifairy import response
 
@@ -82,10 +83,20 @@ def product(product_id):
 
 @bp.route('/product/search')
 def product_search():
+    if not g.search_form.validate():
+        return redirect(url_for('main.explore'))
     page = request.args.get('page', 1, type=int)
     products, total = Product.search(g.search_form.q.data, page,
-                               current_app.config['ITEMS_PER_PAGE'])
-    return jsonify({ products })
+                                     current_app.config['ITEMS_PER_PAGE'])
+    next_url = url_for('main.search', q=g.search_form.q.data, page=page + 1) \
+        if total > page * current_app.config['ITEMS_PER_PAGE'] else None
+    prev_url = url_for('main.search', q=g.search_form.q.data, page=page - 1) \
+        if page > 1 else None
+    return render_template('search.html',
+                           categories=Category.query.all(),
+                           products=products,
+                           next_url=next_url,
+                           prev_url=prev_url)
 
 
 @bp.route('/category/<int:category_id>')
