@@ -1,6 +1,6 @@
 import os
 from flask import current_app, render_template, url_for, redirect, request, \
-    flash
+    flash, g
 from werkzeug.utils import secure_filename
 from flask_login import login_required
 
@@ -15,6 +15,11 @@ def allowed_file(filename):
             in current_app.config['ALLOWED_EXTENSIONS']
 
 
+@bp.before_app_request
+def before_request():
+    g.config = current_app.config
+
+
 @bp.route('/admin')
 def index():
     return redirect(url_for('admin.main', screen='dashboard'))
@@ -26,7 +31,6 @@ def index():
 def main(screen):
     return render_template(f'admin/{screen}.html',
                            screen=screen,
-                           config=current_app.config,
                            categories=Category.query.all())
 
 

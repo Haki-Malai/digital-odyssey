@@ -14,12 +14,12 @@ cart_schema = CartSchema()
 @bp.before_app_request
 def before_request():
     g.search_form = SearchForm()
+    g.config = current_app.config
 
 
 @bp.route('/')
 def index():
     return render_template('index.html',
-                           config=current_app.config,
                            categories=Category.query.all(),
                            products=Product.query.all(),
                            current_user=current_user)
@@ -80,6 +80,14 @@ def product(product_id):
     return Product.query.get(product_id).name
 
 
+@bp.route('/product/search')
+def product_search():
+    page = request.args.get('page', 1, type=int)
+    products, total = Product.search(g.search_form.q.data, page,
+                               current_app.config['ITEMS_PER_PAGE'])
+    return jsonify({ products })
+
+
 @bp.route('/category/<int:category_id>')
 def category(category_id):
     return Category.query.get(category_id).name
@@ -88,11 +96,3 @@ def category(category_id):
 @bp.route('/subcategory/<int:subcategory_id>')
 def subcategory(subcategory_id):
     return Subcategory.query.get(subcategory_id).name
-
-
-@bp.route('/search')
-def search():
-    page = request.args.get('page', 1, type=int)
-    products, total = Product.search(g.search_form.q.data, page,
-                               current_app.config['ITEMS_PER_PAGE'])
-    return jsonify({ products })
