@@ -16,7 +16,8 @@ def create_users(count=10):
         try:
             db.session.commit()
         except IntegrityError:
-            db.session.commit()
+            print('Integrity Error')
+            continue
 
 
 def create_categories(count=5):
@@ -26,7 +27,8 @@ def create_categories(count=5):
         try:
             db.session.commit()
         except IntegrityError:
-            db.session.commit()
+            print('Integrity Error')
+            continue
 
 
 def create_subcategories(count=5):
@@ -38,7 +40,8 @@ def create_subcategories(count=5):
         try:
             db.session.commit()
         except IntegrityError:
-            db.session.commit()
+            print('Integrity Error')
+            continue
 
 
 def create_brands(count=5):
@@ -48,7 +51,8 @@ def create_brands(count=5):
         try:
             db.session.commit()
         except IntegrityError:
-            db.session.commit()
+            print('Integrity Error')
+            continue
 
 
 def create_products(count=10):
@@ -70,17 +74,9 @@ def create_products(count=10):
         db.session.add(product)
         try:
             db.session.commit()
-            product_variation = product.create_product_variation(fake.word())
-            product_image = product.create_product_image(
-                image_url='uploads/product/default.png')
-            db.session.commit()
-            try:
-                product_variation.create_value(fake.word())
-                db.session.commit()
-            except IntegrityError:
-                db.session.rollback()
         except IntegrityError:
-            db.session.commit()
+            print('Integrity Error')
+            continue
 
 
 def create_fake_admin():
@@ -92,7 +88,3 @@ def create_fake_admin():
     user.set_password('asdf')
     db.session.add(user)
     db.session.commit()
-    user.add_to_cart(Product.query.first().id, 1)
-    user.add_to_wishlist(Product.query.first())
-    db.session.commit()
-         
