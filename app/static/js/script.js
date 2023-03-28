@@ -572,70 +572,28 @@ offcanvsSidebar(
   ".offcanvas__filter--sidebar"
 );
 
-// Qunatity Button Activation
-const quantityWrapper = document.querySelectorAll(".quantity__box");
-if (quantityWrapper) {
-  quantityWrapper.forEach(function (singleItem) {
-    let increaseButton = singleItem.querySelector(".increase");
-    let decreaseButton = singleItem.querySelector(".decrease");
-    let removeButton = document.getElementById("removeButton");
-    let productId = increaseButton.value;
-    let quantity = document.getElementById(`cartProductQuantity${productId}`).value;
-
-    increaseButton.addEventListener("click", function (e) {
-      let value = parseInt(quantity, 10);
-      value = isNaN(value) ? 0 : value;
-      value++;
-      quantity = value;
-
-      // Send an AJAX request to update the quantity on the server
-      updateQuantity(productId, value);
-    });
-
-    decreaseButton.addEventListener("click", function (e) {
-      let value = parseInt(quantity, 10);
-      value = isNaN(value) ? 0 : value;
-      value < 1 ? (value = 1) : "";
-      value--;
-      quantity = value;
-
-      // Send an AJAX request to update the quantity on the server
-      updateQuantity(productId, value);
-    });
-
-    removeButton.addEventListener("click", function (e) {
-      // Send an AJAX request to remove the product from the cart on the server
-      updateQuantity(productId, 0);
-    });
-  });
+const updateQuantity = async (productId, quantity=1) => {
+  const response = await fetch(`/cart/${productId}/${quantity}`);
+  if (await response.ok) {
+    window.location.reload();
+  }
 }
 
-function updateQuantity(productId, quantity) {
-  fetch(`/cart/${productId}/${quantity}`)
-    .then(response => response.json())
-    .then(response => {
-      console.log(response)
-      document.getElementById('offsetCartTotal').innerHTML = response.total_price + ' €';
-      if (quantity > 0) {
-        response.cart_products.forEach((cart_product) => {
-          document.getElementById(
-            `cartProductQuantity${cart_product.product_id}`).value = cart_product.quantity;
-          document.getElementById(
-            `totalPrice${cart_product.product_id}`).innerHTML = cart_product.total_price + ' €';
-          try{
-            document.getElementById(
-              `salePrice${cart_product.product_id}`).innerHTML = cart_product.total_sale_price + ' €';
-          } catch (error) {
-            console.log('No sale price', error);
-          }
-        });
-      } else {
-        document.getElementById(`minicartProduct${productId}`).remove();
-      }
-    })
-    .catch(error => {
-      console.log('Quantity update failed', error);
-    });
+const increaseQuantity = async (productId, quantity) => {
+  await updateQuantity(productId, quantity + 1);
+}
+
+const decreaseQuantity = async (productId, quantity) => {
+  if (quantity <= 1) {
+    removeProduct(productId);
+    return
+  }
+  await updateQuantity(productId, quantity - 1);
+}
+
+const removeProduct = async (productId) => {
+  document.getElementById(`minicartProduct${productId}`).remove();
+  await updateQuantity(productId, 0);
 }
 
 // Modal JS

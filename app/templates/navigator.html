@@ -18,7 +18,7 @@
       <div class="main__header--inner position__relative d-flex justify-content-between align-items-center">
         <!-- side menu togle small screen-->
         <div class="offcanvas__header--menu__open">
-          <a class="offcanvas__header--menu__open--btn" href="javascript:void(0)" data-offcanvas>
+          <a class="offcanvas__header--menu__open--btn" data-offcanvas>
             <svg xmlns="http://www.w3.org/2000/svg"  class="ionicon offcanvas__header--menu__open--svg"
               viewBox="0 0 512 512">
             <path fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10"
@@ -87,7 +87,7 @@
           <ul class="d-flex">
             <!-- search button small screen header -->
             <li class="header__account--items  header__account--search__items mobile__d--block d-sm-2-none">
-              <a class="header__account--btn search__open--btn" href="javascript:void(0)" data-offcanvas>
+              <a class="header__account--btn search__open--btn" data-offcanvas>
                 <svg class="product__items--action__btn--svg" xmlns="http://www.w3.org/2000/svg" width="22.51" height="20.443" viewBox="0 0 512 512"><path d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M338.29 338.29L448 448"/></svg>
                 <span class="visually-hidden">Search</span>  
               </a>
@@ -102,7 +102,7 @@
               </li>
               <!-- cart button -->
               <li class="header__account--items">
-                <a class="header__account--btn minicart__open--btn" href="javascript:void(0)" data-offcanvas>
+                <a class="header__account--btn minicart__open--btn" data-offcanvas>
                   <svg xmlns="http://www.w3.org/2000/svg" width="16.706" height="15.534" viewBox="0 0 14.706 13.534">
                     <g  transform="translate(0 0)">
                     <g >
@@ -112,7 +112,7 @@
                     </g>
                     </g>
                   </svg>
-                  <span class="cart items__count">{{ current_user.cart.cart_products.all()|length }}</span>
+                  <span class="cart items__count">{{ current_user.cart.quantity }}</span>
                 </a>
               </li>
               <!-- wishlist button -->
@@ -141,7 +141,7 @@
         <div class="header__account header__sticky--block">
           <ul class="d-flex">
             <li class="header__account--items  header__account--search__items d-sm-2-none">
-              <a class="header__account--btn search__open--btn" href="javascript:void(0)" data-offcanvas>
+              <a class="header__account--btn search__open--btn" data-offcanvas>
                 <svg class="product__items--action__btn--svg" xmlns="http://www.w3.org/2000/svg" width="22.51" height="20.443" viewBox="0 0 512 512"><path d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M338.29 338.29L448 448"/></svg>
                 <span class="visually-hidden">Search</span>  
               </a>
@@ -160,13 +160,13 @@
               </a>
             </li>
             <li class="header__account--items">
-              <a class="header__account--btn minicart__open--btn" href="javascript:void(0)" data-offcanvas>
+              <a class="header__account--btn minicart__open--btn" data-offcanvas>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16.706" height="15.534" viewBox="0 0 14.706 13.534">
                   <g  transform="translate(0 0)">
                   <g >
-                    <path  data-name="Path 16787" d="M4.738,472.271h7.814a.434.434,0,0,0,.414-.328l1.723-6.316a.466.466,0,0,0-.071-.4.424.424,0,0,0-.344-.179H3.745L3.437,463.6a.435.435,0,0,0-.421-.353H.431a.451.451,0,0,0,0,.9h2.24c.054.257,1.474,6.946,1.555,7.33a1.36,1.36,0,0,0-.779,1.242,1.326,1.326,0,0,0,1.293,1.354h7.812a.452.452,0,0,0,0-.9H4.74a.451.451,0,0,1,0-.9Zm8.966-6.317-1.477,5.414H5.085l-1.149-5.414Z" transform="translate(0 -463.248)" fill="#fefefe"/>
-                    <path  data-name="Path 16788" d="M5.5,478.8a1.294,1.294,0,1,0,1.293-1.353A1.325,1.325,0,0,0,5.5,478.8Zm1.293-.451a.452.452,0,1,1-.431.451A.442.442,0,0,1,6.793,478.352Z" transform="translate(-1.191 -466.622)" fill="#fefefe"/>
-                    <path  data-name="Path 16789" d="M13.273,478.8a1.294,1.294,0,1,0,1.293-1.353A1.325,1.325,0,0,0,13.273,478.8Zm1.293-.451a.452.452,0,1,1-.431.451A.442.442,0,0,1,14.566,478.352Z" transform="translate(-2.875 -466.622)" fill="#fefefe"/>
+                    <path data-name="Path 16787" d="M4.738,472.271h7.814a.434.434,0,0,0,.414-.328l1.723-6.316a.466.466,0,0,0-.071-.4.424.424,0,0,0-.344-.179H3.745L3.437,463.6a.435.435,0,0,0-.421-.353H.431a.451.451,0,0,0,0,.9h2.24c.054.257,1.474,6.946,1.555,7.33a1.36,1.36,0,0,0-.779,1.242,1.326,1.326,0,0,0,1.293,1.354h7.812a.452.452,0,0,0,0-.9H4.74a.451.451,0,0,1,0-.9Zm8.966-6.317-1.477,5.414H5.085l-1.149-5.414Z" transform="translate(0 -463.248)" fill="#fefefe"/>
+                    <path data-name="Path 16788" d="M5.5,478.8a1.294,1.294,0,1,0,1.293-1.353A1.325,1.325,0,0,0,5.5,478.8Zm1.293-.451a.452.452,0,1,1-.431.451A.442.442,0,0,1,6.793,478.352Z" transform="translate(-1.191 -466.622)" fill="#fefefe"/>
+                    <path data-name="Path 16789" d="M13.273,478.8a1.294,1.294,0,1,0,1.293-1.353A1.325,1.325,0,0,0,13.273,478.8Zm1.293-.451a.452.452,0,1,1-.431.451A.442.442,0,0,1,14.566,478.352Z" transform="translate(-2.875 -466.622)" fill="#fefefe"/>
                   </g>
                   </g>
                 </svg> 
@@ -216,7 +216,6 @@
                       {% endfor %}
                     </ul>
                   {% endif %}
-
                 </li>
               {% endfor %}
             </ul>
@@ -300,7 +299,7 @@
           </div>
           <div class="header__right--info d-flex align-items-center">
             <div class="account__currency">
-              <a class="account__currency--link text-white" href="javascript:void(0)">
+              <a class="account__currency--link text-white">
                 <span>USD</span> 
                 <svg xmlns="http://www.w3.org/2000/svg" width="9.797" height="6.05" viewBox="0 0 9.797 6.05">
                   <path  d="M14.646,8.59,10.9,12.329,7.151,8.59,6,9.741l4.9,4.9,4.9-4.9Z" transform="translate(-6 -8.59)" fill="currentColor" opacity="0.7"/>
@@ -402,7 +401,7 @@
           {% endif %}
         </div>
         <div class="offcanvas__account--currency">
-          <a class="offcanvas__account--currency__menu text-black" href="javascript:void(0)">
+          <a class="offcanvas__account--currency__menu text-black">
             <span>USD</span> 
             <svg xmlns="http://www.w3.org/2000/svg" width="9.797" height="6.05" viewBox="0 0 9.797 6.05">
               <path  d="M14.646,8.59,10.9,12.329,7.151,8.59,6,9.741l4.9,4.9,4.9-4.9Z" transform="translate(-6 -8.59)" fill="currentColor" opacity="0.7"/>
@@ -442,7 +441,7 @@
         </a>
       </li>
       <li class="offcanvas__stikcy--toolbar__list ">
-        <a class="offcanvas__stikcy--toolbar__btn search__open--btn" href="javascript:void(0)" data-offcanvas>
+        <a class="offcanvas__stikcy--toolbar__btn search__open--btn" data-offcanvas>
           <span class="offcanvas__stikcy--toolbar__icon"> 
             <svg xmlns="http://www.w3.org/2000/svg"  width="22.51" height="20.443" viewBox="0 0 512 512"><path d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M338.29 338.29L448 448"/></svg>   
           </span>
@@ -452,7 +451,7 @@
       {% if current_user.is_authenticated %}
         <!-- cart bottom screen small-->
         <li class="offcanvas__stikcy--toolbar__list">
-          <a class="offcanvas__stikcy--toolbar__btn minicart__open--btn" href="javascript:void(0)" data-offcanvas>
+          <a class="offcanvas__stikcy--toolbar__btn minicart__open--btn" data-offcanvas>
             <span class="offcanvas__stikcy--toolbar__icon"> 
               <svg xmlns="http://www.w3.org/2000/svg" width="18.51" height="15.443" viewBox="0 0 18.51 15.443">
               <path  d="M79.963,138.379l-13.358,0-.56-1.927a.871.871,0,0,0-.6-.592l-1.961-.529a.91.91,0,0,0-.226-.03.864.864,0,0,0-.226,1.7l1.491.4,3.026,10.919a1.277,1.277,0,1,0,1.844,1.144.358.358,0,0,0,0-.049h6.163c0,.017,0,.034,0,.049a1.277,1.277,0,1,0,1.434-1.267c-1.531-.247-7.783-.55-7.783-.55l-.205-.8h7.8a.9.9,0,0,0,.863-.651l1.688-5.943h.62a.936.936,0,1,0,0-1.872Zm-9.934,6.474H68.568c-.04,0-.1.008-.125-.085-.034-.118-.082-.283-.082-.283l-1.146-4.037a.061.061,0,0,1,.011-.057.064.064,0,0,1,.053-.025h1.777a.064.064,0,0,1,.063.051l.969,4.34,0,.013a.058.058,0,0,1,0,.019A.063.063,0,0,1,70.03,144.853Zm3.731-4.41-.789,4.359a.066.066,0,0,1-.063.051h-1.1a.064.064,0,0,1-.063-.051l-.789-4.357a.064.064,0,0,1,.013-.055.07.07,0,0,1,.051-.025H73.7a.06.06,0,0,1,.051.025A.064.064,0,0,1,73.76,140.443Zm3.737,0L76.26,144.8a.068.068,0,0,1-.063.049H74.684a.063.063,0,0,1-.051-.025.064.064,0,0,1-.013-.055l.973-4.357a.066.066,0,0,1,.063-.051h1.777a.071.071,0,0,1,.053.025A.076.076,0,0,1,77.5,140.448Z" transform="translate(-62.393 -135.3)" fill="currentColor"/>
@@ -509,28 +508,34 @@
           <div class="minicart__product" id="minicartProduct{{ product.id }}">
             <div class="minicart__product--items d-flex">
               <div class="minicart__thumb">
-                <a href="{{ url_for('main.product', product_id=product.id) }}"><img src="assets/img/product/product1.png" alt="prduct-img"></a>
+                <a href="{{ url_for('main.product', product_id=product.id) }}">
+                  <img src="{{ url_for('static', filename=product.images.first().image_url) }}"
+                    alt="{{ product.name }}">
+                </a>
               </div>
               <div class="minicart__text">
                 <h4 class="minicart__subtitle"><a href="{{ url_for('main.product', product_id=product.id) }}">{{ product.name }}</a></h4>
-                {% for product_variation in product.product_variations %}
-                  <span class="color__variant"><b>{{ product_variation.name }}:</b> {{ cart_product.product_variation_value.name }}</span>
+                {% for variation in product.variations.all() %}
+                  <span class="color__variant"><b>{{ variation.name }}:</b> {{ cart_product.value.name }}</span>
                 {% endfor %}
                 <div class="minicart__price">
-                  <span class="current__price" id="totalPrice{{ product.id }}">{{ cart_product.total_price }} €</span>
+                  <span class="current__price">{{ cart_product.total_price }} €</span>
                   {% if cart_product.total_sale_price %}
-                    <span class="old__price" id="salePrice{{ product.id }}">{{ cart_product.total_sale_price }} €</span>
+                    <span class="old__price">{{ product.sale_price * cart_product.quantity }} €</span>
                   {% endif %}
                 </div>
                 <div class="minicart__text--footer d-flex align-items-center">
                   <div class="quantity__box minicart__quantity">
-                    <button type="button" class="quantity__value decrease" aria-label="quantity value" value="{{ product.id }}">-</button>
-                    <label>
-                      <input type="number" class="quantity__number" id="cartProductQuantity{{ product.id }}" value="{{ cart_product.quantity }}" data-counter />
-                    </label>
-                    <button type="button" class="quantity__value increase" aria-label="quantity value" value="{{ product.id }}">+</button>
+                    <button class="quantity__value decrease"
+                      onclick="decreaseQuantity({{ product.id }}, {{ cart_product.quantity }})">-
+                    </button>
+                      <input readonly class="quantity__number" value="{{ cart_product.quantity }}"/>
+                    <button class="quantity__value increase"
+                      onclick="increaseQuantity({{ product.id }}, {{ cart_product.quantity }})">+
+                    </button>
                   </div>
-                  <button class="minicart__product--remove remove__button" id="removeButton" value="{{ product.id }}" type="button">Remove</button>
+                  <button class="minicart__product--remove remove__button" id="removeButton"
+                    onclick="removeProduct({{ product.id }})">Remove</button>
                 </div>
               </div>
             </div>
@@ -540,7 +545,7 @@
       <div class="minicart__amount">
         <div class="minicart__amount_list d-flex justify-content-between">
           <span>Total:</span>
-          <span><b id="offsetCartTotal">{{ current_user.cart.quantity }} €</b></span>
+          <span><b id="offsetCartTotal">{{ current_user.cart.total_price }} €</b></span>
         </div>
       </div>
       <div class="minicart__button d-flex justify-content-center">
