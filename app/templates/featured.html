@@ -19,12 +19,14 @@
                   </div>
                 {% endif %}
                 <ul class="product__items--action">
-                  <li class="product__items--action__list">
-                    <a class="product__items--action__btn" href="#">
-                      <svg class="product__items--action__btn--svg" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 512 512"><path d="M352.92 80C288 80 256 144 256 144s-32-64-96.92-64c-52.76 0-94.54 44.14-95.08 96.81-1.1 109.33 86.73 187.08 183 252.42a16 16 0 0018 0c96.26-65.34 184.09-143.09 183-252.42-.54-52.67-42.32-96.81-95.08-96.81z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg>
-                      <span class="visually-hidden">Wishlist</span> 
-                    </a>
-                  </li>
+                  {% if current_user.is_authenticated %}
+                    <li class="product__items--action__list">
+                      <a class="product__items--action__btn" href="#">
+                        <svg class="product__items--action__btn--svg" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 512 512"><path d="M352.92 80C288 80 256 144 256 144s-32-64-96.92-64c-52.76 0-94.54 44.14-95.08 96.81-1.1 109.33 86.73 187.08 183 252.42a16 16 0 0018 0c96.26-65.34 184.09-143.09 183-252.42-.54-52.67-42.32-96.81-95.08-96.81z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg>
+                        <span class="visually-hidden">Wishlist</span> 
+                      </a>
+                    </li>
+                  {% endif %}
                   <li class="product__items--action__list">
                     <a class="product__items--action__btn" data-open="modal1" href="#">
                       <svg class="product__items--action__btn--svg" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 512 512"><path d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M338.29 338.29L448 448"/></svg>
@@ -40,7 +42,9 @@
                 </ul>
               </div>
               <div class="product__items--content product__items2--content text-center">
-                <a class="add__to--cart__btn" onclick="addToWishlist('{{ product.id }}')">+ Add to cart</a>
+                {% if current_user.is_authenticated %}
+                  <a class="add__to--cart__btn" onclick="updateQuantity({{ product.id }})">+ Add to cart</a>
+                {% endif %}
                 <h3 class="product__items--content__title h4"><a href="#">
                   {{ product.name }}
                 </a></h3>

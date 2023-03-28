@@ -4976,7 +4976,6 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .swiper__nav--btn::after {
-  background: url(../img/icon/left-arrow-angle.png);
   width: 9px;
   height: 17px;
   font-size: 0;
@@ -4988,13 +4987,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 .swiper__nav--btn.swiper-button-next {
   right: 0;
-}
-
-.swiper__nav--btn.swiper-button-next::after {
-  background: url(../img/icon/right-arrow-angle.png);
-}
-
-@media only screen and (max-width: 767px) {
+}@media only screen and (max-width: 767px) {
   .product__tab--btn {
     -ms-flex-wrap: wrap;
         flex-wrap: wrap;
