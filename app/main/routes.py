@@ -6,7 +6,7 @@ from apifairy import response
 from app import db
 from app.main import bp
 from app.main.forms import SearchForm
-from app.models import User, Category, Subcategory, Product
+from app.models import User, Category, Subcategory, Product, Banner
 from app.api.schemas import CartSchema, EmptySchema
 
 cart_schema = CartSchema()
@@ -23,6 +23,7 @@ def index():
     return render_template('index.html',
                            categories=Category.query.all(),
                            products=Product.query.all(),
+                           banners=Banner.query,
                            current_user=current_user)
 
 

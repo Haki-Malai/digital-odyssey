@@ -2,7 +2,7 @@ from faker import Faker
 from sqlalchemy.exc import IntegrityError
 
 from app import db
-from app.models import User, Category, Subcategory, Brand, Product
+from app.models import User, Category, Subcategory, Brand, Product, Banner
 
 fake = Faker()
 
@@ -73,6 +73,34 @@ def create_products(count=10):
             brand_id=brand.id,
         )
         db.session.add(product)
+        try:
+            db.session.commit()
+        except IntegrityError:
+            print('Integrity Error')
+            continue
+
+
+def create_fake_banners(count=5):
+    banner1 = Banner(
+        name=fake.word(),
+        body=fake.sentence(),
+        position=1)
+    banner2 = Banner(
+        name=fake.word(),
+        body=fake.sentence(),
+        position=2)
+    banner3 = Banner(
+        name=fake.word(),
+        body=fake.sentence(),
+        position=3)
+    db.session.add_all([banner1, banner2, banner3])
+    db.session.commit()
+    for i in range(count):
+        banner = Banner(
+            name=fake.word(),
+            body=fake.sentence(),
+        )
+        db.session.add(banner)
         try:
             db.session.commit()
         except IntegrityError:

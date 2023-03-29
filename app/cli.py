@@ -7,7 +7,7 @@ bp = Blueprint('cli', __name__, cli_group=None)
 @bp.cli.command('fake')
 def fake():
     from app.fake import create_users, create_categories, create_subcategories, \
-        create_brands, create_products, create_fake_admin
+        create_brands, create_products, create_fake_banners, create_fake_admin
 
     click.echo('Creating default admin...')
     create_fake_admin()
@@ -26,5 +26,8 @@ def fake():
 
     click.echo('Creating products...')
     create_products()
+
+    click.echo('Creating banners...')
+    create_fake_banners()
 
     click.echo('Done.')

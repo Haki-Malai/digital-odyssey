@@ -359,3 +359,18 @@ class CartProduct(db.Model):
 
     def __repr__(self):
         return '<CartProduct %r>' % self.product.name
+
+
+class Banner(db.Model):
+    id = db.Column(db.Integer, primary_key=True, index=True)
+    image_url = db.Column(db.String(255),
+                          nullable=False,
+                          default='uploads/banner/default.png')
+    url = db.Column(db.String(255), nullable=False, default='main.products')
+    name = db.Column(db.String(255), nullable=False)
+    body = db.Column(db.Text, nullable=False)
+    button_text = db.Column(db.String(255), nullable=False, default='Shop Now')
+    position = db.Column(db.Integer, nullable=False, default=0)
+
+    def __repr__(self):
+        return '<Banner %r>' % self.name
