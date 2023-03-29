@@ -1,18 +1,13 @@
 {% extends 'base.html' %}
 
 {% block body %}
-	<div class="row">
-		{% include 'admin/sidebar.html' %}
-			<div class="admin-upload col">
-				<h2 class="text-center mb-4">Upload a new logo</h2>
-				<form action='/admin/logo' method='POST' enctype='multipart/form-data'>
-					<div class="form-group">
-						<label for="logo">Choose a image</label>
-						<input type="file" class="form-control-file" id="logo" name="logo"
-							accept="image/png, image/gif, image/jpeg">
-					</div>
-					<button type="submit" class="btn btn-primary">Upload</button>
-				</form>
-			</div>
-	</div>
+  {% include 'admin/navbar.html' %}
+  <section class="breadcrumb__section breadcrumb__bg">
+    <div class="container">
+      <div class="row row-cols-1">
+        <div class="col">
+        </div>
+      </div>
+    </div>
+  </section>
 {% endblock %}

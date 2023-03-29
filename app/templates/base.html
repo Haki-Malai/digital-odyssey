@@ -17,6 +17,39 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/vendor/bootstrap.min.css') }}">
 
     <!-- Custom Style CSS -->
+    <style>
+      :root {
+        --secondary-color: {{ g.config['SECONDARY_COLOR'] }};
+        --secondary-color2: {{ g.config['SECONDARY_COLOR2'] }};
+        --theme-color: {{ g.config['THEME_COLOR'] }};
+        --theme-color2: {{ g.config['THEME_COLOR2'] }};
+        --theme-color3: {{ g.config['THEME_COLOR3'] }};
+        --theme-color4: {{ g.config['THEME_COLOR4'] }};
+        --yellow-color: {{ g.config['YELLOW_COLOR'] }};
+        --light-color: {{ g.config['LIGHT_COLOR'] }};
+        --light-color2: {{ g.config['LIGHT_COLOR2'] }};
+        --white-color: {{ g.config['WHITE_COLOR'] }};
+        --black-color: {{ g.config['BLACK_COLOR'] }};
+        --dark-color: {{ g.config['DARK_COLOR'] }};
+        --sky-color: {{ g.config['SKY_COLOR'] }};
+        --border-color: {{ g.config['BORDER_COLOR'] }};
+        --border-color2: {{ g.config['BORDER_COLOR2'] }};
+        --border-dark: {{ g.config['BORDER_DARK'] }};
+        --bg-gray-color: {{ g.config['BG_GRAY_COLOR'] }};
+        --gray-color: {{ g.config['GRAY_COLOR'] }};
+        --gray-color2: {{ g.config['GRAY_COLOR2'] }};
+        --text-gray-color: {{ g.config['TEXT_GRAY_COLOR'] }};
+        --font-lato: {{ g.config['FONT_LATO'] }};
+        --font-lora: {{ g.config['FONT_LORA'] }};
+        --font-poppins: {{ g.config['FONT_POPPINS'] }};
+        --body-font-size: {{ g.config['BODY_FONT_SIZE'] }};
+        --body-font-weight: {{ g.config['BODY_FONT_WEIGHT'] }};
+        --body-line-height: {{ g.config['BODY_LINE_HEIGHT'] }};
+        --headings-weight: {{ g.config['HEADINGS_WEIGHT'] }};
+        --transition: {{ g.config['TRANSITION'] }};
+        --container-fluid-offset: {{ g.config['CONTAINER_FLUID_OFFSET'] }};
+      }
+    </style>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
   </head>
 
