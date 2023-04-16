@@ -12,25 +12,29 @@ Before installing and running Digital Odyssey, you need to have the following pr
  To install Digital Odyssey, follow these steps:
   1. Clone the repository:
 ```bash
-git clone https://github.com/your-username/digital-odyssey.git
+git clone https://github.com/Haki-Malai/digital-odyssey.git
 ```
   2. Navigate to the project directory:
 ```bash
 cd digital-odyssey
 ```
+  3. Move to development branch:
+```bash
+git checkout development
+```
   4. Create a virtual environment:
 ```bash
 python -m venv env
 ```
-  6. Activate the virtual environment:
+  1. Activate the virtual environment:
 ```bash
 source env/bin/activate
 ```
-  8. Install the required Python packages:
+  1. Install the required Python packages:
 ```bash
 pip install -r requirements.txt
 ```
-  10. Build the Elasticsearch Docker container:
+  1.  Build the Elasticsearch Docker container:
 ```bash
 docker build -t elasticsearch -f Dockerfile.el .
 ```
@@ -39,11 +43,11 @@ docker build -t elasticsearch -f Dockerfile.el .
 ```bash
 source env/bin/activate
 ```
-  3. Start Elasticsearch container (or use your own and edit the configuration files):
+  1. Start Elasticsearch container (or use your own and edit the configuration files):
 ```bash
 docker run --name myelasticsearch -m 1gb elasticsearch
 ```
-  4. Start the Flask application:
+  1. Start the Flask application:
 ```bash
 flask run
 ```
