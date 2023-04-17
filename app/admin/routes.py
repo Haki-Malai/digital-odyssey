@@ -41,11 +41,11 @@ def upload_logo():
     if 'logo' not in request.files:
         flash('No file part', 'warning')
         return redirect(url_for('admin.main', screen='design'))
-    file = request.files['logo']
-    if file.filename == '':
+    logo = request.files['logo']
+    if logo.filename == '':
         flash('No selected file', 'warning')
         return redirect(url_for('admin.main', screen='design'))
-    if file and allowed_file(file.filename):
+    if logo and allowed_file(logo.filename):
         filename = 'general/logo.png'
-        file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
+        logo.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
         return redirect(url_for('admin.main', screen='design'))
