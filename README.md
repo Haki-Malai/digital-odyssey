@@ -1,4 +1,4 @@
-# digital-odyssey
+# Digital Odyssey
 
 Digital Odyssey is an ecommerce web application built using Python Flask framework. The application provides features such as browsing products, adding them to cart, and making orders. The application also uses Elasticsearch for search functionality. In this README, we will provide detailed instructions on how to install and run Digital Odyssey.
 
