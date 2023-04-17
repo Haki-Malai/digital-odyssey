@@ -53,6 +53,7 @@ def create_app(config_name='default'):
     from app.api import bp as api_bp
     app.register_blueprint(api_bp, url_prefix='/api')
 
+    # Create shell context for flask shell
     from app import models
     @app.shell_context_processor
     def make_shell_context():
@@ -64,6 +65,7 @@ def create_app(config_name='default'):
                 ctx[attr] = model
         return ctx
 
+    # Create database tables for our data models
     with app.app_context():
         db.create_all()
 
