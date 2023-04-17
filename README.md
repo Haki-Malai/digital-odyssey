@@ -8,7 +8,7 @@ Before installing and running Digital Odyssey, you need to have the following pr
   - Pip (Python package manager)
   - Docker
  
- ## Installation
+## Installation
 To install Digital Odyssey, follow these steps:
   1. Clone the repository:
 ```bash
