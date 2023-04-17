@@ -1,59 +1,54 @@
 import os
+import json
+
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 class Config:
-    # General Configs
-    TITLE = "Flask Boilerplate"
-    NAVIGATION = {
-        "Home": "main.index",
-        "Shop": "main.index",
-        "About": "main.index",
-        "Other": {
-            "Subpage": "main.index", 
-            "Subpage2": "main.index",
-            "Subpage3": "main.index",
-            "Subpage4": "main.index",
-            "Subpage5": "main.index",
-        },
-        "Contact": "main.index",
-    }
+    config_file = os.path.join(basedir, "app/static/uploads/config.json")
+    
+    def __init__(self, config_file=config_file):
+        """Load config from json file.
+        """
+        with open(config_file) as f:
+            config = json.load(f)
 
-    SECRET_KEY = os.environ.get("SECRET_KEY")
-    SQLALCHEMY_TRACK_NOTIFICATIONS = False
-    ELASTICSEARCH_URL = os.environ.get("ELASTICSEARCH_URL") or "http://localhost:9200"
-    REDIS_URL = os.environ.get("REDIS_URL") or "redis://"
-    ITEMS_PER_PAGE = 10
+        for key, value in config.items():
+            setattr(self, key, value)
 
-    @staticmethod
-    def init_app(app):
-        pass
+    def update_config(self, key, value):
+        """Update config file with new value.
+        """
+        with open(self.config_file) as f:
+            config = json.load(f)
 
-    @classmethod
-    def update_config(cls, app):
-        for key in dir(cls):
-            if key.isupper():
-                app.config[key] = getattr(cls, key)
+        config[key.upper()] = value
+
+        with open(self.config_file, 'w') as f:
+            json.dump(config, f, indent=4)
 
  
 class DevelopmentConfig(Config):
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, "dev-data.sqlite")
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir,
+                                                          "dev-data.sqlite")
     DEBUG = True
 
 
 class TestingConfig(Config):
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, "test-data.sqlite")
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir,
+                                                          "test-data.sqlite")
     TESTING = True
 
     
 class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, "prod-data.sqlite")
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir,
+                                                          "prod-data.sqlite")
     PRODUCTION = True
 
 
 config = {
-    'default': DevelopmentConfig,
-    'production': ProductionConfig,
-    'development': DevelopmentConfig,
-    'testing': TestingConfig
+    'default': DevelopmentConfig(),
+    'production': ProductionConfig(),
+    'development': DevelopmentConfig(),
+    'testing': TestingConfig()
 }
