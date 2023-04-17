@@ -68,3 +68,4 @@ def create_app(config_name='default'):
         db.create_all()
 
     return app
+    

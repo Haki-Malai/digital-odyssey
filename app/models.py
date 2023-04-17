@@ -79,6 +79,30 @@ class User(UserMixin, db.Model):
     # Currently only 2 roles: admin and user so this is fine
     def has_permission(self, permission):
         return self.role == permission
+    
+    # Cart methods
+    def add_to_cart(self, product, quantity):
+        if not self.cart:
+            self.cart = Cart(user=self)
+        self.cart.add_product(product, quantity)
+
+    def remove_from_cart(self, product):
+        if self.cart:
+            self.cart.remove_product(product)
+
+    def empty_cart(self):
+        if self.cart:
+            self.cart.empty_cart()
+    
+    # Wishlist methods
+    def add_to_wishlist(self, product):
+        if not self.wishlist:
+            self.wishlist = Wishlist(user=self)
+        self.wishlist.add_product(product)
+
+    def remove_from_wishlist(self, product):
+        if product in self.wishlist:
+            self.wishlist.remove(product)
 
     # Cart methods
     def add_to_cart(self, product_id, quantity=1):
