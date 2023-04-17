@@ -16,15 +16,16 @@ class Config:
         for key, value in config.items():
             setattr(self, key, value)
 
-    @staticmethod
-    def init_app(app):
-        pass
+    def update_config(self, key, value):
+        """Update config file with new value.
+        """
+        with open(self.config_file) as f:
+            config = json.load(f)
 
-    @classmethod
-    def update_config(cls, app):
-        for key in dir(cls):
-            if key.isupper():
-                app.config[key] = getattr(cls, key)
+        config[key.upper()] = value
+
+        with open(self.config_file, 'w') as f:
+            json.dump(config, f, indent=4)
 
  
 class DevelopmentConfig(Config):
