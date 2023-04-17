@@ -572,60 +572,28 @@ offcanvsSidebar(
   ".offcanvas__filter--sidebar"
 );
 
-// Qunatity Button Activation
-const quantityWrapper = document.querySelectorAll(".quantity__box");
-if (quantityWrapper) {
-  quantityWrapper.forEach(function (singleItem) {
-    let increaseButton = singleItem.querySelector(".increase");
-    let decreaseButton = singleItem.querySelector(".decrease");
-    let removeButton = document.getElementById("removeButton");
-    let productId = increaseButton.value;
-    let quantity = document.getElementById(`cartProductQuantity${productId}`).value;
-
-    increaseButton.addEventListener("click", function (e) {
-      let value = parseInt(quantity, 10);
-      value = isNaN(value) ? 0 : value;
-      value++;
-      quantity = value;
-
-      // Send an AJAX request to update the quantity on the server
-      updateQuantity(productId, value);
-    });
-
-    decreaseButton.addEventListener("click", function (e) {
-      let value = parseInt(quantity, 10);
-      value = isNaN(value) ? 0 : value;
-      value < 1 ? (value = 1) : "";
-      value--;
-      quantity = value;
-
-      // Send an AJAX request to update the quantity on the server
-      updateQuantity(productId, value);
-    });
-
-    removeButton.addEventListener("click", function (e) {
-      // Send an AJAX request to remove the product from the cart on the server
-      updateQuantity(productId, 0);
-    });
-  });
+const updateQuantity = async (productId, quantity=1) => {
+  const response = await fetch(`/cart/${productId}/${quantity}`);
+  if (await response.ok) {
+    window.location.reload();
+  }
 }
 
-function updateQuantity(productId, quantity) {
-  fetch(`/cart/${productId}/${quantity}`)
-    .then(response => response.json())
-    .then(response => {
-      if (response.product_quantity == 0) {
-        document.getElementById(`minicartProduct${productId}`).remove();
-      } else {
-        document.getElementById(`cartProductQuantity${productId}`).value = response.product_quantity;
-        document.getElementById(`totalPrice${productId}`).innerHTML = response.product_total_price + ' €';
-        document.getElementById(`salePrice${productId}`).innerHTML = response.product_total_sale_price + ' €';
-      }
-      document.getElementById('offsetCartTotal').innerHTML = response.total_price + ' €';
-    })
-    .catch(error => {
-      console.log('Quantity update failed');
-    });
+const increaseQuantity = async (productId, quantity) => {
+  await updateQuantity(productId, quantity + 1);
+}
+
+const decreaseQuantity = async (productId, quantity) => {
+  if (quantity <= 1) {
+    removeProduct(productId);
+    return
+  }
+  await updateQuantity(productId, quantity - 1);
+}
+
+const removeProduct = async (productId) => {
+  document.getElementById(`minicartProduct${productId}`).remove();
+  await updateQuantity(productId, 0);
 }
 
 // Modal JS
@@ -1021,4 +989,20 @@ function setQueryParameters(param, value){
   var url = new URL(window.location.href);
   url.searchParams.set(param, value);
   location = url.href;
+}
+
+const addToWishlist = (productId) => {
+  fetch(`/cart/${productId}`)
+    .then(response => response.json())
+    .then(response => {
+      document.querySelectorAll(".cart items__count")
+      .forEach((subMenu) => {
+        subMenu.innerHTML = response.itemsCount;
+        subMenu.nextElementSibling.classList.remove("active");
+        slideUp(subMenu);
+      });
+    })
+    .catch(error => {
+      console.log('Quantity update failed', error);
+    });
 }

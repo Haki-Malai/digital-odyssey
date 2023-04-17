@@ -1,10 +1,12 @@
 <header class="header__section header__transparent">
-  {% if config.countdown %}
+  {% if g.config.countdown %}
     <div class="header__topbar bg__primary">
       <div class="container">
         <div class="header__topbar--inner d-flex align-items-center justify-content-center">
           <div class="header__shipping">
-            <p class="header__shipping--text text-white"><img class="header__shipping--icon" src="assets/img/icon/car.png" alt="header-shipping-img"> Claim your online FREE Delivery or Shipping today! Expires in</p>
+            <p class="header__shipping--text text-white">
+              Claim your online FREE Delivery or Shipping today! Expires in
+            </p>
           </div>
           <div class="header__topbar--countdown d-flex" data-countdown="Sep 30, 2022 00:00:00"></div>
         </div>
@@ -14,19 +16,26 @@
   <div class="main__header header__sticky">
     <div class="container">
       <div class="main__header--inner position__relative d-flex justify-content-between align-items-center">
-        <div class="offcanvas__header--menu__open ">
-          <a class="offcanvas__header--menu__open--btn" href="javascript:void(0)" data-offcanvas>
-            <svg xmlns="http://www.w3.org/2000/svg" class="ionicon offcanvas__header--menu__open--svg" viewBox="0 0 512 512"><path fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M80 160h352M80 256h352M80 352h352"/></svg>
-            <span class="visually-hidden">Offcanvas Menu Open</span>
+        <!-- side menu togle small screen-->
+        <div class="offcanvas__header--menu__open">
+          <a class="offcanvas__header--menu__open--btn">
+            <svg xmlns="http://www.w3.org/2000/svg" class="ionicon offcanvas__header--menu__open--svg"
+              viewBox="0 0 512 512">
+            <path fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10"
+              stroke-width="32" d="M80 160h352M80 256h352M80 352h352"></svg>
           </a>
         </div>
         <div class="main__logo">
-          <h1 class="main__logo--title"><a class="main__logo--link" href="{{ url_for('main.index') }}"><img class="main__logo--img" src="assets/img/logo/nav-log.png" alt="logo-img"></a></h1>
+          <h1 class="main__logo--title">
+            <a class="main__logo--link" href="{{ url_for('main.index') }}">
+              <img class="main__logo--img" src="{{ url_for('static', filename='uploads/general/logo.png') }}">
+            </a>
+          </h1>
         </div>
         <div class="header__search--widget d-none d-lg-block header__sticky--none">
           <!-- Search Form -->
           {% if g.search_form %}
-            <form class="d-flex header__search--form" action="{{ url_for('main.search') }}">
+            <form class="d-flex header__search--form" action="{{ url_for('main.product_search') }}">
               <div class="header__select--categories select">
                 <select class="header__select--inner">
                   <option selected="selected">Select Categories</option>
@@ -37,7 +46,9 @@
               </div>
               <div class="header__search--box">
                 <label>
-                  {{ g.search_form.q(size=20, class='form-control', placeholder=g.search_form.q.label.text) }}
+                  {{ g.search_form.q(size=20,
+                    class='header__search--input',
+                    placeholder=g.search_form.q.label.text) }}
                 </label>
                 <button class="header__search--button bg__secondary text-white" type="submit">Search</button>
               </div>
@@ -48,19 +59,21 @@
         <div class="header__menu d-none d-lg-block header__sticky--block">
           <nav class="header__menu--navigation">
             <ul class="d-flex">
-              {% for key, value in config['NAVIGATION'].items() %}
+              {% for key, value in g.config['NAVIGATION'].items() %}
                 {% if value is not mapping %}
                   <li><a href="{{ value }}">{{ key }}</a></li>
                 {% else %}
                   <li class="header__menu--items">
                     <a class="header__menu--link">{{ key }}
-                      <svg class="menu__arrowdown--icon" xmlns="http://www.w3.org/2000/svg" width="12" height="7.41" viewBox="0 0 12 7.41">
-                        <path  d="M16.59,8.59,12,13.17,7.41,8.59,6,10l6,6,6-6Z" transform="translate(-6 -8.59)" fill="currentColor" opacity="0.7"/>
+                      <svg width="12" height="7.41" class="menu__arrowdown--icon" viewBox="0 0 12 7.41" xmlns="http://www.w3.org/2000/svg">
+                        <path transform="translate(-6 -8.59)" fill="currentColor" opacity="0.7" d="M16.59,8.59,12,13.17,7.41,8.59,6,10l6,6,6-6Z"/>
                       </svg>
                     </a>
                     <ul class="header__sub--menu">
                       {% for subkey, subvalue in value.items() %}
-                        <li class="header__sub--menu__items"><a href="{{ subvalue }}" class="header__sub--menu__link">{{ subkey }}</a></li>
+                        <li class="header__sub--menu__items">
+                          <a href="{{ subvalue }}" class="header__sub--menu__link">{{ subkey }}</a>
+                        </li>
                       {% endfor %}
                     </ul>
                   </li>
@@ -73,8 +86,11 @@
           <ul class="d-flex">
             <!-- search button small screen header -->
             <li class="header__account--items  header__account--search__items mobile__d--block d-sm-2-none">
-              <a class="header__account--btn search__open--btn" href="javascript:void(0)" data-offcanvas>
-                <svg class="product__items--action__btn--svg" xmlns="http://www.w3.org/2000/svg" width="22.51" height="20.443" viewBox="0 0 512 512"><path d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M338.29 338.29L448 448"/></svg>
+              <a class="header__account--btn search__open--btn">
+                <svg class="product__items--action__btn--svg" xmlns="http://www.w3.org/2000/svg" width="22.51" height="20.443" viewBox="0 0 512 512">
+                  <path d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/>
+                  <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M338.29 338.29L448 448"/>
+                </svg>
                 <span class="visually-hidden">Search</span>  
               </a>
             </li>
@@ -82,32 +98,46 @@
               <!-- account button -->
               <li class="header__account--items">
                 <a class="header__account--btn" href="{{ url_for('main.user') }}">
-                  <svg xmlns="http://www.w3.org/2000/svg"  width="20.51" height="19.443" viewBox="0 0 512 512"><path d="M344 144c-3.92 52.87-44 96-88 96s-84.15-43.12-88-96c-4-55 35-96 88-96s92 42 88 96z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path d="M256 304c-87 0-175.3 48-191.64 138.6C62.39 453.52 68.57 464 80 464h352c11.44 0 17.62-10.48 15.65-21.4C431.3 352 343 304 256 304z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/></svg>
-                  <span class="visually-hidden">My account</span> 
+                  <svg width="20.51" height="19.443" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M344 144c-3.92 52.87-44 96-88 96s-84.15-43.12-88-96c-4-55 35-96 88-96s92 42 88 96z"/>
+                    <path fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32" d="M256 304c-87 0-175.3 48-191.64 138.6C62.39 453.52 68.57 464 80 464h352c11.44 0 17.62-10.48 15.65-21.4C431.3 352 343 304 256 304z"/>
+                  </svg>
+                  <span class="visually-hidden">My account</span>
                 </a>
               </li>
               <!-- cart button -->
               <li class="header__account--items">
-                <a class="header__account--btn minicart__open--btn" href="javascript:void(0)" data-offcanvas>
+                <a class="header__account--btn minicart__open--btn">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16.706" height="15.534" viewBox="0 0 14.706 13.534">
-                    <g  transform="translate(0 0)">
-                    <g >
-                      <path  data-name="Path 16787" d="M4.738,472.271h7.814a.434.434,0,0,0,.414-.328l1.723-6.316a.466.466,0,0,0-.071-.4.424.424,0,0,0-.344-.179H3.745L3.437,463.6a.435.435,0,0,0-.421-.353H.431a.451.451,0,0,0,0,.9h2.24c.054.257,1.474,6.946,1.555,7.33a1.36,1.36,0,0,0-.779,1.242,1.326,1.326,0,0,0,1.293,1.354h7.812a.452.452,0,0,0,0-.9H4.74a.451.451,0,0,1,0-.9Zm8.966-6.317-1.477,5.414H5.085l-1.149-5.414Z" transform="translate(0 -463.248)" fill="#fefefe"/>
-                      <path  data-name="Path 16788" d="M5.5,478.8a1.294,1.294,0,1,0,1.293-1.353A1.325,1.325,0,0,0,5.5,478.8Zm1.293-.451a.452.452,0,1,1-.431.451A.442.442,0,0,1,6.793,478.352Z" transform="translate(-1.191 -466.622)" fill="#fefefe"/>
-                      <path  data-name="Path 16789" d="M13.273,478.8a1.294,1.294,0,1,0,1.293-1.353A1.325,1.325,0,0,0,13.273,478.8Zm1.293-.451a.452.452,0,1,1-.431.451A.442.442,0,0,1,14.566,478.352Z" transform="translate(-2.875 -466.622)" fill="#fefefe"/>
+                    <g transform="translate(0 0)">
+                      <g>
+                        <path  data-name="Path 16787" d="M4.738,472.271h7.814a.434.434,0,0,0,.414-.328l1.723-6.316a.466.466,0,0,0-.071-.4.424.424,0,0,0-.344-.179H3.745L3.437,463.6a.435.435,0,0,0-.421-.353H.431a.451.451,0,0,0,0,.9h2.24c.054.257,1.474,6.946,1.555,7.33a1.36,1.36,0,0,0-.779,1.242,1.326,1.326,0,0,0,1.293,1.354h7.812a.452.452,0,0,0,0-.9H4.74a.451.451,0,0,1,0-.9Zm8.966-6.317-1.477,5.414H5.085l-1.149-5.414Z" transform="translate(0 -463.248)" fill="#fefefe"/>
+                        <path  data-name="Path 16788" d="M5.5,478.8a1.294,1.294,0,1,0,1.293-1.353A1.325,1.325,0,0,0,5.5,478.8Zm1.293-.451a.452.452,0,1,1-.431.451A.442.442,0,0,1,6.793,478.352Z" transform="translate(-1.191 -466.622)" fill="#fefefe"/>
+                        <path  data-name="Path 16789" d="M13.273,478.8a1.294,1.294,0,1,0,1.293-1.353A1.325,1.325,0,0,0,13.273,478.8Zm1.293-.451a.452.452,0,1,1-.431.451A.442.442,0,0,1,14.566,478.352Z" transform="translate(-2.875 -466.622)" fill="#fefefe"/>
+                      </g>
                     </g>
-                    </g>
-                  </svg>  
-                  <span class="items__count">{{ current_user.cart.cart_products|length }}</span>
+                  </svg>
+                  <span class="cart items__count">{{ current_user.cart.quantity }}</span>
                 </a>
               </li>
               <!-- wishlist button -->
               <li class="header__account--items d-none d-lg-block">
                 <a class="header__account--btn" href="{{ url_for('main.wishlist') }}">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18.541" height="15.557" viewBox="0 0 18.541 15.557">
-                    <path  d="M71.775,135.51a5.153,5.153,0,0,1,1.267-1.524,4.986,4.986,0,0,1,6.584.358,4.728,4.728,0,0,1,1.174,4.914,10.458,10.458,0,0,1-2.132,3.808,22.591,22.591,0,0,1-5.4,4.558c-.445.282-.9.549-1.356.812a.306.306,0,0,1-.254.013,25.491,25.491,0,0,1-6.279-4.8,11.648,11.648,0,0,1-2.52-4.009,4.957,4.957,0,0,1,.028-3.787,4.629,4.629,0,0,1,3.744-2.863,4.782,4.782,0,0,1,5.086,2.447c.013.019.025.034.057.076Z" transform="translate(-62.498 -132.915)" fill="currentColor"/>
+                  <svg viewBox="0 0 18.541 15.557" width="18.541" height="15.557" xmlns="http://www.w3.org/2000/svg">
+                    <path transform="translate(-62.498 -132.915)" fill="currentColor" d="M71.775,135.51a5.153,5.153,0,0,1,1.267-1.524,4.986,4.986,0,0,1,6.584.358,4.728,4.728,0,0,1,1.174,4.914,10.458,10.458,0,0,1-2.132,3.808,22.591,22.591,0,0,1-5.4,4.558c-.445.282-.9.549-1.356.812a.306.306,0,0,1-.254.013,25.491,25.491,0,0,1-6.279-4.8,11.648,11.648,0,0,1-2.52-4.009,4.957,4.957,0,0,1,.028-3.787,4.629,4.629,0,0,1,3.744-2.863,4.782,4.782,0,0,1,5.086,2.447c.013.019.025.034.057.076Z"/>
                   </svg>
-                  <span class="items__count">{{ current_user.cart.cart_products|length }}</span> 
+                  <span class="wishlist items__count">{{ current_user.wishlist.quantity }}</span> 
+                </a>
+              </li>
+            {% else %}
+              <!-- login button -->
+              <li class="header__account--items">
+                <a class="header__account--btn" href="{{ url_for('auth.login') }}">
+                  <svg width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-right" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0v-2z"/>
+                    <path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+                  </svg>
+                  <span class="visually-hidden">Login</span> 
                 </a>
               </li>
             {% endif %}
@@ -115,38 +145,42 @@
         </div>
         <div class="header__account header__sticky--block">
           <ul class="d-flex">
-            <li class="header__account--items  header__account--search__items d-sm-2-none">
-              <a class="header__account--btn search__open--btn" href="javascript:void(0)" data-offcanvas>
-                <svg class="product__items--action__btn--svg" xmlns="http://www.w3.org/2000/svg" width="22.51" height="20.443" viewBox="0 0 512 512"><path d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M338.29 338.29L448 448"/></svg>
-                <span class="visually-hidden">Search</span>  
+            <li class="header__account--items header__account--search__items d-sm-2-none">
+              <a class="header__account--btn search__open--btn">
+                <svg class="product__items--action__btn--svg" width="22.51" height="20.443" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                  <path fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32" d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z"/>
+                  <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M338.29 338.29L448 448"/>
+                </svg>
+                <span class="visually-hidden">Search</span>
               </a>
             </li>
             <li class="header__account--items d-none d-lg-block">
               <a class="header__account--btn" href="{{ url_for('main.wishlist') }}">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18.541" height="15.557" viewBox="0 0 18.541 15.557">
-                  <path  d="M71.775,135.51a5.153,5.153,0,0,1,1.267-1.524,4.986,4.986,0,0,1,6.584.358,4.728,4.728,0,0,1,1.174,4.914,10.458,10.458,0,0,1-2.132,3.808,22.591,22.591,0,0,1-5.4,4.558c-.445.282-.9.549-1.356.812a.306.306,0,0,1-.254.013,25.491,25.491,0,0,1-6.279-4.8,11.648,11.648,0,0,1-2.52-4.009,4.957,4.957,0,0,1,.028-3.787,4.629,4.629,0,0,1,3.744-2.863,4.782,4.782,0,0,1,5.086,2.447c.013.019.025.034.057.076Z" transform="translate(-62.498 -132.915)" fill="currentColor"/>
+                <svg width="18.541" height="15.557" viewBox="0 0 18.541 15.557" xmlns="http://www.w3.org/2000/svg">
+                  <path transform="translate(-62.498 -132.915)" fill="currentColor" d="M71.775,135.51a5.153,5.153,0,0,1,1.267-1.524,4.986,4.986,0,0,1,6.584.358,4.728,4.728,0,0,1,1.174,4.914,10.458,10.458,0,0,1-2.132,3.808,22.591,22.591,0,0,1-5.4,4.558c-.445.282-.9.549-1.356.812a.306.306,0,0,1-.254.013,25.491,25.491,0,0,1-6.279-4.8,11.648,11.648,0,0,1-2.52-4.009,4.957,4.957,0,0,1,.028-3.787,4.629,4.629,0,0,1,3.744-2.863,4.782,4.782,0,0,1,5.086,2.447c.013.019.025.034.057.076Z"/>
                 </svg>
-                <span class="items__count">3</span> 
               </a>
             </li>
             <li class="header__account--items d-none d-lg-block">
               <a class="header__account--btn" href="{{ url_for('main.user') }}">
-                <svg xmlns="http://www.w3.org/2000/svg"  width="20.51" height="19.443" viewBox="0 0 512 512"><path d="M344 144c-3.92 52.87-44 96-88 96s-84.15-43.12-88-96c-4-55 35-96 88-96s92 42 88 96z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path d="M256 304c-87 0-175.3 48-191.64 138.6C62.39 453.52 68.57 464 80 464h352c11.44 0 17.62-10.48 15.65-21.4C431.3 352 343 304 256 304z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/></svg>
+                <svg width="20.51" height="19.443" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                  <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M344 144c-3.92 52.87-44 96-88 96s-84.15-43.12-88-96c-4-55 35-96 88-96s92 42 88 96z"/>
+                  <path fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32" d="M256 304c-87 0-175.3 48-191.64 138.6C62.39 453.52 68.57 464 80 464h352c11.44 0 17.62-10.48 15.65-21.4C431.3 352 343 304 256 304z"/>
+                </svg>
                 <span class="visually-hidden">My account</span> 
               </a>
             </li>
             <li class="header__account--items">
-              <a class="header__account--btn minicart__open--btn" href="javascript:void(0)" data-offcanvas>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16.706" height="15.534" viewBox="0 0 14.706 13.534">
-                  <g  transform="translate(0 0)">
-                  <g >
-                    <path  data-name="Path 16787" d="M4.738,472.271h7.814a.434.434,0,0,0,.414-.328l1.723-6.316a.466.466,0,0,0-.071-.4.424.424,0,0,0-.344-.179H3.745L3.437,463.6a.435.435,0,0,0-.421-.353H.431a.451.451,0,0,0,0,.9h2.24c.054.257,1.474,6.946,1.555,7.33a1.36,1.36,0,0,0-.779,1.242,1.326,1.326,0,0,0,1.293,1.354h7.812a.452.452,0,0,0,0-.9H4.74a.451.451,0,0,1,0-.9Zm8.966-6.317-1.477,5.414H5.085l-1.149-5.414Z" transform="translate(0 -463.248)" fill="#fefefe"/>
-                    <path  data-name="Path 16788" d="M5.5,478.8a1.294,1.294,0,1,0,1.293-1.353A1.325,1.325,0,0,0,5.5,478.8Zm1.293-.451a.452.452,0,1,1-.431.451A.442.442,0,0,1,6.793,478.352Z" transform="translate(-1.191 -466.622)" fill="#fefefe"/>
-                    <path  data-name="Path 16789" d="M13.273,478.8a1.294,1.294,0,1,0,1.293-1.353A1.325,1.325,0,0,0,13.273,478.8Zm1.293-.451a.452.452,0,1,1-.431.451A.442.442,0,0,1,14.566,478.352Z" transform="translate(-2.875 -466.622)" fill="#fefefe"/>
-                  </g>
+              <a class="header__account--btn minicart__open--btn">
+                <svg width="16.706" height="15.534" viewBox="0 0 14.706 13.534" xmlns="http://www.w3.org/2000/svg">
+                  <g transform="translate(0 0)">
+                    <g>
+                      <path data-name="Path 16787" d="M4.738,472.271h7.814a.434.434,0,0,0,.414-.328l1.723-6.316a.466.466,0,0,0-.071-.4.424.424,0,0,0-.344-.179H3.745L3.437,463.6a.435.435,0,0,0-.421-.353H.431a.451.451,0,0,0,0,.9h2.24c.054.257,1.474,6.946,1.555,7.33a1.36,1.36,0,0,0-.779,1.242,1.326,1.326,0,0,0,1.293,1.354h7.812a.452.452,0,0,0,0-.9H4.74a.451.451,0,0,1,0-.9Zm8.966-6.317-1.477,5.414H5.085l-1.149-5.414Z" transform="translate(0 -463.248)" fill="#fefefe"/>
+                      <path data-name="Path 16788" d="M5.5,478.8a1.294,1.294,0,1,0,1.293-1.353A1.325,1.325,0,0,0,5.5,478.8Zm1.293-.451a.452.452,0,1,1-.431.451A.442.442,0,0,1,6.793,478.352Z" transform="translate(-1.191 -466.622)" fill="#fefefe"/>
+                      <path data-name="Path 16789" d="M13.273,478.8a1.294,1.294,0,1,0,1.293-1.353A1.325,1.325,0,0,0,13.273,478.8Zm1.293-.451a.452.452,0,1,1-.431.451A.442.442,0,0,1,14.566,478.352Z" transform="translate(-2.875 -466.622)" fill="#fefefe"/>
+                    </g>
                   </g>
                 </svg> 
-                <span class="items__count">3</span> 
               </a>
             </li>
           </ul>
@@ -173,7 +207,10 @@
               {% for category in categories %}
                 <li class="categories__menu--items">
                   <a class="categories__menu--link" href="{{ url_for('main.category', category_id=category.id) }}"> 
-                    <svg class="categories__menu--svgicon" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 512 512"><path d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M256 176v160M336 256H176"/></svg>{{ category.name }}
+                    <svg class="categories__menu--svgicon" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 512 512">
+                      <path d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M256 176v160M336 256H176"/>
+                    </svg>
+                    {{ category.name }}
                     {% if category.subcategories %}
                       <svg class="categories__menu--right__arrow--icon" xmlns="http://www.w3.org/2000/svg" width="17.007" height="16.831" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M184 112l144 144-144 144"/></svg>
                     {% endif %}
@@ -181,11 +218,20 @@
                   {% if category.subcategories %}
                     <ul class="categories__submenu border-radius-10 d-flex justify-content-between">
                       {% for subcategory in category.subcategories %}
-                        <li class="categories__submenu--items"><a class="categories__submenu--items__text" href="{{ url_for('main.subcategory', subcategory_id=subcategory.id) }}"><strong>{{ subcategory.name }}</strong></a>
+                        <li class="categories__submenu--items">
+                          <a class="categories__submenu--items__text"
+                            href="{{ url_for('main.subcategory', subcategory_id=subcategory.id) }}">
+                            <strong>{{ subcategory.name }}</strong>
+                          </a>
                           {% if subcategory.products %}
                             {% for product in subcategory.products %}
                               <ul class="categories__submenu--child">
-                                <li class="categories__submenu--child__items"><a class="categories__submenu--child__items--link" href="{{ url_for('main.product', product_id=product.id) }}">{{ product.name }}</a></li>
+                                <li class="categories__submenu--child__items">
+                                  <a class="categories__submenu--child__items--link"
+                                    href="{{ url_for('main.product', product_id=product.id) }}">
+                                    {{ product.name }}
+                                  </a>
+                                </li>
                               </ul>
                             {% endfor %}
                           {% endif %}
@@ -193,7 +239,6 @@
                       {% endfor %}
                     </ul>
                   {% endif %}
-
                 </li>
               {% endfor %}
             </ul>
@@ -202,17 +247,31 @@
               <ul class="category__mobile--menu_ul">
                 {% for category in categories %}
                   <li class="categories__menu--items">
-                    <a class="categories__menu--link" href="{{ url_for('main.category', category_id=category.id) }}">
-                      <svg class="categories__menu--svgicon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><ellipse cx="256" cy="256" rx="267.57" ry="173.44" transform="rotate(-45 256 256.002)" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M334.04 177.96L177.96 334.04M278.3 278.3l-44.6-44.6M322.89 233.7l-44.59-44.59M456.68 211.4L300.6 55.32M211.4 456.68L55.32 300.6M233.7 322.89l-44.59-44.59"/></svg>{{ category.name }}
+                    <a class="categories__menu--link"
+                      href="{{ url_for('main.category', category_id=category.id) }}">
+                      <svg class="categories__menu--svgicon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                        <ellipse cx="256" cy="256" rx="267.57" ry="173.44" transform="rotate(-45 256 256.002)" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/>
+                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M334.04 177.96L177.96 334.04M278.3 278.3l-44.6-44.6M322.89 233.7l-44.59-44.59M456.68 211.4L300.6 55.32M211.4 456.68L55.32 300.6M233.7 322.89l-44.59-44.59"/>
+                      </svg>
+                      {{ category.name }}
                     </a>
                     {% if category.subcategories %}
                       <ul class="category__sub--menu">
                         {% for subcategory in category.subcategories %}
-                          <li class="categories__submenu--items"><a class="categories__submenu--items__text" href="{{ url_for('main.subcategory', subcategory_id=subcategory.id) }}">{{ subcategory.name }}</a>
+                          <li class="categories__submenu--items">
+                            <a class="categories__submenu--items__text"
+                              href="{{ url_for('main.subcategory', subcategory_id=subcategory.id) }}">
+                              {{ subcategory.name }}
+                            </a>
                             {% if subcategory.products %}
                               <ul class="category__sub--menu">
                                 {% for product in subcategory.products %}
-                                  <li class="categories__submenu--child__items"><a class="categories__submenu--child__items--link" href="{{ url_for('main.product', product_id=product.id) }}">{{ product.name }}</a></li>
+                                  <li class="categories__submenu--child__items">
+                                    <a class="categories__submenu--child__items--link"
+                                      href="{{ url_for('main.product', product_id=product.id) }}">
+                                      {{ product.name }}
+                                    </a>
+                                  </li>
                                 {% endfor %}
                               </ul>
                             {% endif %}
@@ -232,7 +291,7 @@
           <div class="header__menu">
             <nav class="header__menu--navigation">
               <ul class="d-flex">
-                {% for key, value in config['NAVIGATION'].items() %}
+                {% for key, value in g.config['NAVIGATION'].items() %}
                   {% if value is mapping %}
                     <li class="header__menu--items">
                       <a class="header__menu--link text-white">{{ key }}
@@ -259,7 +318,12 @@
                             <span class="header__mega--subtitle">{{ category.name }}</span>
                             <ul class="header__mega--sub__menu">
                               {% for subcategory in category.subcategories %}
-                                <li class="header__mega--sub__menu_li"><a class="header__mega--sub__menu--title" href="{{ url_for('main.subcategory', subcategory_id=subcategory.id) }}">{{ subcategory.name }}</a></li>
+                                <li class="header__mega--sub__menu_li">
+                                  <a class="header__mega--sub__menu--title"
+                                    href="{{ url_for('main.subcategory', subcategory_id=subcategory.id) }}">
+                                    {{ subcategory.name }}
+                                  </a>
+                                </li>
                               {% endfor %}
                             </ul>
                           </li>
@@ -277,8 +341,7 @@
           </div>
           <div class="header__right--info d-flex align-items-center">
             <div class="account__currency">
-              <a class="account__currency--link text-white" href="javascript:void(0)">
-                <img src="assets/img/icon/usd-icon.png" alt="currency">
+              <a class="account__currency--link text-white">
                 <span>USD</span> 
                 <svg xmlns="http://www.w3.org/2000/svg" width="9.797" height="6.05" viewBox="0 0 9.797 6.05">
                   <path  d="M14.646,8.59,10.9,12.329,7.151,8.59,6,9.741l4.9,4.9,4.9-4.9Z" transform="translate(-6 -8.59)" fill="currentColor" opacity="0.7"/>
@@ -311,21 +374,23 @@
   <!-- navbar when screen small -->
   <div class="offcanvas__header">
     <div class="offcanvas__inner">
+      <button class="offcanvas__close--btn"></button>
       <div class="offcanvas__logo">
         <a class="offcanvas__logo_link" href="{{ url_for('main.index') }}">
-          <img src="assets/img/logo/nav-log.png" alt="Grocee Logo" width="158" height="36">
+          <img src="{{ url_for('static', filename='uploads/general/logo.png') }}" alt="Grocee Logo">
         </a>
-        <button class="offcanvas__close--btn" data-offcanvas>close</button>
       </div>
       <nav class="offcanvas__menu">
         <ul class="offcanvas__menu_ul">
-          {% for key, value in config['NAVIGATION'].items() %}
+          {% for key, value in g.config['NAVIGATION'].items() %}
             {% if value is mapping %}
               <li class="offcanvas__menu_li">
                 <a class="offcanvas__menu_item">{{ key }}</a>
                 <ul class="offcanvas__sub_menu">
                   {% for subkey, subvalue in value.items() %}
-                    <li class="offcanvas__sub_menu_li"><a href="{{ subvalue }}" class="offcanvas__sub_menu_item">{{ subkey }}</a></li>
+                    <li class="offcanvas__sub_menu_li">
+                      <a class="offcanvas__sub_menu_item" href="{{ subvalue }}">{{ subkey }}</a>
+                    </li>
                   {% endfor %}
                 </ul>
               </li>
@@ -339,7 +404,12 @@
                           <a class="offcanvas__sub_menu_item" href="#">{{ category.name }}</a>
                           <ul class="offcanvas__sub_menu">
                             {% for subcategory in category.subcategories %}
-                              <li class="offcanvas__sub_menu_li"><a class="offcanvas__sub_menu_item" href="{{ url_for('main.subcategory', subcategory_id=subcategory.id) }}">{{ subcategory.name }}</a></li>
+                              <li class="offcanvas__sub_menu_li">
+                                <a class="offcanvas__sub_menu_item"
+                                  href="{{ url_for('main.subcategory', subcategory_id=subcategory.id) }}">
+                                  {{ subcategory.name }}
+                                </a>
+                              </li>
                             {% endfor %}
                           </ul>
                         {% else %}
@@ -350,38 +420,48 @@
                   </ul>
               </li>
             {% else %}
-              <li class="offcanvas__menu_li"><a class="offcanvas__menu_item" href="{{ value }}">{{ key }}</a></li>
+              <li class="offcanvas__menu_li">
+                <a class="offcanvas__menu_item" href="{{ value }}">{{ key }}</a>
+              </li>
             {% endif %}
           {% endfor %}
         </ul>
         <!-- login logout register buttons small-->
         <div class="offcanvas__account--items">
           {% if current_user.is_authenticated %}
-            <a class="offcanvas__account--items__btn d-flex align-items-center" href="{{ url_for('auth.logout') }}">
-              <span class="offcanvas__account--items__icon"> 
-                <svg xmlns="http://www.w3.org/2000/svg"  width="20.51" height="19.443" viewBox="0 0 512 512"><path d="M344 144c-3.92 52.87-44 96-88 96s-84.15-43.12-88-96c-4-55 35-96 88-96s92 42 88 96z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path d="M256 304c-87 0-175.3 48-191.64 138.6C62.39 453.52 68.57 464 80 464h352c11.44 0 17.62-10.48 15.65-21.4C431.3 352 343 304 256 304z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/></svg> 
+            <a class="offcanvas__account--items__btn d-flex align-items-center"
+              href="{{ url_for('auth.logout') }}">
+              <span class="offcanvas__account--items__icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20.51" height="19.443" viewBox="0 0 512 512">
+                  <path d="M344 144c-3.92 52.87-44 96-88 96s-84.15-43.12-88-96c-4-55 35-96 88-96s92 42 88 96z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/>
+                  <path d="M256 304c-87 0-175.3 48-191.64 138.6C62.39 453.52 68.57 464 80 464h352c11.44 0 17.62-10.48 15.65-21.4C431.3 352 343 304 256 304z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/></svg> 
               </span>
               <span class="offcanvas__account--items__label">Logout</span>
             </a>
           {% else %}
-            <a class="offcanvas__account--items__btn d-flex align-items-center" href="{{ url_for('auth.login') }}">
+            <a class="offcanvas__account--items__btn d-flex align-items-center"
+              href="{{ url_for('auth.login') }}">
               <span class="offcanvas__account--items__icon"> 
-                <svg xmlns="http://www.w3.org/2000/svg"  width="20.51" height="19.443" viewBox="0 0 512 512"><path d="M344 144c-3.92 52.87-44 96-88 96s-84.15-43.12-88-96c-4-55 35-96 88-96s92 42 88 96z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path d="M256 304c-87 0-175.3 48-191.64 138.6C62.39 453.52 68.57 464 80 464h352c11.44 0 17.62-10.48 15.65-21.4C431.3 352 343 304 256 304z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/></svg> 
+                <svg xmlns="http://www.w3.org/2000/svg"  width="20.51" height="19.443" viewBox="0 0 512 512">
+                  <path d="M344 144c-3.92 52.87-44 96-88 96s-84.15-43.12-88-96c-4-55 35-96 88-96s92 42 88 96z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/>
+                  <path d="M256 304c-87 0-175.3 48-191.64 138.6C62.39 453.52 68.57 464 80 464h352c11.44 0 17.62-10.48 15.65-21.4C431.3 352 343 304 256 304z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/></svg> 
               </span>
               <span class="offcanvas__account--items__label">Login</span>
             </a>
             <br>
             <a class="offcanvas__account--items__btn d-flex align-items-center" href="{{ url_for('auth.register') }}">
-              <span class="offcanvas__account--items__icon"> 
-                <svg xmlns="http://www.w3.org/2000/svg"  width="20.51" height="19.443" viewBox="0 0 512 512"><path d="M344 144c-3.92 52.87-44 96-88 96s-84.15-43.12-88-96c-4-55 35-96 88-96s92 42 88 96z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path d="M256 304c-87 0-175.3 48-191.64 138.6C62.39 453.52 68.57 464 80 464h352c11.44 0 17.62-10.48 15.65-21.4C431.3 352 343 304 256 304z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/></svg> 
+              <span class="offcanvas__account--items__icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20.51" height="19.443" viewBox="0 0 512 512">
+                  <path d="M344 144c-3.92 52.87-44 96-88 96s-84.15-43.12-88-96c-4-55 35-96 88-96s92 42 88 96z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/>
+                  <path d="M256 304c-87 0-175.3 48-191.64 138.6C62.39 453.52 68.57 464 80 464h352c11.44 0 17.62-10.48 15.65-21.4C431.3 352 343 304 256 304z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/>
+                </svg>
               </span>
               <span class="offcanvas__account--items__label">Register</span>
             </a>
           {% endif %}
         </div>
         <div class="offcanvas__account--currency">
-          <a class="offcanvas__account--currency__menu text-black" href="javascript:void(0)">
-            <img src="assets/img/icon/usd-icon.png" alt="currency">
+          <a class="offcanvas__account--currency__menu text-black">
             <span>USD</span> 
             <svg xmlns="http://www.w3.org/2000/svg" width="9.797" height="6.05" viewBox="0 0 9.797 6.05">
               <path  d="M14.646,8.59,10.9,12.329,7.151,8.59,6,9.741l4.9,4.9,4.9-4.9Z" transform="translate(-6 -8.59)" fill="currentColor" opacity="0.7"/>
@@ -407,7 +487,9 @@
       <li class="offcanvas__stikcy--toolbar__list">
         <a class="offcanvas__stikcy--toolbar__btn" href="{{ url_for('main.index') }}">
         <span class="offcanvas__stikcy--toolbar__icon"> 
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="21.51" height="21.443" viewBox="0 0 22 17"><path fill="currentColor" d="M20.9141 7.93359c.1406.11719.2109.26953.2109.45703 0 .14063-.0469.25782-.1406.35157l-.3516.42187c-.1172.14063-.2578.21094-.4219.21094-.1406 0-.2578-.04688-.3515-.14062l-.9844-.77344V15c0 .3047-.1172.5625-.3516.7734-.2109.2344-.4687.3516-.7734.3516h-4.5c-.3047 0-.5742-.1172-.8086-.3516-.2109-.2109-.3164-.4687-.3164-.7734v-3.6562h-2.25V15c0 .3047-.11719.5625-.35156.7734-.21094.2344-.46875.3516-.77344.3516h-4.5c-.30469 0-.57422-.1172-.80859-.3516-.21094-.2109-.31641-.4687-.31641-.7734V8.46094l-.94922.77344c-.11719.09374-.24609.14062-.38672.14062-.16406 0-.30468-.07031-.42187-.21094l-.35157-.42187C.921875 8.625.875 8.50781.875 8.39062c0-.1875.070312-.33984.21094-.45703L9.73438.832031C10.1094.527344 10.5312.375 11 .375s.8906.152344 1.2656.457031l8.6485 7.101559zm-3.7266 6.50391V7.05469L11 1.99219l-6.1875 5.0625v7.38281h3.375v-3.6563c0-.3046.10547-.5624.31641-.7734.23437-.23436.5039-.35155.80859-.35155h3.375c.3047 0 .5625.11719.7734.35155.2344.211.3516.4688.3516.7734v3.6563h3.375z"></path></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="21.51" height="21.443" viewBox="0 0 22 17">
+            <path fill="currentColor" d="M20.9141 7.93359c.1406.11719.2109.26953.2109.45703 0 .14063-.0469.25782-.1406.35157l-.3516.42187c-.1172.14063-.2578.21094-.4219.21094-.1406 0-.2578-.04688-.3515-.14062l-.9844-.77344V15c0 .3047-.1172.5625-.3516.7734-.2109.2344-.4687.3516-.7734.3516h-4.5c-.3047 0-.5742-.1172-.8086-.3516-.2109-.2109-.3164-.4687-.3164-.7734v-3.6562h-2.25V15c0 .3047-.11719.5625-.35156.7734-.21094.2344-.46875.3516-.77344.3516h-4.5c-.30469 0-.57422-.1172-.80859-.3516-.21094-.2109-.31641-.4687-.31641-.7734V8.46094l-.94922.77344c-.11719.09374-.24609.14062-.38672.14062-.16406 0-.30468-.07031-.42187-.21094l-.35157-.42187C.921875 8.625.875 8.50781.875 8.39062c0-.1875.070312-.33984.21094-.45703L9.73438.832031C10.1094.527344 10.5312.375 11 .375s.8906.152344 1.2656.457031l8.6485 7.101559zm-3.7266 6.50391V7.05469L11 1.99219l-6.1875 5.0625v7.38281h3.375v-3.6563c0-.3046.10547-.5624.31641-.7734.23437-.23436.5039-.35155.80859-.35155h3.375c.3047 0 .5625.11719.7734.35155.2344.211.3516.4688.3516.7734v3.6563h3.375z"></path>
+          </svg>
           </span>
           <span class="offcanvas__stikcy--toolbar__label">Home</span>
         </a>
@@ -415,15 +497,20 @@
       <li class="offcanvas__stikcy--toolbar__list">
         <a class="offcanvas__stikcy--toolbar__btn" href="{{ url_for('main.products') }}">
         <span class="offcanvas__stikcy--toolbar__icon"> 
-          <svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" width="18.51" height="17.443" viewBox="0 0 448 512"><path d="M416 32H32A32 32 0 0 0 0 64v384a32 32 0 0 0 32 32h384a32 32 0 0 0 32-32V64a32 32 0 0 0-32-32zm-16 48v152H248V80zm-200 0v152H48V80zM48 432V280h152v152zm200 0V280h152v152z"></path></svg>
+          <svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" width="18.51" height="17.443" viewBox="0 0 448 512">
+            <path d="M416 32H32A32 32 0 0 0 0 64v384a32 32 0 0 0 32 32h384a32 32 0 0 0 32-32V64a32 32 0 0 0-32-32zm-16 48v152H248V80zm-200 0v152H48V80zM48 432V280h152v152zm200 0V280h152v152z"></path>
+          </svg>
           </span>
         <span class="offcanvas__stikcy--toolbar__label">Shop</span>
         </a>
       </li>
       <li class="offcanvas__stikcy--toolbar__list ">
-        <a class="offcanvas__stikcy--toolbar__btn search__open--btn" href="javascript:void(0)" data-offcanvas>
-          <span class="offcanvas__stikcy--toolbar__icon"> 
-            <svg xmlns="http://www.w3.org/2000/svg"  width="22.51" height="20.443" viewBox="0 0 512 512"><path d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M338.29 338.29L448 448"/></svg>   
+        <a class="offcanvas__stikcy--toolbar__btn search__open--btn">
+          <span class="offcanvas__stikcy--toolbar__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22.51" height="20.443" viewBox="0 0 512 512">
+              <path d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/>
+              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M338.29 338.29L448 448"/>
+            </svg>
           </span>
         <span class="offcanvas__stikcy--toolbar__label">Search</span>
         </a>
@@ -431,26 +518,39 @@
       {% if current_user.is_authenticated %}
         <!-- cart bottom screen small-->
         <li class="offcanvas__stikcy--toolbar__list">
-          <a class="offcanvas__stikcy--toolbar__btn minicart__open--btn" href="javascript:void(0)" data-offcanvas>
-            <span class="offcanvas__stikcy--toolbar__icon"> 
+          <a class="offcanvas__stikcy--toolbar__btn minicart__open--btn">
+            <span class="offcanvas__stikcy--toolbar__icon">
               <svg xmlns="http://www.w3.org/2000/svg" width="18.51" height="15.443" viewBox="0 0 18.51 15.443">
-              <path  d="M79.963,138.379l-13.358,0-.56-1.927a.871.871,0,0,0-.6-.592l-1.961-.529a.91.91,0,0,0-.226-.03.864.864,0,0,0-.226,1.7l1.491.4,3.026,10.919a1.277,1.277,0,1,0,1.844,1.144.358.358,0,0,0,0-.049h6.163c0,.017,0,.034,0,.049a1.277,1.277,0,1,0,1.434-1.267c-1.531-.247-7.783-.55-7.783-.55l-.205-.8h7.8a.9.9,0,0,0,.863-.651l1.688-5.943h.62a.936.936,0,1,0,0-1.872Zm-9.934,6.474H68.568c-.04,0-.1.008-.125-.085-.034-.118-.082-.283-.082-.283l-1.146-4.037a.061.061,0,0,1,.011-.057.064.064,0,0,1,.053-.025h1.777a.064.064,0,0,1,.063.051l.969,4.34,0,.013a.058.058,0,0,1,0,.019A.063.063,0,0,1,70.03,144.853Zm3.731-4.41-.789,4.359a.066.066,0,0,1-.063.051h-1.1a.064.064,0,0,1-.063-.051l-.789-4.357a.064.064,0,0,1,.013-.055.07.07,0,0,1,.051-.025H73.7a.06.06,0,0,1,.051.025A.064.064,0,0,1,73.76,140.443Zm3.737,0L76.26,144.8a.068.068,0,0,1-.063.049H74.684a.063.063,0,0,1-.051-.025.064.064,0,0,1-.013-.055l.973-4.357a.066.066,0,0,1,.063-.051h1.777a.071.071,0,0,1,.053.025A.076.076,0,0,1,77.5,140.448Z" transform="translate(-62.393 -135.3)" fill="currentColor"/>
-              </svg> 
+                <path d="M79.963,138.379l-13.358,0-.56-1.927a.871.871,0,0,0-.6-.592l-1.961-.529a.91.91,0,0,0-.226-.03.864.864,0,0,0-.226,1.7l1.491.4,3.026,10.919a1.277,1.277,0,1,0,1.844,1.144.358.358,0,0,0,0-.049h6.163c0,.017,0,.034,0,.049a1.277,1.277,0,1,0,1.434-1.267c-1.531-.247-7.783-.55-7.783-.55l-.205-.8h7.8a.9.9,0,0,0,.863-.651l1.688-5.943h.62a.936.936,0,1,0,0-1.872Zm-9.934,6.474H68.568c-.04,0-.1.008-.125-.085-.034-.118-.082-.283-.082-.283l-1.146-4.037a.061.061,0,0,1,.011-.057.064.064,0,0,1,.053-.025h1.777a.064.064,0,0,1,.063.051l.969,4.34,0,.013a.058.058,0,0,1,0,.019A.063.063,0,0,1,70.03,144.853Zm3.731-4.41-.789,4.359a.066.066,0,0,1-.063.051h-1.1a.064.064,0,0,1-.063-.051l-.789-4.357a.064.064,0,0,1,.013-.055.07.07,0,0,1,.051-.025H73.7a.06.06,0,0,1,.051.025A.064.064,0,0,1,73.76,140.443Zm3.737,0L76.26,144.8a.068.068,0,0,1-.063.049H74.684a.063.063,0,0,1-.051-.025.064.064,0,0,1-.013-.055l.973-4.357a.066.066,0,0,1,.063-.051h1.777a.071.071,0,0,1,.053.025A.076.076,0,0,1,77.5,140.448Z" transform="translate(-62.393 -135.3)" fill="currentColor"/>
+              </svg>
             </span>
             <span class="offcanvas__stikcy--toolbar__label">Cart</span>
-            <span class="items__count">{{ current_user.cart.cart_products|length }}</span> 
+            <span class="cart items__count">{{ current_user.cart.quantity }}</span>
           </a>
         </li>
         <!-- wishlist bottom scren small -->
         <li class="offcanvas__stikcy--toolbar__list">
           <a class="offcanvas__stikcy--toolbar__btn" href="{{ url_for('main.wishlist') }}">
-            <span class="offcanvas__stikcy--toolbar__icon"> 
+            <span class="offcanvas__stikcy--toolbar__icon">
               <svg xmlns="http://www.w3.org/2000/svg" width="18.541" height="15.557" viewBox="0 0 18.541 15.557">
-              <path  d="M71.775,135.51a5.153,5.153,0,0,1,1.267-1.524,4.986,4.986,0,0,1,6.584.358,4.728,4.728,0,0,1,1.174,4.914,10.458,10.458,0,0,1-2.132,3.808,22.591,22.591,0,0,1-5.4,4.558c-.445.282-.9.549-1.356.812a.306.306,0,0,1-.254.013,25.491,25.491,0,0,1-6.279-4.8,11.648,11.648,0,0,1-2.52-4.009,4.957,4.957,0,0,1,.028-3.787,4.629,4.629,0,0,1,3.744-2.863,4.782,4.782,0,0,1,5.086,2.447c.013.019.025.034.057.076Z" transform="translate(-62.498 -132.915)" fill="currentColor"/>
-              </svg> 
+                <path d="M71.775,135.51a5.153,5.153,0,0,1,1.267-1.524,4.986,4.986,0,0,1,6.584.358,4.728,4.728,0,0,1,1.174,4.914,10.458,10.458,0,0,1-2.132,3.808,22.591,22.591,0,0,1-5.4,4.558c-.445.282-.9.549-1.356.812a.306.306,0,0,1-.254.013,25.491,25.491,0,0,1-6.279-4.8,11.648,11.648,0,0,1-2.52-4.009,4.957,4.957,0,0,1,.028-3.787,4.629,4.629,0,0,1,3.744-2.863,4.782,4.782,0,0,1,5.086,2.447c.013.019.025.034.057.076Z" transform="translate(-62.498 -132.915)" fill="currentColor"/>
+              </svg>
             </span>
             <span class="offcanvas__stikcy--toolbar__label">Wishlist</span>
-            <span class="items__count">{{ current_user.wishlist.products|length }}</span> 
+            <span class="wishlist items__count">{{ current_user.wishlist.quantity }}</span> 
+          </a>
+        </li>
+      {% else %}
+        <!-- login bottom scren small -->
+        <li class="offcanvas__stikcy--toolbar__list">
+          <a class="offcanvas__stikcy--toolbar__btn" href="{{ url_for('auth.login') }}">
+            <span class="offcanvas__stikcy--toolbar__icon"> 
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-right" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0v-2z"/>
+                <path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+              </svg>
+            </span>
+            <span class="offcanvas__stikcy--toolbar__label">Login</span>
           </a>
         </li>
       {% endif %}
@@ -464,39 +564,51 @@
       <div class="minicart__header ">
         <div class="minicart__header--top d-flex justify-content-between align-items-center">
           <h3 class="minicart__title">Shopping Cart</h3>
-          <button class="minicart__close--btn" aria-label="minicart close btn" data-offcanvas>
-            <svg class="minicart__close--icon" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 512 512"><path fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M368 368L144 144M368 144L144 368"/></svg>
+          <button class="minicart__close--btn">
+            <svg class="minicart__close--icon" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 512 512">
+              <path fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M368 368L144 144M368 144L144 368"/>
+            </svg>
           </button>
         </div>
-        <p class="minicart__header--desc">{{ config['TITLE'] }}</p>
+        <p class="minicart__header--desc">{{ g.config['TITLE'] }}</p>
       </div>
-      {% for cart_product in current_user.cart.cart_products %}
+      {% for cart_product in current_user.cart.cart_products.all() %}
         {% with product=cart_product.product %}
           <div class="minicart__product" id="minicartProduct{{ product.id }}">
             <div class="minicart__product--items d-flex">
               <div class="minicart__thumb">
-                <a href="{{ url_for('main.product', product_id=product.id) }}"><img src="assets/img/product/product1.png" alt="prduct-img"></a>
+                <a href="{{ url_for('main.product', product_id=product.id) }}">
+                  <img src="{{ url_for('static', filename=product.images.first().image_url) }}"
+                    alt="{{ product.name }}">
+                </a>
               </div>
               <div class="minicart__text">
-                <h4 class="minicart__subtitle"><a href="{{ url_for('main.product', product_id=product.id) }}">{{ product.name }}</a></h4>
-                {% for variation in product.variations %}
-                  <span class="color__variant"><b>{{ variation.name }}:</b> {{ cart_product.variation_value.name }}</span>
+                <h4 class="minicart__subtitle">
+                  <a href="{{ url_for('main.product', product_id=product.id) }}">{{ product.name }}</a>
+                </h4>
+                {% for variation in product.variations.all() %}
+                  <span class="color__variant">
+                    <b>{{ variation.name }}:</b> {{ cart_product.value.name }}
+                  </span>
                 {% endfor %}
                 <div class="minicart__price">
-                  <span class="current__price" id="totalPrice{{ product.id }}">{{ cart_product.total_price }} €</span>
+                  <span class="current__price">{{ cart_product.total_price }} €</span>
                   {% if cart_product.total_sale_price %}
-                    <span class="old__price" id="salePrice{{ product.id }}">{{ cart_product.total_sale_price }} €</span>
+                    <span class="old__price">{{ product.sale_price * cart_product.quantity }} €</span>
                   {% endif %}
                 </div>
                 <div class="minicart__text--footer d-flex align-items-center">
                   <div class="quantity__box minicart__quantity">
-                    <button type="button" class="quantity__value decrease" aria-label="quantity value" value="{{ product.id }}">-</button>
-                    <label>
-                      <input type="number" class="quantity__number" id="cartProductQuantity{{ product.id }}" value="{{ cart_product.quantity }}" data-counter />
-                    </label>
-                    <button type="button" class="quantity__value increase" aria-label="quantity value" value="{{ product.id }}">+</button>
+                    <button class="quantity__value decrease"
+                      onclick="decreaseQuantity({{ product.id }}, {{ cart_product.quantity }})">-
+                    </button>
+                      <input readonly class="quantity__number" value="{{ cart_product.quantity }}"/>
+                    <button class="quantity__value increase"
+                      onclick="increaseQuantity({{ product.id }}, {{ cart_product.quantity }})">+
+                    </button>
                   </div>
-                  <button class="minicart__product--remove remove__button" id="removeButton" value="{{ product.id }}" type="button">Remove</button>
+                  <button class="minicart__product--remove remove__button" id="removeButton"
+                    onclick="removeProduct({{ product.id }})">Remove</button>
                 </div>
               </div>
             </div>
@@ -518,18 +630,29 @@
   <!-- End offCanvas minicart -->
 
   <!-- Start serch box area -->
-  <div class="predictive__search--box ">
-    <div class="predictive__search--box__inner">
-      <h2 class="predictive__search--title">Search Products</h2>
-      <form class="predictive__search--form" action="#">
-        <label>
-          <input class="predictive__search--input" placeholder="Search Here" type="text">
-        </label>
-        <button class="predictive__search--button" aria-label="search button"><svg class="product__items--action__btn--svg" xmlns="http://www.w3.org/2000/svg" width="30.51" height="25.443" viewBox="0 0 512 512"><path d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M338.29 338.29L448 448"/></svg>  </button>
-      </form>
+  {% if g.search_form %}
+    <div class="predictive__search--box ">
+      <div class="predictive__search--box__inner">
+        <h2 class="predictive__search--title">Search Products</h2>
+        <form class="predictive__search--form" action="{{ url_for('main.product_search') }}">
+          <label>
+            {{ g.search_form.q(size=20,
+              class='header__search--input',
+              placeholder=g.search_form.q.label.text) }}
+          </label>
+          <button class="predictive__search--button">
+            <svg class="product__items--action__btn--svg" xmlns="http://www.w3.org/2000/svg" width="30.51" height="25.443" viewBox="0 0 512 512">
+              <path d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/>
+              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M338.29 338.29L448 448"/>
+            </svg>
+          </button>
+        </form>
+      </div>
+      <button class="predictive__search--close__btn">
+        <svg class="predictive__search--close__icon" xmlns="http://www.w3.org/2000/svg" width="40.51" height="30.443"  viewBox="0 0 512 512">
+          <path fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M368 368L144 144M368 144L144 368"/>
+        </svg>
+      </button>
     </div>
-    <button class="predictive__search--close__btn" aria-label="search close" data-offcanvas>
-      <svg class="predictive__search--close__icon" xmlns="http://www.w3.org/2000/svg" width="40.51" height="30.443"  viewBox="0 0 512 512"><path fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M368 368L144 144M368 144L144 368"/></svg>
-    </button>
-  </div>
+  {% endif %}
 </header>

@@ -6,7 +6,7 @@
     <title>{{ config['TITLE'] }}</title>
     <meta name="description" content="Morden Bootstrap HTML5 Template">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='uploads/favicon.ico') }}">
       
     <!-- ======= All CSS Plugins here ======== -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/plugins/swiper-bundle.min.css') }}">
@@ -17,20 +17,50 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/vendor/bootstrap.min.css') }}">
 
     <!-- Custom Style CSS -->
+    <style>
+      :root {
+        --secondary-color: {{ g.config['SECONDARY_COLOR'] }};
+        --secondary-color_2: {{ g.config['SECONDARY_COLOR_2'] }};
+        --theme-color: {{ g.config['THEME_COLOR'] }};
+        --theme-color_2: {{ g.config['THEME_COLOR_2'] }};
+        --theme-color_3: {{ g.config['THEME_COLOR_3'] }};
+        --theme-color_4: {{ g.config['THEME_COLOR_4'] }};
+        --yellow-color: {{ g.config['YELLOW_COLOR'] }};
+        --light-color: {{ g.config['LIGHT_COLOR'] }};
+        --light-color_2: {{ g.config['LIGHT_COLOR_2'] }};
+        --white-color: {{ g.config['WHITE_COLOR'] }};
+        --black-color: {{ g.config['BLACK_COLOR'] }};
+        --dark-color: {{ g.config['DARK_COLOR'] }};
+        --sky-color: {{ g.config['SKY_COLOR'] }};
+        --border-color: {{ g.config['BORDER_COLOR'] }};
+        --border-color_2: {{ g.config['BORDER_COLOR_2'] }};
+        --border-dark: {{ g.config['BORDER_DARK'] }};
+        --bg-gray-color: {{ g.config['BG_GRAY_COLOR'] }};
+        --gray-color: {{ g.config['GRAY_COLOR'] }};
+        --gray-color_2: {{ g.config['GRAY_COLOR_2'] }};
+        --text-gray-color: {{ g.config['TEXT_GRAY_COLOR'] }};
+        --font-lato: {{ g.config['FONT_LATO'] }};
+        --font-lora: {{ g.config['FONT_LORA'] }};
+        --font-poppins: {{ g.config['FONT_POPPINS'] }};
+        --body-font-size: {{ g.config['BODY_FONT_SIZE'] }};
+        --body-font-weight: {{ g.config['BODY_FONT_WEIGHT'] }};
+        --body-line-height: {{ g.config['BODY_LINE_HEIGHT'] }};
+        --headings-weight: {{ g.config['HEADINGS_WEIGHT'] }};
+        --transition: {{ g.config['TRANSITION'] }};
+        --container-fluid-offset: {{ g.config['CONTAINER_FLUID_OFFSET'] }};
+      }
+    </style>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
   </head>
 
   <body style="align-items: center;">
 
     {% include 'preloader.html' %}
 
-    {% include 'navigator.html' %}
-
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
         {% for category, message in messages %}
-          <div style="position: fixed; z-index: 9999; width: 100%; margin: auto;">
+          <div class="alert-container">
             <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert" style="position: relative; margin-bottom: 10px;">
               {{ message }}
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -43,8 +73,8 @@
     {% block body %}{% endblock %}
     
     <!-- All Script JS Plugins here  -->
-    <script src="{{ url_for('static', filename='js/vendor/popper.js') }}" defer="defer"></script>
-    <script src="{{ url_for('static', filename='js/vendor/bootstrap.min.js') }}" defer="defer"></script>
+    <script src="{{ url_for('static', filename='js/vendor/popper.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/vendor/bootstrap.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/plugins/swiper-bundle.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/plugins/glightbox.min.js') }}"></script>
     <!-- Customscript js -->
