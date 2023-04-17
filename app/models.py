@@ -6,8 +6,17 @@ from app.search import add_to_index, remove_from_index, query_index
 
 
 class SearchableMixin(object):
+    """Mixin for adding search capabilities to SQLAlchemy models.
+    """
     @classmethod
     def search(cls, expression, page, per_page):
+        """Search the index for items that match the given expression.
+        :param expression: the expression to search for
+        :param page: the page number to return
+        :param per_page: the number of items to return per page
+        :return: a tuple containing the results and the total number of
+        results
+        """
         ids, total = query_index(cls.__tablename__, expression, page, per_page)
         if total == 0:
             return cls.query.filter_by(id=0), 0
@@ -18,7 +27,10 @@ class SearchableMixin(object):
             db.case(*when, value=cls.id)), total
 
     @classmethod
-    def before_commit(cls, session):
+    def before_commit(cls, session) -> None:
+        """Register objects to be indexed after the commit.
+        :param session: the current session
+        """
         session._changes = {
             'add': list(session.new),
             'update': list(session.dirty),
@@ -26,7 +38,10 @@ class SearchableMixin(object):
         }
 
     @classmethod
-    def after_commit(cls, session):
+    def after_commit(cls, session) -> None:
+        """Index the registered objects.
+        :param session: the current session
+        """
         for obj in session._changes['add']:
             if isinstance(obj, SearchableMixin):
                 add_to_index(obj.__tablename__, obj)
@@ -56,82 +71,93 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
 
     cart = db.relationship('Cart', back_populates='user', uselist=False)
-    wishlist = db.relationship('Wishlist', back_populates='user', uselist=False)
+    wishlist = db.relationship('Wishlist', back_populates='user',
+                               uselist=False)
 
     def __repr__(self) -> str:
         return '<User %r>' % self.username
 
     def __init__(self, **kwargs):
+        """Create a new user instance and add a cart and wishlist to it.
+        """
         super(User, self).__init__(**kwargs)
         Cart(user=self)
         Wishlist(user=self)
 
     @property
     def password(self):
+        """Prevent password from being accessed.
+        """
         raise AttributeError('password is not a readable attribute')
 
     def set_password(self, password):
+        """Set the password for the user.
+        """
         self.password_hash = generate_password_hash(password)
 
     def verify_password(self, password):
+        """Check if the password is correct.
+        """
         return check_password_hash(self.password_hash, password)
 
-    # Currently only 2 roles: admin and user so this is fine
     def has_permission(self, permission):
+        """Check if the user has the given permission.
+        """
         return self.role == permission
-    
-    # Cart methods
+
     def add_to_cart(self, product, quantity):
+        """Add a product to the user's cart.
+        """
         if not self.cart:
             self.cart = Cart(user=self)
         self.cart.add_product(product, quantity)
 
     def remove_from_cart(self, product):
+        """Remove a product from the user's cart.
+        """
         if self.cart:
             self.cart.remove_product(product)
 
     def empty_cart(self):
+        """Empty the user's cart.
+        """
         if self.cart:
             self.cart.empty_cart()
-    
-    # Wishlist methods
+
     def add_to_wishlist(self, product):
+        """Add a product to the user's wishlist.
+        """
         if not self.wishlist:
             self.wishlist = Wishlist(user=self)
         self.wishlist.add_product(product)
 
     def remove_from_wishlist(self, product):
+        """Remove a product from the user's wishlist.
+        """
         if product in self.wishlist:
             self.wishlist.remove(product)
 
-    # Cart methods
     def add_to_cart(self, product_id, quantity=1):
+        """Add a product to the user's cart.
+        """
         return self.cart.add_product(product_id, quantity)
 
     def remove_from_cart(self, product_id):
+        """Remove a product from the user's cart.
+        """
         if self.cart:
             self.cart.remove_product(product_id)
 
-    def empty_cart(self):
-        if self.cart:
-            self.cart.empty_cart()
-
-    # Wishlist methods
-    def add_to_wishlist(self, product_id):
-        if not self.wishlist:
-            self.wishlist = Wishlist(user=self)
-        self.wishlist.add_product(product_id)
-
-    def remove_from_wishlist(self, product):
-        if product in self.wishlist:
-            self.wishlist.remove(product)
-
 
 class AnonymousUser(AnonymousUserMixin):
+    """Anonymous user class.
+    """
     def has_permission(self, permission):
+        """Return False for all permissions."""
         return False
-    
+
     def is_administrator(self):
+        """Return False."""
         return False
 
 login.anonymous_user = AnonymousUser
@@ -139,10 +165,14 @@ login.anonymous_user = AnonymousUser
 
 @login.user_loader
 def load_user(id):
+    """Load a user from the database.
+    """
     return User.query.get(int(id))
 
 
 class Category(db.Model):
+    """Category model.
+    """
     id = db.Column(db.Integer, primary_key=True, index=True)
     name = db.Column(db.String(64), unique=True, index=True)
 
@@ -154,6 +184,8 @@ class Category(db.Model):
 
 
 class Subcategory(db.Model):
+    """Subcategory model.
+    """
     id = db.Column(db.Integer, primary_key=True, index=True)
     name = db.Column(db.String(124), index=True)
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
@@ -166,17 +198,21 @@ class Subcategory(db.Model):
 
 
 class Brand(db.Model):
+    """Brand model.
+    """
     id = db.Column(db.Integer, primary_key=True, index=True)
     name = db.Column(db.String(255), nullable=False, index=True)
     description = db.Column(db.Text)
 
     products = db.relationship('Product', back_populates='brand')
-        
+
     def __repr__(self):
         return '<Brand %r>' % self.name
 
 
 class Product(SearchableMixin, db.Model):
+    """Product model.
+    """
     __searchable__ = ['name', 'description']
 
     id = db.Column(db.Integer, primary_key=True, index=True)
@@ -207,12 +243,16 @@ class Product(SearchableMixin, db.Model):
         return '<Product %r>' % self.name
 
     def __init__(self, **kwargs):
+        """Create a new product instance with a default image and
+        default variation.
+        """
         super(Product, self).__init__(**kwargs)
         ProductImage(product=self, image_url='uploads/product/default.png')
         ProductVariation(product=self, name='Variation')
 
 
 class ProductImage(db.Model):
+    """Product image model."""
     id = db.Column(db.Integer, primary_key=True, index=True)
     product_id = db.Column(db.Integer,
                            db.ForeignKey('product.id'),
@@ -226,6 +266,8 @@ class ProductImage(db.Model):
 
 
 class ProductVariation(db.Model):
+    """Product variation model.
+    """
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
     product_id = db.Column(db.Integer,
@@ -248,13 +290,15 @@ class ProductVariation(db.Model):
 
 
 class ProductVariationValue(db.Model):
+    """Product variation value model.
+    """
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
     variation_id = db.Column(db.Integer,
                              db.ForeignKey('product_variation.id'),
                              nullable=False)
     product_id = db.Column(db.Integer,
-                           db.ForeignKey('product.id'), 
+                           db.ForeignKey('product.id'),
                            nullable=False)
 
     variation = db.relationship('ProductVariation',
@@ -266,6 +310,8 @@ class ProductVariationValue(db.Model):
 
 
 class Wishlist(db.Model):
+    """Wishlist model.
+    """
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
@@ -286,6 +332,8 @@ class Wishlist(db.Model):
 
 
 class WishlistProduct(db.Model):
+    """Wishlist product model.
+    """
     wishlist_id = db.Column(db.Integer, db.ForeignKey('wishlist.id'), primary_key=True)
     product_id = db.Column(db.Integer, db.ForeignKey('product.id'), primary_key=True)
 
@@ -297,6 +345,8 @@ class WishlistProduct(db.Model):
 
 
 class Cart(db.Model):
+    """Cart model.
+    """
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
@@ -310,13 +360,22 @@ class Cart(db.Model):
 
     @property
     def total_price(self):
+        """Return the total price of all products in the cart.
+        """
         return sum(cp.total_price for cp in self.cart_products)
 
     @property
     def quantity(self):
+        """Return the total quantity of all products in the cart.
+        """
         return self.cart_products.count()
 
     def add_product(self, product_id, quantity=1, product_value_id=None):
+        """Add a product to the cart.
+        :param product_id: The id of the product to add.
+        :param quantity: The quantity of the product to add.
+        :param product_value_id: The id of the product variation value.
+        """
         product = Product.query.get(product_id)
         if not product:
             return False
@@ -344,6 +403,9 @@ class Cart(db.Model):
         return True
 
     def remove_product(self, product_id):
+        """Remove a product from the cart.
+        :param product_id: The id of the product to remove.
+        """
         for cart_product in self.cart_products:
             if cart_product.product_id == product_id:
                 self.cart_products.remove(cart_product)
@@ -352,12 +414,16 @@ class Cart(db.Model):
                 return
 
     def empty_cart(self):
+        """Empty the cart.
+        """
         for cart_product in self.cart_products:
             self.cart_products.remove(cart_product)
             db.session.delete(cart_product)
             return
 
     def has_product(self, product_id):
+        """Check if the cart has a product.
+        """
         for cart_product in self.cart_products:
             if cart_product.product_id == product_id:
                 return True
