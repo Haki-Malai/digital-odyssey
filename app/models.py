@@ -174,11 +174,9 @@ class Product(SearchableMixin, db.Model):
     category = db.relationship('Category', back_populates='products')
     subcategory = db.relationship('Subcategory', back_populates='products')
     brand = db.relationship('Brand', back_populates='products')
-    variations = db.relationship('ProductVariation',
-                                 back_populates='product',
+    variations = db.relationship('ProductVariation', back_populates='product',
                                  lazy='dynamic')
-    images = db.relationship('ProductImage',
-                             back_populates='product',
+    images = db.relationship('ProductImage', back_populates='product',
                              lazy='dynamic')
 
     def __repr__(self):
@@ -348,14 +346,12 @@ class CartProduct(db.Model):
     product_id = db.Column(db.Integer, db.ForeignKey('product.id'))
     quantity = db.Column(db.Integer, nullable=False, default=0)
     total_price = db.Column(db.Float, nullable=False, default=0.0)
-    value_id = db.Column(
-        db.Integer,
-        db.ForeignKey('product_variation_value.id'))
+    value_id = db.Column(db.Integer,
+                         db.ForeignKey('product_variation_value.id'))
 
     cart = db.relationship('Cart', back_populates='cart_products')
     product = db.relationship('Product', lazy='joined')
-    value = db.relationship('ProductVariationValue',
-                            lazy='joined')
+    value = db.relationship('ProductVariationValue', lazy='joined')
 
     def __repr__(self):
         return '<CartProduct %r>' % self.product.name
@@ -363,13 +359,13 @@ class CartProduct(db.Model):
 
 class Banner(db.Model):
     id = db.Column(db.Integer, primary_key=True, index=True)
-    image_url = db.Column(db.String(255),
-                          nullable=False,
+    image_url = db.Column(db.String(255), nullable=False,
                           default='uploads/banner/default.png')
     url = db.Column(db.String(255), nullable=False, default='main.products')
     name = db.Column(db.String(255), nullable=False)
     body = db.Column(db.Text, nullable=False)
-    button_text = db.Column(db.String(255), nullable=False, default='Shop Now')
+    button_text = db.Column(db.String(255), nullable=False,
+                            default='Shop Now')
     position = db.Column(db.Integer, nullable=False, default=0)
 
     def __repr__(self):

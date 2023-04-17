@@ -23,8 +23,8 @@ mail = Mail()
 
 def create_app(config_name='default'):
     app = Flask(__name__)
-    app.config.from_object(config[config_name])
-    config[config_name].init_app(app)
+    app.config_obj = config[config_name]
+    app.config.from_object(app.config_obj)
 
     # Disable trailing slash 
     app.url_map.strict_slashes = False
