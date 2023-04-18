@@ -1,20 +1,14 @@
-from flask import current_app, render_template, request, g, abort, \
-    redirect, url_for
-from flask_login import current_user, login_required
-from apifairy import response
+from flask import current_app, render_template, request, g, redirect, url_for
+from flask_login import current_user
 
-from app import db
 from app.main import bp
 from app.main.forms import SearchForm
-from app.models import User, Category, Subcategory, Product, Banner
-from app.api.schemas import CartSchema, EmptySchema
-
-cart_schema = CartSchema()
+from app.models import Category, Subcategory, Product, Banner
 
 
 @bp.before_app_request
 def before_request() -> None:
-    """Set objects to the global config.
+    """Set search form to the global config.
     """
     g.search_form = SearchForm()
     g.config = current_app.config
@@ -29,61 +23,6 @@ def index() -> str:
                            products=Product.query.all(),
                            banners=Banner.query,
                            current_user=current_user)
-
-
-@bp.route('/user')
-@login_required
-def user():
-    """Get the current user.
-    """
-    return current_user.username
-
-
-@bp.route('/wishlist')
-@login_required
-def wishlist():
-    """Get the current user's wishlist.
-    """
-    return current_user.wishlist.products
-
-
-@bp.route('/wishlist/<int:product_id>')
-@login_required
-def wishlist_product(product_id: int):
-    """Add a product to the current user's wishlist.
-    """
-    product = Product.query.get(product_id)
-    current_user.wishlist.add(product)
-    db.session.commit()
-    return current_user.wishlist.products
-
-
-@bp.route('/cart')
-@login_required
-@response(cart_schema)
-def cart() -> dict:
-    """Get the current user's cart.
-    """
-    return current_user.cart
-
-
-@bp.route('/cart/<int:product_id>/<int:quantity>')
-@login_required
-@response(EmptySchema, 200)
-def cart_quantity(product_id: int, quantity:int = 1):
-    """Add or update quantity of product in cart.
-    """
-    if current_user.add_to_cart(product_id, quantity):
-        return {}
-    abort(400, 'There was an error adding the product to the cart')
-
-
-@bp.route('/checkout')
-@login_required
-def checkout() :
-    """Checkout the current user's cart.
-    """
-    return current_user.cart.products
 
 
 @bp.route('/products')
