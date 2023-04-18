@@ -3,6 +3,7 @@ from flask import current_app, render_template, url_for, redirect, request, \
     flash, g
 from flask_login import login_required
 
+from app import update_config
 from app.admin import bp
 from app.models import Category
 from app.decorators import admin_required
@@ -85,6 +86,7 @@ def colors() -> str:
         for key, value in form.data.items():
             if 'color' in key.lower() and value:
                 current_app.config_obj.update_config(key, value)
+                update_config(current_app, 'default')
         flash('Colors updated successfully!', 'success')
     else:
         for field, errors in form.errors.items():
