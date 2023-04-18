@@ -6,6 +6,8 @@ from wtforms.validators import ValidationError
 
 
 class ColorForm(FlaskForm):
+    """Color form.
+    """
     submit = SubmitField()
     black_color = StringField()
     bg_gray_color = StringField()

@@ -9,26 +9,34 @@ from app.decorators import admin_required
 from app.admin.forms import ColorForm
 
 
-def allowed_file(filename):
+def allowed_file(filename: str) -> bool:
+    """Check if the file is allowed to be uploaded.
+    """
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() \
             in current_app.config['ALLOWED_EXTENSIONS']
 
 
 @bp.before_app_request
-def before_request():
+def before_request() -> None:
+    """Set the config object to the global config.
+    """
     g.config = current_app.config
 
 
 @bp.route('/admin')
-def index():
+def index() -> str:
+    """Redirect to the admin dashboard.
+    """
     return redirect(url_for('admin.main', screen='dashboard'))
 
 
 @bp.route('/admin/<screen>')
 @login_required
 @admin_required
-def main(screen):
+def main(screen) -> str:
+    """Admin main page.
+    """
     return render_template(f'admin/{screen}.html',
                            screen=screen,
                            categories=Category.query.all())
@@ -37,7 +45,9 @@ def main(screen):
 @bp.route('/admin/design')
 @login_required
 @admin_required
-def design():
+def design() -> str:
+    """Design page.
+    """
     form = ColorForm()
     return render_template('admin/design.html',
                            colors_form=form,
@@ -48,7 +58,9 @@ def design():
 @bp.route('/admin/logo', methods=['POST'])
 @login_required
 @admin_required
-def upload_logo():
+def upload_logo() -> str:
+    """Upload a logo.
+    """
     if 'logo' not in request.files:
         flash('No file part', 'warning')
         return redirect(url_for('admin.main', screen='design'))
@@ -65,7 +77,9 @@ def upload_logo():
 @bp.route('/admin/colors', methods=['POST'])
 @login_required
 @admin_required
-def colors():
+def colors() -> str:
+    """Update the colors.
+    """
     form = ColorForm()
     if form.validate_on_submit():
         for key, value in form.data.items():

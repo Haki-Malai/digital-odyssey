@@ -7,6 +7,8 @@ from app.models import User
 
 
 class LoginForm(FlaskForm):
+    """Login form.
+    """
     entity = StringField('Username or Email', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     remember_me = BooleanField('Remember Me')
@@ -14,6 +16,8 @@ class LoginForm(FlaskForm):
 
 
 class RegistrationForm(FlaskForm):
+    """Registration form.
+    """
     username = StringField('Username',
                            validators=[DataRequired(), Length(min=4, max=20)])
     email = StringField('Email',validators=[DataRequired(), Email()])
@@ -24,7 +28,7 @@ class RegistrationForm(FlaskForm):
     subscribe = BooleanField('Subscribe to our newsletter')
     agree_to_terms = BooleanField('I agree to the terms of service', validators=[DataRequired()])
     submit = SubmitField('Register')
-    
+
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
         if user is not None:
