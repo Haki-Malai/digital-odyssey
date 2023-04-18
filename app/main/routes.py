@@ -35,6 +35,7 @@ def products() -> str:
 @bp.route('/product/<int:product_id>')
 def product(product_id:int) -> str:
     """Get a product.
+    :param product_id: The product id.
     """
     return Product.query.get(product_id).name
 
@@ -45,13 +46,17 @@ def product_search() -> str:
     """
     if not g.search_form.validate():
         return redirect(url_for('main.explore'))
+
     page = request.args.get('page', 1, type=int)
     products, total = Product.search(g.search_form.q.data, page,
                                      current_app.config['ITEMS_PER_PAGE'])
+
     next_url = url_for('main.search', q=g.search_form.q.data, page=page + 1) \
         if total > page * current_app.config['ITEMS_PER_PAGE'] else None
+
     prev_url = url_for('main.search', q=g.search_form.q.data, page=page - 1) \
         if page > 1 else None
+
     return render_template('search.html',
                            categories=Category.query.all(),
                            products=products,
@@ -62,10 +67,14 @@ def product_search() -> str:
 @bp.route('/category/<int:category_id>')
 def category(category_id: int) -> str:
     """Get a category.
+    :param category_id: The category id.
     """
     return Category.query.get(category_id).name
 
 
 @bp.route('/subcategory/<int:subcategory_id>')
 def subcategory(subcategory_id: int) -> str:
+    """Get a subcategory.
+    :param subcategory_id: The subcategory id.
+    """
     return Subcategory.query.get(subcategory_id).name

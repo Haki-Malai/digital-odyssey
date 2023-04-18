@@ -7,6 +7,8 @@ from app.models import User
 
 
 class LoginForm(FlaskForm):
+    """Login form.
+    """
     entity = StringField('Username or Email', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     remember_me = BooleanField('Remember Me')
@@ -14,6 +16,8 @@ class LoginForm(FlaskForm):
 
 
 class RegistrationForm(FlaskForm):
+    """Registration form.
+    """
     username = StringField('Username',
                            validators=[DataRequired(), Length(min=4, max=20)])
     email = StringField('Email',validators=[DataRequired(), Email()])

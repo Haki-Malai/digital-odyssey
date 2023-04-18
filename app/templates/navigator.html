@@ -363,19 +363,22 @@
                 <ul class="offcanvas__sub_menu">
                   {% for subkey, subvalue in value.items() %}
                     <li class="offcanvas__sub_menu_li">
-                      <a class="offcanvas__sub_menu_item" href="{{ subvalue }}">{{ subkey }}</a>
+                      <a class="offcanvas__sub_menu_item" href="{{ url_for(subvalue) }}">{{ subkey }}</a>
                     </li>
                   {% endfor %}
                 </ul>
               </li>
             {% elif key == "Shop" %}
               <li class="offcanvas__menu_li">
-                  <a class="offcanvas__menu_item" href="url_for({{ value }})">{{ key }}</a>
+                  <a class="offcanvas__menu_item" href="{{ url_for(value) }}">{{ key }}</a>
                   <ul class="offcanvas__sub_menu">
                     {% for category in categories %}
                       <li class="offcanvas__sub_menu_li">
                         {% if category.subcategories %}
-                          <a class="offcanvas__sub_menu_item" href="#">{{ category.name }}</a>
+                          <a class="offcanvas__sub_menu_item"
+                            href="{{ url_for('main.category', category_id=category.id) }}">
+                            {{ category.name }}
+                          </a>
                           <ul class="offcanvas__sub_menu">
                             {% for subcategory in category.subcategories %}
                               <li class="offcanvas__sub_menu_li">
@@ -387,7 +390,9 @@
                             {% endfor %}
                           </ul>
                         {% else %}
-                          <a class="offcanvas__sub_menu_item" href="url_for({{ value }})">{{ category.name }}</a>
+                          <a class="offcanvas__sub_menu_item" href="{{ url_for(value) }}">
+                            {{ category.name }}
+                          </a>
                         {% endif %}
                       </li>
                     {% endfor %}
@@ -395,7 +400,7 @@
               </li>
             {% else %}
               <li class="offcanvas__menu_li">
-                <a class="offcanvas__menu_item" href="{{ value }}">{{ key }}</a>
+                <a class="offcanvas__menu_item" href="{{ url_for(value) }}">{{ key }}</a>
               </li>
             {% endif %}
           {% endfor %}
