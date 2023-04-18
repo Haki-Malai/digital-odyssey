@@ -9,7 +9,6 @@ from elasticsearch import Elasticsearch
 from redis import Redis
 import rq
 from config import config
-from app import models
 
 db = SQLAlchemy()
 mg = Migrate()
@@ -62,6 +61,7 @@ def create_app(config_name:str = 'default'):
     def make_shell_context():
         """Create a shell context for flask shell.
         """
+        from app import models
         ctx = {'db': db}
         for attr in dir(models):
             model = getattr(models, attr)

@@ -24,7 +24,7 @@ class RegistrationForm(FlaskForm):
     subscribe = BooleanField('Subscribe to our newsletter')
     agree_to_terms = BooleanField('I agree to the terms of service', validators=[DataRequired()])
     submit = SubmitField('Register')
-    
+
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
         if user is not None:
