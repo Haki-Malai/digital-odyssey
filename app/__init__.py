@@ -27,7 +27,7 @@ def create_app(config_name:str = 'default'):
     :return: the application instance
     """
     app = Flask(__name__)
-    app.config_obj:object = config[config_name]
+    app.config_obj = config[config_name]
     app.config.from_object(app.config_obj)
 
     # Disable trailing slash
@@ -77,3 +77,13 @@ def create_app(config_name:str = 'default'):
         db.create_all()
 
     return app
+
+
+def update_config(app: Flask, config_name: str) -> None:
+    """Update the app's configuration with the specified configuration.
+    :param app: The Flask app instance.
+    :param config_name: The name of the configuration to use.
+    """
+    config_obj = config[config_name]
+    config_obj.__init__()
+    app.config.from_object(config_obj)
