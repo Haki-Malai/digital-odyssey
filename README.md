@@ -1,6 +1,6 @@
 # Digital Odyssey
 
-Digital Odyssey is an ecommerce web application built using Python Flask framework. The application provides features such as browsing products, adding them to cart, and making orders. The application also uses Elasticsearch for search functionality. In this README, we will provide detailed instructions on how to install and run Digital Odyssey.
+Digital Odyssey is an ecommerce web application built using Python Flask framework. The application provides features such as browsing products, adding them to cart, and making orders. The application also uses Elasticsearch for search functionality. There is also a custom CMS provided which is accessible on the /admin page. In this README, we will provide detailed instructions on how to install and run Digital Odyssey. 
 
 ## Prerequisites
 Before installing and running Digital Odyssey, you need to have the following prerequisites:
@@ -47,7 +47,11 @@ docker build -t elasticsearch -f Dockerfile.el .
 ```bash
 docker run --name myelasticsearch -m 1gb elasticsearch
 ```
-  3. Start the Flask application:
+  3. If needed, create some fake data with the cli command provided:
+```bash
+flask fake
+```
+  4. Start the Flask application:
 ```bash
 flask run
 ```
