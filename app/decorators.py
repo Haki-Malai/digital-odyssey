@@ -25,6 +25,6 @@ def logout_required(f: Callable) -> Callable:
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if current_user.is_authenticated:
-            redirect(url_for('auth.login'))
+            return redirect(url_for('main.index'))
         return f(*args, **kwargs)
-    return decorated_function    
+    return decorated_function
