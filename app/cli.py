@@ -5,7 +5,7 @@ bp = Blueprint('cli', __name__, cli_group=None)
 
 
 @bp.cli.command('fake')
-def fake():
+def fake() -> None:
     """Generate fake data.
     """
     from app.fake import create_users, create_categories, create_subcategories, \
