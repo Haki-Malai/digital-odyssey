@@ -1,32 +1,35 @@
-<section class="contact__section section--padding">
-  <div class="container">
-    <div class="section__heading text-center mb-40">
-      <span class="section__heading--subtitle">{{ 'some text description' }}</span>
-      <h2 class="section__heading--maintitle">{{ screen.upper() }}</h2>
+<div class="container d-flex flex-wrap text-center">
+  <div class="row w-100">
+    <div class="d-flex align-items-center justify-content-center mt-4">
+      <h2>{{ screen.upper() }} PAGE</h2>
     </div>
-    <div class="main__contact--area position__relative">
-      <div class="contact__form">
-        <h3 class="contact__form--title mb-40">Color Palet</h3>
-        <form class="contact__form--inner" action="{{ url_for('admin.colors') }}" method="POST">
+    <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="collapse"
+      data-bs-target="#colorPaletteForm" aria-controls="colorPaletteForm">
+      <h3>Color Palette</h3>
+    </button>
+    <div class="col-12">
+      <div class="collapse" id="colorPaletteForm">
+        <form class="mt-3" action="{{ url_for('admin.colors') }}" method="POST">
           {{ colors_form.csrf_token }}
           <div class="row">
             {% for key in colors_form.__dict__ %}
               {% if 'color' in key %}
-                <div class="col-lg-6 col-md-6">
-                  <div class="contact__form--list mb-20">
-                    <label class="contact__form--label" for="{{ key }}">{{ key }}</label>
-                    <input class="contact__form--input" name="{{ key }}" id="{{ key }}"
-                      placeholder="{{ g.config[key.upper()] }}" type="text"
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label for="{{ key }}">{{ key }}</label>
+                    <input name="{{ key }}" id="{{ key }}" type="text"
+                      placeholder="{{ g.config[key.upper()] }}"
                       value="{{ g.config[key.upper()] }}"
+                      class="form-control"
                       style="background-color: {{ g.config[key.upper()] }};">
                   </div>
                 </div>
               {% endif %}
             {% endfor %}
           </div>
-          <button class="btn-dark" type="submit"><span>Submit Now</span></button>  
+          <button type="submit" class="btn btn-dark mt-3">Submit</button>
         </form>
       </div>
     </div>
   </div>
-</section>
+</div>
