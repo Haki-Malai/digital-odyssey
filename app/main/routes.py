@@ -13,13 +13,17 @@ cart_schema = CartSchema()
 
 
 @bp.before_app_request
-def before_request():
+def before_request() -> None:
+    """Set objects to the global config.
+    """
     g.search_form = SearchForm()
     g.config = current_app.config
 
 
 @bp.route('/')
-def index():
+def index() -> str:
+    """Get the index page.
+    """
     return render_template('index.html',
                            categories=Category.query.all(),
                            products=Product.query.all(),
@@ -30,18 +34,24 @@ def index():
 @bp.route('/user')
 @login_required
 def user():
+    """Get the current user.
+    """
     return current_user.username
 
 
 @bp.route('/wishlist')
 @login_required
 def wishlist():
+    """Get the current user's wishlist.
+    """
     return current_user.wishlist.products
 
 
 @bp.route('/wishlist/<int:product_id>')
 @login_required
-def wishlist_product(product_id):
+def wishlist_product(product_id: int):
+    """Add a product to the current user's wishlist.
+    """
     product = Product.query.get(product_id)
     current_user.wishlist.add(product)
     db.session.commit()
@@ -51,14 +61,16 @@ def wishlist_product(product_id):
 @bp.route('/cart')
 @login_required
 @response(cart_schema)
-def cart():
+def cart() -> dict:
+    """Get the current user's cart.
+    """
     return current_user.cart
 
 
 @bp.route('/cart/<int:product_id>/<int:quantity>')
 @login_required
 @response(EmptySchema, 200)
-def cart_quantity(product_id, quantity=1):
+def cart_quantity(product_id: int, quantity:int = 1):
     """Add or update quantity of product in cart.
     """
     if current_user.add_to_cart(product_id, quantity):
@@ -68,22 +80,30 @@ def cart_quantity(product_id, quantity=1):
 
 @bp.route('/checkout')
 @login_required
-def checkout():
+def checkout() :
+    """Checkout the current user's cart.
+    """
     return current_user.cart.products
 
 
 @bp.route('/products')
-def products():
+def products() -> str:
+    """Get all products.
+    """
     return Product.query.first().name
 
 
 @bp.route('/product/<int:product_id>')
-def product(product_id):
+def product(product_id:int) -> str:
+    """Get a product.
+    """
     return Product.query.get(product_id).name
 
 
 @bp.route('/product/search')
-def product_search():
+def product_search() -> str:
+    """Search for a product.
+    """
     if not g.search_form.validate():
         return redirect(url_for('main.explore'))
     page = request.args.get('page', 1, type=int)
@@ -101,10 +121,12 @@ def product_search():
 
 
 @bp.route('/category/<int:category_id>')
-def category(category_id):
+def category(category_id: int) -> str:
+    """Get a category.
+    """
     return Category.query.get(category_id).name
 
 
 @bp.route('/subcategory/<int:subcategory_id>')
-def subcategory(subcategory_id):
+def subcategory(subcategory_id: int) -> str:
     return Subcategory.query.get(subcategory_id).name
