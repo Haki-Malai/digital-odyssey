@@ -1,9 +1,12 @@
-{% extends 'base.html' %}
+{% extends 'admin/index.html' %}
 
-{% block body %}
+{% block page %}
 
-  {% include 'admin/navbar.html' %}
-
+  <div class="d-flex align-items-center justify-content-center mt-4">
+    <h2>{{ screen.upper() }} PAGE</h2>
+  </div>
   {% include 'admin/design/colors.html' %}
+  <br>
+  {% include 'admin/design/logo.html' %}   
 
 {% endblock %}
