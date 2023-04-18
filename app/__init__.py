@@ -15,19 +15,23 @@ mg = Migrate()
 login = LoginManager()
 fairy = APIFairy()
 ma = Marshmallow()
-login.login_view = 'auth.login'
-login.login_message = 'Please log in to access this page.'
-login.login_message_category = 'warning'
+login.login_view:str = 'auth.login'
+login.login_message:str = 'Please log in to access this page.'
+login.login_message_category:str = 'warning'
 mail = Mail()
 
 
-def create_app(config_name='default'):
+def create_app(config_name:str = 'default'):
+    """Create an application instance using the app factory pattern.
+    :param config_name: the name of the configuration to use
+    :return: the application instance
+    """
     app = Flask(__name__)
-    app.config_obj = config[config_name]
+    app.config_obj:object = config[config_name]
     app.config.from_object(app.config_obj)
 
-    # Disable trailing slash 
-    app.url_map.strict_slashes = False
+    # Disable trailing slash
+    app.url_map.strict_slashes:bool = False
 
     # Initialize extensions
     db.init_app(app)
@@ -50,13 +54,16 @@ def create_app(config_name='default'):
     app.register_blueprint(admin_bp)
     from app.auth import bp as auth_bp
     app.register_blueprint(auth_bp)
+    from app.user import bp as user_bp
+    app.register_blueprint(user_bp)
     from app.api import bp as api_bp
     app.register_blueprint(api_bp, url_prefix='/api')
 
-    # Create shell context for flask shell
-    from app import models
     @app.shell_context_processor
     def make_shell_context():
+        """Create a shell context for flask shell.
+        """
+        from app import models
         ctx = {'db': db}
         for attr in dir(models):
             model = getattr(models, attr)
@@ -70,4 +77,3 @@ def create_app(config_name='default'):
         db.create_all()
 
     return app
-    

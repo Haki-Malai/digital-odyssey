@@ -4,10 +4,14 @@ from app.models import User, ProductVariation, ProductVariationValue, \
 
 
 class EmptySchema(ma.Schema):
+    """Empty schema.
+    """
     pass
 
 
 class UserSchema(ma.SQLAlchemySchema):
+    """User schema.
+    """
     class Meta:
         model = User
         ordered = True
@@ -21,6 +25,8 @@ class UserSchema(ma.SQLAlchemySchema):
 
 
 class ProductSchema(ma.SQLAlchemySchema):
+    """Product schema.
+    """
     class Meta:
         model = Product
         ordered = True
@@ -39,6 +45,8 @@ class ProductSchema(ma.SQLAlchemySchema):
 
 
 class ProductImageSchema(ma.SQLAlchemySchema):
+    """Product image schema.
+    """
     class Meta:
         model = ProductImage
         ordered = True
@@ -48,6 +56,8 @@ class ProductImageSchema(ma.SQLAlchemySchema):
 
 
 class ProductVariationSchema(ma.SQLAlchemySchema):
+    """Product variation schema.
+    """
     class Meta:
         model = ProductVariation
         ordered = True
@@ -59,6 +69,8 @@ class ProductVariationSchema(ma.SQLAlchemySchema):
 
 
 class ProductVariationValueSchema(ma.SQLAlchemySchema):
+    """Product variation value schema.
+    """
     class Meta:
         model = ProductVariationValue
         ordered = True
@@ -68,6 +80,8 @@ class ProductVariationValueSchema(ma.SQLAlchemySchema):
 
 
 class WishlistSchema(ma.SQLAlchemySchema):
+    """Wishlist schema.
+    """
     class Meta:
         model = Wishlist
         ordered = True
@@ -78,6 +92,8 @@ class WishlistSchema(ma.SQLAlchemySchema):
 
 
 class WishlistProductSchema(ma.SQLAlchemySchema):
+    """Wishlist product schema.
+    """
     class Meta:
         model = WishlistProduct
         ordered = True
@@ -86,6 +102,8 @@ class WishlistProductSchema(ma.SQLAlchemySchema):
 
 
 class CartSchema(ma.SQLAlchemySchema):
+    """Cart schema.
+    """
     class Meta:
         model = Cart
         ordered = True
@@ -98,6 +116,8 @@ class CartSchema(ma.SQLAlchemySchema):
 
 
 class CartProductSchema(ma.SQLAlchemySchema):
+    """Cart product schema.
+    """
     class Meta:
         model = CartProduct
         ordered = True
