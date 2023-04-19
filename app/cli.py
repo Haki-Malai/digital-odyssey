@@ -49,7 +49,7 @@ def test(coverage: bool, dir: str) -> None:
 
     args = [dir]
     if coverage:
-        args.append('--cov=api')
+        args.append('--cov=.')
         args.append('--cov-report=html')
 
     pytest.main(args)
