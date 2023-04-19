@@ -8,8 +8,8 @@ class Config:
     """Configuration base, for all environments.
     :param config_file: path to config file
     """
-    config_file: str = os.path.join(basedir, 'app/static/uploads/config.json')
-    
+    config_file: str = os.path.join(basedir, 'config.json')
+
     def __init__(self, config_file:str = config_file) -> None:
         """Load config from json file.
         """
@@ -30,10 +30,12 @@ class Config:
         with open(self.config_file, 'w') as f:
             json.dump(config, f, indent=4)
 
- 
+
 class DevelopmentConfig(Config):
     """Development configuration.
     """
+    config_file: str = os.path.join(basedir, 'dev_config.json')
+
     SQLALCHEMY_DATABASE_URI:str = 'sqlite:///' + os.path.join(basedir,
                                                           "dev-data.sqlite")
     DEBUG: bool = True
@@ -42,14 +44,17 @@ class DevelopmentConfig(Config):
 class TestingConfig(Config):
     """Testing configuration.
     """
+    config_file: str = os.path.join(basedir, 'test_config.json')
+
     SQLALCHEMY_DATABASE_URI:str = 'sqlite:///' + os.path.join(basedir,
                                                           "test-data.sqlite")
     TESTING: bool = True
 
-    
+
 class ProductionConfig(Config):
     """Production configuration.
     """
+
     SQLALCHEMY_DATABASE_URI:str = 'sqlite:///' + os.path.join(basedir,
                                                           "prod-data.sqlite")
     PRODUCTION: bool = True
