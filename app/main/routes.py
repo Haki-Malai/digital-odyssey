@@ -18,11 +18,12 @@ def before_request() -> None:
 def index() -> str:
     """Get the index page.
     """
-    return render_template('index.html',
-                           categories=Category.query.all(),
-                           products=Product.query.all(),
-                           banners=Banner.query,
-                           current_user=current_user)
+    return render_template(
+        'index.html',
+        categories=Category.query,
+        featured_products=Product.query.filter_by(featured=True),
+        banners=Banner.query,
+        current_user=current_user)
 
 
 @bp.route('/products')
