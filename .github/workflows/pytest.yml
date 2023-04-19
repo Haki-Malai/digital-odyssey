@@ -19,4 +19,5 @@ jobs:
           pip install -r requirements.txt
       - name: Run tests
         run: |
+          . env/bin/activate
           flask test -c
