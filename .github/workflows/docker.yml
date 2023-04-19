@@ -1,0 +1,19 @@
+name: Verify Docker Compose and Dockerfiles
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Verify docker-compose
+        run: docker-compose config
+
+      - name: Verify Dockerfile
+        run: docker build -f Dockerfile -t myapp:latest .
+
+      - name: Verify Dockerfile.el
+        run: docker build -f Dockerfile.el -t elasticsearch:latest .
