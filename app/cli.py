@@ -46,6 +46,9 @@ def test(coverage: bool, dir: str) -> None:
     :param dir: Directory to run tests from.
     """
     import pytest
+    import os
+
+    from config import config
 
     args = [dir]
     if coverage:
@@ -53,3 +56,5 @@ def test(coverage: bool, dir: str) -> None:
         args.append('--cov-report=html')
 
     pytest.main(args)
+    os.remove(config['testing'].SQLALCHEMY_DATABASE_URI.replace(
+        'sqlite:///', ''))
