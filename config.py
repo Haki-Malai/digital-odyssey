@@ -34,6 +34,8 @@ class Config:
 class DevelopmentConfig(Config):
     """Development configuration.
     """
+    config_file: str = os.path.join(basedir, 'dev_config.json')
+
     SQLALCHEMY_DATABASE_URI:str = 'sqlite:///' + os.path.join(basedir,
                                                           "dev-data.sqlite")
     DEBUG: bool = True
@@ -42,6 +44,8 @@ class DevelopmentConfig(Config):
 class TestingConfig(Config):
     """Testing configuration.
     """
+    config_file: str = os.path.join(basedir, 'test_config.json')
+
     SQLALCHEMY_DATABASE_URI:str = 'sqlite:///' + os.path.join(basedir,
                                                           "test-data.sqlite")
     TESTING: bool = True
@@ -50,6 +54,7 @@ class TestingConfig(Config):
 class ProductionConfig(Config):
     """Production configuration.
     """
+
     SQLALCHEMY_DATABASE_URI:str = 'sqlite:///' + os.path.join(basedir,
                                                           "prod-data.sqlite")
     PRODUCTION: bool = True
