@@ -40,7 +40,7 @@
               <div class="header__select--categories select">
                 <select class="header__select--inner">
                   <option selected="selected">Select Categories</option>
-                  {% for category in categories %}
+                  {% for category in categories.all() %}
                     <option value="{{ category.id }}">{{ category.name }}</option>
                   {% endfor %}
                 </select>
@@ -187,15 +187,19 @@
             <svg class="categories__list--icon" xmlns="http://www.w3.org/2000/svg" width="21.007" height="16.831" viewBox="0 0 21.007 16.831">
               <path id="listine-dots" d="M20.66,99.786a1.036,1.036,0,0,0-.347-.13H4.227a2.013,2.013,0,0,1,0,3.012q7.988,0,15.976,0h.063a.7.7,0,0,0,.454-.162.9.9,0,0,0,.286-.452v-1.765A.861.861,0,0,0,20.66,99.786ZM3.323,101.162A1.662,1.662,0,1,1,1.662,99.5,1.661,1.661,0,0,1,3.323,101.162Zm16.99,3H4.227a2.013,2.013,0,0,1,0,3.012q7.988,0,15.976,0h.063a.7.7,0,0,0,.454-.164.9.9,0,0,0,.286-.452v-1.765a.861.861,0,0,0-.347-.5A1.082,1.082,0,0,0,20.314,104.161Zm-16.99,1.506a1.662,1.662,0,1,1-1.662-1.662A1.663,1.663,0,0,1,3.323,105.668Zm16.99,3H4.227a2.013,2.013,0,0,1,0,3.012q7.988,0,15.976,0h.063a.7.7,0,0,0,.454-.164.9.9,0,0,0,.286-.45v-1.767a.861.861,0,0,0-.347-.5A1.083,1.083,0,0,0,20.314,108.663Zm-16.99,1.506a1.662,1.662,0,1,1-1.662-1.662A1.663,1.663,0,0,1,3.323,110.169Zm16.99,2.993H4.227a2.013,2.013,0,0,1,0,3.012q7.988,0,15.976,0h.063a.687.687,0,0,0,.454-.162.9.9,0,0,0,.286-.452v-1.765a.861.861,0,0,0-.347-.5A1.035,1.035,0,0,0,20.314,113.163Zm-16.99,1.506a1.662,1.662,0,1,1-1.662-1.662A1.661,1.661,0,0,1,3.323,114.669Z" transform="translate(0 -99.5)" fill="currentColor"/>
             </svg>
-            <span class="categories__menu--title">All Categories</span>
-            <svg class="categories__arrowdown--icon" xmlns="http://www.w3.org/2000/svg" width="12.355" height="8.394" viewBox="0 0 10.355 6.394">
-              <path  d="M15.138,8.59l-3.961,3.952L7.217,8.59,6,9.807l5.178,5.178,5.178-5.178Z" transform="translate(-6 -8.59)" fill="currentColor"/>
-            </svg>
+            {% if categories.all() %}
+              <span class="categories__menu--title">All Categories</span>
+              <svg class="categories__arrowdown--icon" xmlns="http://www.w3.org/2000/svg" width="12.355" height="8.394" viewBox="0 0 10.355 6.394">
+                <path  d="M15.138,8.59l-3.961,3.952L7.217,8.59,6,9.807l5.178,5.178,5.178-5.178Z" transform="translate(-6 -8.59)" fill="currentColor"/>
+              </svg>
+            {% else %}
+              <span class="categories__menu--title">Categories Are Empty</span>
+            {% endif %}
           </div>
           <div class="dropdown__categories--menu">
             <!-- dropdown categories big screen -->
             <ul class="d-none d-lg-block">
-              {% for category in categories %}
+              {% for category in categories.all() %}
                 <li class="categories__menu--items">
                   <a class="categories__menu--link" href="{{ url_for('main.category', category_id=category.id) }}">
                     <svg class="categories__menu--svgicon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M256 176v160M336 256H176"/></svg>{{ category.name }}
@@ -224,7 +228,7 @@
             <!-- dropdown categories small screen -->
             <nav class="category__mobile--menu" aria-label>
               <ul class="category__mobile--menu_ul">
-                {% for category in categories %}
+                {% for category in categories.all() %}
                   <li class="categories__menu--items">
                     <a class="categories__menu--link" href="{{ url_for('main.category', category_id=category.id) }}">
                       <svg class="categories__menu--svgicon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><ellipse cx="256" cy="256" rx="267.57" ry="173.44" transform="rotate(-45 256 256.002)" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M334.04 177.96L177.96 334.04M278.3 278.3l-44.6-44.6M322.89 233.7l-44.59-44.59M456.68 211.4L300.6 55.32M211.4 456.68L55.32 300.6M233.7 322.89l-44.59-44.59"/></svg>{{ category.name }}
@@ -287,7 +291,7 @@
                         </svg>
                       </a>
                       <ul class="header__mega--menu d-flex">
-                        {% for category in categories %}
+                        {% for category in categories.all() %}
                           <li class="header__mega--menu__li">
                             <span class="header__mega--subtitle">{{ category.name }}</span>
                             <ul class="header__mega--sub__menu">
@@ -372,7 +376,7 @@
               <li class="offcanvas__menu_li">
                   <a class="offcanvas__menu_item" href="{{ url_for(value) }}">{{ key }}</a>
                   <ul class="offcanvas__sub_menu">
-                    {% for category in categories %}
+                    {% for category in categories.all() %}
                       <li class="offcanvas__sub_menu_li">
                         {% if category.subcategories %}
                           <a class="offcanvas__sub_menu_item"
