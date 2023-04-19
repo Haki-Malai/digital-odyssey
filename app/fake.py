@@ -109,11 +109,15 @@ def create_fake_banners(count=5):
 
 
 def create_fake_admin():
-    user = User(
-        username='asdf',
-        email='asdf@asdf.gr',
-        role='admin'
-    )
-    user.set_password('asdf')
-    db.session.add(user)
-    db.session.commit()
+    try:
+        user = User(
+            username='asdf',
+            email='asdf@asdf.gr',
+            role='admin'
+        )
+        user.set_password('asdf')
+        db.session.add(user)
+        db.session.commit()
+    except IntegrityError:
+        db.session.rollback()
+        return

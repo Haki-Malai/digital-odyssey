@@ -1,3 +1,4 @@
+from flask import current_app
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin, AnonymousUserMixin
 
@@ -57,10 +58,6 @@ class SearchableMixin(object):
     def reindex(cls):
         for obj in cls.query:
             add_to_index(cls.__tablename__, obj)
-
-
-db.event.listen(db.session, 'before_commit', SearchableMixin.before_commit)
-db.event.listen(db.session, 'after_commit', SearchableMixin.after_commit)
 
 
 class User(UserMixin, db.Model):
@@ -249,6 +246,12 @@ class Product(SearchableMixin, db.Model):
         super(Product, self).__init__(**kwargs)
         ProductImage(product=self, image_url='uploads/product/default.png')
         ProductVariation(product=self, name='Variation')
+
+        #if current_app.elasticsearch is not None:
+            #db.event.listen(db.session, 'before_commit',
+                            #SearchableMixin.before_commit)
+            #db.event.listen(db.session, 'after_commit',
+                            #SearchableMixin.after_commit)
 
 
 class ProductImage(db.Model):
