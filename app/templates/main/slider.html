@@ -1,102 +1,110 @@
-<section class="hero__slider--section">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-8 col-md-8">
-        <div class="hero__slider--inner hero__slider--nav__activation swiper mb-30">
-          <div class="hero__slider--wrapper swiper-wrapper">
-            {% for banner in banners.filter_by(position=0).all() %}
-              <div class="swiper-slide">
-                <div class="hero__slider--items slider__--bg"
-                  style="background: url({{ url_for('static', filename=banner.image_url) }})">
-                  <div class="slider__content">
-                    <a href={{ banner.url }}>
-                    <span class="slider__content--subtitle text-white">{{ banner.name }}</span>
-                    <h2 class="slider__content--maintitle text-white h1">{{ banner.body }}</h2>
-                      <h5 class="slider__content--subtitle2 text-white">{{ banner.button_text }}</h5>
-                    </a>
+{% if banners.all() %}
+  <section class="hero__slider--section">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-8">
+          <div class="hero__slider--inner hero__slider--nav__activation swiper mb-30">
+            <div class="hero__slider--wrapper swiper-wrapper">
+              {% for banner in banners.filter_by(position=0).all() %}
+                <div class="swiper-slide">
+                  <div class="hero__slider--items slider__--bg"
+                    style="background: url({{ url_for('static', filename=banner.image_url) }})">
+                    <div class="slider__content">
+                      <a href={{ banner.url }}>
+                      <span class="slider__content--subtitle text-white">{{ banner.name }}</span>
+                      <h2 class="slider__content--maintitle text-white h1">{{ banner.body }}</h2>
+                        <h5 class="slider__content--subtitle2 text-white">{{ banner.button_text }}</h5>
+                      </a>
+                    </div>
+                  </div>
+                  <div class="hero__slider--navigation swiper-button-next">
+                    <svg width="15.685" height="22.984" id="right-arrow-angle" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 11.685 21.984">
+                      <g>
+                        <g data-name="Group 2089">
+                        <path data-name="Path 48087" d="M11.445,11.689,1.436,21.715a.791.791,0,0,1-1.19,0,.982.982,0,0,1,0-1.3l9.405-9.422L.247,1.57a.982.982,0,0,1,0-1.3.791.791,0,0,1,1.19,0L11.446,10.295a.958.958,0,0,1,.238.7A.966.966,0,0,1,11.445,11.689Z" transform="translate(0)" fill="currentColor"/>
+                        </g>
+                      </g>
+                    </svg>
+                  </div>
+                  <div class="hero__slider--navigation swiper-button-prev">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="15.685" height="22.984" viewBox="0 0 11.685 21.984">
+                      <g data-name="Group 2089">
+                        <path data-name="Path 48087" d="M.24,11.689,10.249,21.715a.791.791,0,0,0,1.19,0,.982.982,0,0,0,0-1.3L2.033,10.992l9.4-9.422a.982.982,0,0,0,0-1.3.791.791,0,0,0-1.19,0L.24,10.295a.958.958,0,0,0-.238.7A.966.966,0,0,0,.24,11.689Z" transform="translate(0)" fill="currentColor"/>
+                      </g>
+                    </svg>
                   </div>
                 </div>
-                <div class="hero__slider--navigation swiper-button-next">
-                  <svg width="15.685" height="22.984" id="right-arrow-angle" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 11.685 21.984">
-                    <g>
-                      <g data-name="Group 2089">
-                      <path data-name="Path 48087" d="M11.445,11.689,1.436,21.715a.791.791,0,0,1-1.19,0,.982.982,0,0,1,0-1.3l9.405-9.422L.247,1.57a.982.982,0,0,1,0-1.3.791.791,0,0,1,1.19,0L11.446,10.295a.958.958,0,0,1,.238.7A.966.966,0,0,1,11.445,11.689Z" transform="translate(0)" fill="currentColor"/>
-                      </g>
-                    </g>
-                  </svg>
-                </div>
-                <div class="hero__slider--navigation swiper-button-prev">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="15.685" height="22.984" viewBox="0 0 11.685 21.984">
-                    <g data-name="Group 2089">
-                      <path data-name="Path 48087" d="M.24,11.689,10.249,21.715a.791.791,0,0,0,1.19,0,.982.982,0,0,0,0-1.3L2.033,10.992l9.4-9.422a.982.982,0,0,0,0-1.3.791.791,0,0,0-1.19,0L.24,10.295a.958.958,0,0,0-.238.7A.966.966,0,0,0,.24,11.689Z" transform="translate(0)" fill="currentColor"/>
-                    </g>
-                  </svg>
-                </div>
-              </div>
-            {% endfor %}
+              {% endfor %}
+            </div>
           </div>
         </div>
-      </div>
-      {% with banner = banners.filter_by(position=1).first() %}
-        <div class="col-lg-4 col-md-4">
-          <div class="slider__sidebar--banner position__relative mb-30">
-            <a class="sidebar__banner--thumbnail display-block" href="{{ url_for(banner.url) }}">
-              <img class="sidebar__banner--thumbnail__img display-block" alt="banner"
-                src="{{ url_for('static', filename=banner.image_url) }}">
-              <div class="sidebar__banner--content">
-                <h2 class="sidebar__banner--content__title text-white">{{ banner.name }}</h2>
-                <p class="sidebar__banner--content__desc text-white">{{ banner.body }}</p>
-                <span class="sidebar__banner--content__btn text-white">{{ banner.button_text }}
-                  <svg class="banner__two--content__btn--arrow__icon" xmlns="http://www.w3.org/2000/svg" width="10.383" height="7.546" viewBox="0 0 10.383 7.546">
-                    <path data-name="Path 77287" d="M10.241,45.329l-3.09-3.263a.465.465,0,0,0-.683,0,.53.53,0,0,0,0,.721l2.266,2.393H.483a.511.511,0,0,0,0,1.02H8.734L6.469,48.592a.53.53,0,0,0,0,.721.465.465,0,0,0,.683,0l3.09-3.263A.53.53,0,0,0,10.241,45.329Z" transform="translate(0 -41.916)" fill="currentColor"/>
-                  </svg>
-                </span>
+        {% with banner = banners.filter_by(position=1).first() %}
+          {% if banner %}
+            <div class="col-lg-4 col-md-4">
+              <div class="slider__sidebar--banner position__relative mb-30">
+                <a class="sidebar__banner--thumbnail display-block" href="{{ url_for(banner.url) }}">
+                  <img class="sidebar__banner--thumbnail__img display-block" alt="banner"
+                    src="{{ url_for('static', filename=banner.image_url) }}">
+                  <div class="sidebar__banner--content">
+                    <h2 class="sidebar__banner--content__title text-white">{{ banner.name }}</h2>
+                    <p class="sidebar__banner--content__desc text-white">{{ banner.body }}</p>
+                    <span class="sidebar__banner--content__btn text-white">{{ banner.button_text }}
+                      <svg class="banner__two--content__btn--arrow__icon" xmlns="http://www.w3.org/2000/svg" width="10.383" height="7.546" viewBox="0 0 10.383 7.546">
+                        <path data-name="Path 77287" d="M10.241,45.329l-3.09-3.263a.465.465,0,0,0-.683,0,.53.53,0,0,0,0,.721l2.266,2.393H.483a.511.511,0,0,0,0,1.02H8.734L6.469,48.592a.53.53,0,0,0,0,.721.465.465,0,0,0,.683,0l3.09-3.263A.53.53,0,0,0,10.241,45.329Z" transform="translate(0 -41.916)" fill="currentColor"/>
+                      </svg>
+                    </span>
+                  </div>
+                </a>
               </div>
-            </a>
-          </div>
+            </div>
+          {% endif %}
+        {% endwith %}
+    </div>
+  </section>
+  <section class="banner__section section--padding pt-0">
+    <div class="container">
+      <div class="row row-cols-lg-2 row-cols-md-2 row-cols-sm-2 row-cols-1 mb--n30">
+        <div class="col mb-30">
+          {% with banner = banners.filter_by(position=2).first() %}
+            {% if banner %}
+              <div class="banner__items position__relative">
+                <a class="banner__items--thumbnail display-block" href="{{ url_for(banner.url) }}">
+                  <img class="banner__items--thumbnail__img banner__img--max__height display-block" alt="banner"
+                    src="{{ url_for('static', filename=banner.image_url) }}">
+                  <div class="banner__items--content">
+                    <h2 class="banner__items--content__title text-white">{{ banner.body }}</h2>
+                    <span class="banner__items--content__btn text-white">{{ banner.button_text }}
+                      <svg class="banner__two--content__btn--arrow__icon" xmlns="http://www.w3.org/2000/svg" width="10.383" height="7.546" viewBox="0 0 10.383 7.546">
+                        <path  data-name="Path 77287" d="M10.241,45.329l-3.09-3.263a.465.465,0,0,0-.683,0,.53.53,0,0,0,0,.721l2.266,2.393H.483a.511.511,0,0,0,0,1.02H8.734L6.469,48.592a.53.53,0,0,0,0,.721.465.465,0,0,0,.683,0l3.09-3.263A.53.53,0,0,0,10.241,45.329Z" transform="translate(0 -41.916)" fill="currentColor"/>
+                      </svg>
+                    </span>
+                  </div>
+                </a>
+              </div>
+            {% endif %}
+          {% endwith %}
         </div>
-      {% endwith %}
-  </div>
-</section>
-<section class="banner__section section--padding pt-0">
-  <div class="container">
-    <div class="row row-cols-lg-2 row-cols-md-2 row-cols-sm-2 row-cols-1 mb--n30">
-      <div class="col mb-30">
-        {% with banner = banners.filter_by(position=2).first() %}
-          <div class="banner__items position__relative">
-            <a class="banner__items--thumbnail display-block" href="{{ url_for(banner.url) }}">
-              <img class="banner__items--thumbnail__img banner__img--max__height display-block" alt="banner"
-                src="{{ url_for('static', filename=banner.image_url) }}">
-              <div class="banner__items--content">
-                <h2 class="banner__items--content__title text-white">{{ banner.body }}</h2>
-                <span class="banner__items--content__btn text-white">{{ banner.button_text }}
-                  <svg class="banner__two--content__btn--arrow__icon" xmlns="http://www.w3.org/2000/svg" width="10.383" height="7.546" viewBox="0 0 10.383 7.546">
-                    <path  data-name="Path 77287" d="M10.241,45.329l-3.09-3.263a.465.465,0,0,0-.683,0,.53.53,0,0,0,0,.721l2.266,2.393H.483a.511.511,0,0,0,0,1.02H8.734L6.469,48.592a.53.53,0,0,0,0,.721.465.465,0,0,0,.683,0l3.09-3.263A.53.53,0,0,0,10.241,45.329Z" transform="translate(0 -41.916)" fill="currentColor"/>
-                  </svg>
-                </span>
+        <div class="col mb-30">
+          {% with banner = banners.filter_by(position=3).first() %}
+            {% if banner %}
+              <div class="banner__items position__relative">
+                <a class="banner__items--thumbnail display-block" href="{{ url_for(banner.url) }}">
+                  <img class="banner__items--thumbnail__img banner__img--max__height display-block" alt="banner"
+                    src="{{ url_for('static', filename=banner.image_url) }}">
+                  <div class="banner__items--content">
+                    <h2 class="banner__items--content__title text-white">{{ banner.body }}</h2>
+                    <span class="banner__items--content__btn text-white">{{ banner.button_text }}
+                      <svg class="banner__two--content__btn--arrow__icon" xmlns="http://www.w3.org/2000/svg" width="10.383" height="7.546" viewBox="0 0 10.383 7.546">
+                        <path  data-name="Path 77287" d="M10.241,45.329l-3.09-3.263a.465.465,0,0,0-.683,0,.53.53,0,0,0,0,.721l2.266,2.393H.483a.511.511,0,0,0,0,1.02H8.734L6.469,48.592a.53.53,0,0,0,0,.721.465.465,0,0,0,.683,0l3.09-3.263A.53.53,0,0,0,10.241,45.329Z" transform="translate(0 -41.916)" fill="currentColor"/>
+                      </svg>
+                    </span>
+                  </div>
+                </a>
               </div>
-            </a>
-          </div>
-        {% endwith %}
-      </div>
-      <div class="col mb-30">
-        {% with banner = banners.filter_by(position=3).first() %}
-          <div class="banner__items position__relative">
-            <a class="banner__items--thumbnail display-block" href="{{ url_for(banner.url) }}">
-              <img class="banner__items--thumbnail__img banner__img--max__height display-block" alt="banner"
-                src="{{ url_for('static', filename=banner.image_url) }}">
-              <div class="banner__items--content">
-                <h2 class="banner__items--content__title text-white">{{ banner.body }}</h2>
-                <span class="banner__items--content__btn text-white">{{ banner.button_text }}
-                  <svg class="banner__two--content__btn--arrow__icon" xmlns="http://www.w3.org/2000/svg" width="10.383" height="7.546" viewBox="0 0 10.383 7.546">
-                    <path  data-name="Path 77287" d="M10.241,45.329l-3.09-3.263a.465.465,0,0,0-.683,0,.53.53,0,0,0,0,.721l2.266,2.393H.483a.511.511,0,0,0,0,1.02H8.734L6.469,48.592a.53.53,0,0,0,0,.721.465.465,0,0,0,.683,0l3.09-3.263A.53.53,0,0,0,10.241,45.329Z" transform="translate(0 -41.916)" fill="currentColor"/>
-                  </svg>
-                </span>
-              </div>
-            </a>
-          </div>
-        {% endwith %}
+            {% endif %}
+          {% endwith %}
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+{% endif %}
