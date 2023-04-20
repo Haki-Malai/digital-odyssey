@@ -53,7 +53,7 @@ def test(coverage: bool, dirname: str) -> None:
     args = [dirname]
     if coverage:
         args.append('--cov=.')
-        args.append('--cov-report=html')
+        args.append('--cov-report=xml')
 
     pytest.main(args)
     os.remove(config['testing'].SQLALCHEMY_DATABASE_URI.replace(

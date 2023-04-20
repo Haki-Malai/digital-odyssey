@@ -1,0 +1,21 @@
+name: Codacy Coverage
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  codacy-coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Generate coverage report
+        run: flask test -c
+      - name: Upload coverage report to Codacy
+        uses: codacy/coverage-action@v1
+        with:
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          coverage-report: coverage.xml
