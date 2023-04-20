@@ -1,5 +1,7 @@
 # Digital Odyssey
 
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/d1a324ba3048458ca9b6270b6de5929e)](https://app.codacy.com/gh/Haki-Malai/digital-odyssey/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+
 Digital Odyssey is an ecommerce web application built using Python Flask framework. The application provides features such as browsing products, adding them to cart, and making orders. The application also uses Elasticsearch for search functionality. There is also a custom CMS provided which is accessible on the /admin page. In this README, we will provide detailed instructions on how to install and run Digital Odyssey. 
 
 ## Prerequisites
