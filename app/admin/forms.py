@@ -33,6 +33,5 @@ class ColorForm(FlaskForm):
     theme_color = StringField(validators=[validate_color])
     theme_color_2 = StringField(validators=[validate_color])
     theme_color_3 = StringField(validators=[validate_color])
-    theme_color_4 = StringField(validators=[validate_color])
     white_color = StringField(validators=[validate_color])
     yellow_color = StringField(validators=[validate_color])

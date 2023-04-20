@@ -21,7 +21,6 @@
         --theme-color: {{ g.config['THEME_COLOR'] }};
         --theme-color_2: {{ g.config['THEME_COLOR_2'] }};
         --theme-color_3: {{ g.config['THEME_COLOR_3'] }};
-        --theme-color_4: {{ g.config['THEME_COLOR_4'] }};
         --yellow-color: {{ g.config['YELLOW_COLOR'] }};
         --light-color: {{ g.config['LIGHT_COLOR'] }};
         --light-color_2: {{ g.config['LIGHT_COLOR_2'] }};
@@ -47,7 +46,7 @@
         --container-fluid-offset: {{ g.config['CONTAINER_FLUID_OFFSET'] }};
       }
     </style>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="{{ url_for('static', filename='css/style.scss.css') }}" rel="stylesheet" type="text/css">
   </head>
 
   <body style="align-items: center;">

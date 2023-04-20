@@ -18,11 +18,12 @@
         </label>
         <div class="account__login--remember__forgot mb-15 d-flex justify-content-between align-items-center">
           <div class="account__login--remember position__relative">
-            {{ login_form.remember_me(class_="checkout__checkbox--input", id="check1") }}
-            <span class="checkout__checkbox--checkmark"></span>
-            <label class="checkout__checkbox--label login__remember--label" for="check1">
-              {{ login_form.remember_me.label }}
-            </label>
+            {{ login_form.remember_me(class_="checkout__checkbox--input", id="remember") }}
+            <span class="checkout__checkbox--checkmark">
+              <label class="checkout__checkbox--label login__remember--label" for="remember">
+                {{ login_form.remember_me.label }}
+              </label>
+            </span>
           </div>
           <a href="{{ url_for('auth.reset_password_request') }}" class="account__login--forgot">
             Forgot Your Password?
