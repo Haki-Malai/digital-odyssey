@@ -1,4 +1,4 @@
-name: pytest
+name: Python Tests (PyTest)
 
 on: [push, pull_request]
 
