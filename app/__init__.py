@@ -1,13 +1,16 @@
+import os
+import rq
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_mail import Mail
-from apifairy import APIFairy
 from flask_marshmallow import Marshmallow
+from sassutils.wsgi import SassMiddleware
+from apifairy import APIFairy
 from elasticsearch import Elasticsearch
 from redis import Redis
-import rq
+
 from config import config
 
 db = SQLAlchemy()
@@ -30,10 +33,12 @@ def create_app(config_name:str = 'default'):
     app.config_obj = config[config_name]
     app.config.from_object(app.config_obj)
 
-    # Disable trailing slash
     app.url_map.strict_slashes:bool = False
 
-    # Initialize extensions
+    app.wsgi_app = SassMiddleware(app.wsgi_app, {
+        'app': ('static/sass', 'static/css', '/static/css')
+    })
+
     db.init_app(app)
     mg.init_app(app, db)
     login.init_app(app)
@@ -45,7 +50,6 @@ def create_app(config_name:str = 'default'):
     app.redis = Redis.from_url(app.config['REDIS_URL'])
     app.task_queue = rq.Queue('app-tasks', connection=app.redis)
 
-    # Register blueprints
     from app.cli import bp as cli_bp
     app.register_blueprint(cli_bp)
     from app.main import bp as main_bp
@@ -72,7 +76,6 @@ def create_app(config_name:str = 'default'):
                 ctx[attr] = model
         return ctx
 
-    # Create database tables for our data models
     with app.app_context():
         db.create_all()
 
