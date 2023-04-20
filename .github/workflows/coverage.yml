@@ -15,7 +15,6 @@ jobs:
       - name: Generate coverage report
         run: flask test -c
       - name: Upload coverage report to Codacy
-        uses: codacy/coverage-action@v1
-        with:
-          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-          coverage-report: coverage.xml
+        env:
+          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
+        run: bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r coverage.xm
