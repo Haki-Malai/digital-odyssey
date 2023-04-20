@@ -1,7 +1,7 @@
 # Digital Odyssey
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/d1a324ba3048458ca9b6270b6de5929e)](https://app.codacy.com/gh/Haki-Malai/digital-odyssey/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
-![Codacy coverage](https://img.shields.io/codacy/coverage/d1a324ba3048458ca9b6270b6de5929e)
+[![Codacy Badge](https://app.codacy.com/project/badge/Coverage/d1a324ba3048458ca9b6270b6de5929e)](https://app.codacy.com/gh/Haki-Malai/digital-odyssey/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_coverage)
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/Haki-Malai/digital-odyssey/pytest.yml?label=pytest)
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/Haki-Malai/digital-odyssey/docker.yml?label=docker)
 

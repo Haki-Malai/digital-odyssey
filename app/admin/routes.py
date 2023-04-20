@@ -9,6 +9,8 @@ from app.models import Category
 from app.decorators import admin_required
 from app.admin.forms import ColorForm
 
+MAIN_ROUTE: str = 'admin.main'
+
 
 def allowed_file(filename: str) -> bool:
     """Check if the file is allowed to be uploaded.
@@ -29,7 +31,7 @@ def before_request() -> None:
 def index() -> str:
     """Redirect to the admin dashboard.
     """
-    return redirect(url_for('admin.main', screen='dashboard'))
+    return redirect(url_for(MAIN_ROUTE, screen='dashboard'))
 
 
 @bp.route('/admin/<screen>')
@@ -64,15 +66,15 @@ def upload_logo() -> str:
     """
     if 'logo' not in request.files:
         flash('No file part', 'warning')
-        return redirect(url_for('admin.main', screen='design'))
+        return redirect(url_for(MAIN_ROUTE, screen='design'))
     logo = request.files['logo']
     if logo.filename == '':
         flash('No selected file', 'warning')
-        return redirect(url_for('admin.main', screen='design'))
+        return redirect(url_for(MAIN_ROUTE, screen='design'))
     if logo and allowed_file(logo.filename):
         filename = 'general/logo.png'
         logo.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
-        return redirect(url_for('admin.main', screen='design'))
+        return redirect(url_for(MAIN_ROUTE, screen='design'))
 
 
 @bp.route('/admin/colors', methods=['POST'])
@@ -92,4 +94,4 @@ def colors() -> str:
         for field, errors in form.errors.items():
             for error in errors:
                 flash(f'{field.title()} field {error}', 'error')
-    return redirect(url_for('admin.main', screen='design'))
+    return redirect(url_for(MAIN_ROUTE, screen='design'))
