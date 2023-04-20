@@ -38,9 +38,9 @@ def fake() -> None:
 @bp.cli.command('test')
 @click.option('-c', '--coverage', is_flag=True, default=False,
               help='Run tests under code coverage.')
-@click.option('-d', '--dir', default='tests',
+@click.option('-d', '--dirname', default='tests',
               help='Directory to run tests from.')
-def test(coverage: bool, dir: str) -> None:
+def test(coverage: bool, dirname: str) -> None:
     """Run tests.
     :param coverage: Run tests with coverage.
     :param dir: Directory to run tests from.
@@ -50,7 +50,7 @@ def test(coverage: bool, dir: str) -> None:
 
     from config import config
 
-    args = [dir]
+    args = [dirname]
     if coverage:
         args.append('--cov=.')
         args.append('--cov-report=html')

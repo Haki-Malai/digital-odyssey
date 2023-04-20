@@ -4,6 +4,15 @@ from wtforms import StringField, SubmitField
 from wtforms.validators import ValidationError
 
 
+def validate_color(form:FlaskForm, field:object):
+    """Validate color format.
+    :param form: The form to validate.
+    :param field: The field to validate.
+    """
+    if field.data and not re.match(r'^#[0-9A-Fa-f]{6}$', field.data):
+        raise ValidationError('Invalid color format. Must be in the form #123123')
+
+
 class ColorForm(FlaskForm):
     """Color form.
     """
@@ -27,7 +36,3 @@ class ColorForm(FlaskForm):
     theme_color_4 = StringField(validators=[validate_color])
     white_color = StringField(validators=[validate_color])
     yellow_color = StringField(validators=[validate_color])
-    
-    def validate_color(form, field):
-        if field.data and not re.match(r'^#[0-9A-Fa-f]{6}$', field.data):
-            raise ValidationError('Invalid color format. Must be in the form #123123')
