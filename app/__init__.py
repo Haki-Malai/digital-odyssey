@@ -31,6 +31,7 @@ def create_app(config_name:str = 'default'):
     """
     app = Flask(__name__)
     app.config_obj = config[config_name]
+    app.config_obj.__init__()
     app.config.from_object(app.config_obj)
 
     app.url_map.strict_slashes:bool = False

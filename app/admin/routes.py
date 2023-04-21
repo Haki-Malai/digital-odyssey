@@ -7,7 +7,7 @@ from app import update_config
 from app.admin import bp
 from app.models import Category
 from app.decorators import admin_required
-from app.admin.forms import ColorForm
+from app.admin.forms import ColorForm, GeneralForm
 
 MAIN_ROUTE: str = 'admin.main'
 
@@ -51,9 +51,11 @@ def main(screen) -> str:
 def design() -> str:
     """Design page.
     """
-    form = ColorForm()
+    color_form = ColorForm()
+    general_form = GeneralForm()
     return render_template('admin/design.html',
-                           colors_form=form,
+                           colors_form=color_form,
+                           general_form=general_form,
                            screen='design',
                            categories=Category.query.all())
 
@@ -83,15 +85,35 @@ def upload_logo() -> str:
 def colors() -> str:
     """Update the colors.
     """
-    form = ColorForm()
-    if form.validate_on_submit():
-        for key, value in form.data.items():
+    color_form = ColorForm()
+    if color_form.validate_on_submit():
+        for key, value in color_form.data.items():
             if 'color' in key.lower() and value:
                 current_app.config_obj.update_config(key, value)
                 update_config(current_app, 'default')
         flash('Colors updated successfully!', 'success')
     else:
-        for field, errors in form.errors.items():
+        for field, errors in color_form.errors.items():
+            for error in errors:
+                flash(f'{field.title()} field {error}', 'error')
+    return redirect(url_for(MAIN_ROUTE, screen='design'))
+
+
+@bp.route('/admin/general', methods=['POST'])
+@login_required
+@admin_required
+def general() -> str:
+    """Update the general settings.
+    """
+    general_form = GeneralForm()
+    if general_form.validate_on_submit():
+        for key, value in general_form.data.items():
+            if key in general_form.items and value:
+                current_app.config_obj.update_config(key, value)
+                update_config(current_app, 'default')
+        flash('General settings updated successfully!', 'success')
+    else:
+        for field, errors in general_form.errors.items():
             for error in errors:
                 flash(f'{field.title()} field {error}', 'error')
     return redirect(url_for(MAIN_ROUTE, screen='design'))

@@ -1,5 +1,6 @@
 .hero__slider--section {
   margin-top: 3em;
+  margin-bottom: 3em;
 }
 
 .hero__slider--items {
@@ -8,83 +9,83 @@
   align-items: center;
   height: 570px;
   @media only screen and (min-width: 380px) {
-  height: 600px;
+    height: 600px;
   }
   @media only screen and (min-width: 576px) {
-  height: 645px;
+    height: 645px;
   }
   @media only screen and (min-width: 768px) {
-  height: 380px;
+    height: 380px;
   }
   @media only screen and (min-width: 992px) {
-  height: 450px;
+    height: 450px;
   }
   @media only screen and (min-width: 1200px) {
-   height: 470px;
+    height: 470px;
   }
   @media only screen and (min-width: 1600px) {
-   height: 680px;
+    height: 680px;
   }
   &__inner{
 
-  & .row{
-    @media only screen and (max-width: 767px) {
-    flex-direction: column-reverse;
+    & .row{
+      @media only screen and (max-width: 767px) {
+        flex-direction: column-reverse;
+      }
     }
-  }
   }
 }
 
 .slider__items--container{
   @media only screen and (min-width: 1600px) {
-  max-width: 1600px;
+    max-width: 1600px;
   }
 }
 
 .hero__slider--layer{
   text-align: right;
   @media only screen and (max-width: 767px) {
-  margin-bottom: 20px;
+    margin-bottom: 20px;
   }
 }
 
 .slider__layer--img {
   @media only screen and (min-width: 1200px) {
-  max-width: 500px;
-  margin: 0 auto;
+    max-width: 500px;
+    margin: 0 auto;
   }
   @media only screen and (min-width: 1366px) {
-  max-width: 520px;
+    max-width: 520px;
   }
   @media only screen and (min-width: 1600px) {
-  max-width: 600px;
+    max-width: 600px;
   }
   @media only screen and (min-width: 1800px) {
-  max-width: 700px;
+    max-width: 700px;
   }
   @media only screen and (max-width: 767px) {
-  max-width: 400px;
-  margin: 0 auto;
+    max-width: 400px;
+    margin: 0 auto;
   }
   @media only screen and (max-width: 479px) {
-  max-width: 100%;
-  padding: 0 30px;
+    max-width: 100%;
+    padding: 0 30px;
   }
   @media only screen and (max-width: 379px) {
-  padding: 0 15px;
+    padding: 0 15px;
   }
 }
 
 .slider__content{
   @media only screen and (max-width: 767px) {
-  text-align: center;
+    text-align: center;
   }
   &--padding__left{
   @media only screen and (min-width: 1600px) {
     padding-left: 200px;
   }
-  }
-  &--subtitle{
+}
+&--subtitle{
   font-size: 1.8rem;
   line-height: 2.4rem;
   margin-bottom: 10px;
@@ -103,8 +104,8 @@
     line-height: 2.8rem;
     margin-bottom: 15px;
   }
-  }
-  &--maintitle{
+}
+&--maintitle{
   margin-bottom: 1.4rem;
   @media only screen and (min-width: 768px) {
     margin-bottom: 15px;
@@ -115,8 +116,8 @@
   @media only screen and (min-width: 1600px) {
     margin-bottom: 2.2rem;
   }
-  }
-  &--desc{
+}
+&--desc{
   margin-bottom: 18px;
   @media only screen and (min-width: 768px) {
     margin-bottom: 18px;
@@ -136,7 +137,7 @@
     line-height: 3.3rem;
     margin-bottom: 40px;
   }
-  }
+}
 }
 
 .swiper-slide-active .slider__content > * {
@@ -150,28 +151,28 @@
 
 .swiper-slide-active{
   & .slider__content--subtitle{
-  -webkit-animation-delay: 1.1s;
+    -webkit-animation-delay: 1.1s;
 	  animation-delay: 1.1s;
   }
   & .slider__content--maintitle{
-  -webkit-animation-delay: 0.6s;
+    -webkit-animation-delay: 0.6s;
 	  animation-delay: 0.6s;
   }
   & .slider__content--desc{
-  -webkit-animation-delay: 0.4s;
+    -webkit-animation-delay: 0.4s;
 	  animation-delay: 0.4s;
   }
   & .slider__btn{
-  -webkit-animation-delay: 0.2s;
+    -webkit-animation-delay: 0.2s;
 	  animation-delay: 0.2s;
   }
   & .slider__layer--img{
-  transform: scale(1);
-  -webkit-transform: scale(1);
-  -moz-transform: scale(1);
-  -ms-transform: scale(1);
-  -o-transform: scale(1);
-  transition: 1.4s;
+    transform: scale(1);
+    -webkit-transform: scale(1);
+    -moz-transform: scale(1);
+    -ms-transform: scale(1);
+    -o-transform: scale(1);
+    transition: 1.4s;
   }
 }
 
@@ -179,45 +180,45 @@
   padding: 0 23px;
   font-size: 15px;
   @media only screen and (min-width: 768px) {
-  padding: 0 28px;
+    padding: 0 28px;
   }
   @media only screen and (min-width: 992px) {
-  padding: 0 30px;
+    padding: 0 30px;
   }
   @media only screen and (min-width: 1200px) {
-  padding: 0 35px;
+    padding: 0 35px;
   }
   &.style4{
-  &:hover{
-    background: var(--black-color);
-    color: var(--white-color);
-  }
+    &:hover{
+      background: var(--black-color);
+      color: var(--white-color);
+    }
   }
 }
 
 .slider__pagination{
   bottom: 20px !important;
   @media only screen and (min-width: 768px) {
-  bottom: 20px !important;
+    bottom: 20px !important;
   }
   @media only screen and (min-width: 1600px) {
-  bottom: 40px !important;
+    bottom: 40px !important;
   }
   & .swiper-pagination-bullet{
-  width: 2.5rem;
-  height: 7px;
-  background: var(--theme-color);
-  opacity: 1;
-  border-radius: 2px;
-  &.swiper-pagination-bullet-active{
+    width: 2.5rem;
+    height: 7px;
+    background: var(--theme-color);
+    opacity: 1;
+    border-radius: 2px;
+    &.swiper-pagination-bullet-active{
     background: var(--secondary-color);
   }
-  }
+}
 }
 
 .hero__slider--navigation{
   &::after{
-  display: none;
+    display: none;
   }
   right: 65px;
   bottom: 15px;
@@ -232,35 +233,35 @@
   color: var(--black-color);
   transition: .3s;
   &:hover{
-  background: var(--theme-color);
-  color: var(--white-color);
+    background: var(--theme-color);
+    color: var(--white-color);
   }
   & svg{
-  @media only screen and (max-width: 991px) {
-    width: 10px;
-  }
+    @media only screen and (max-width: 991px) {
+      width: 10px;
+    }
   }
   &.swiper-button-next{
-  right: 20px;
-  @media only screen and (min-width: 768px) {
     right: 20px;
-  }
-  @media only screen and (min-width: 992px) {
-    right: 30px;
-  }
+    @media only screen and (min-width: 768px) {
+      right: 20px;
+    }
+    @media only screen and (min-width: 992px) {
+      right: 30px;
+    }
   }
   @media only screen and (min-width: 768px) {
-  right: 68px;
-  bottom: 17px;
-  width: 3.8rem;
-  height: 3.8rem;
-  line-height: 3.8rem;
+    right: 68px;
+    bottom: 17px;
+    width: 3.8rem;
+    height: 3.8rem;
+    line-height: 3.8rem;
   }
   @media only screen and (min-width: 992px) {
-  right: 85px;
-  bottom: 30px;
-  width: 4.5rem;
-  height: 4.5rem;
-  line-height: 4.5rem;
+    right: 85px;
+    bottom: 30px;
+    width: 4.5rem;
+    height: 4.5rem;
+    line-height: 4.5rem;
   }
 }
