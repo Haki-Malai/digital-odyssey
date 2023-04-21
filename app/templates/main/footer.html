@@ -1,0 +1,118 @@
+<footer class="footer__section footer__style bg__black">
+  <div class="container">
+    <div class="footer__top footer__section--topbar">
+      <div class="row main__footer--wrapper footer__top--row">
+        <div class="col-lg-3 footer__col--width col-md-7 footer__col--padding footer__col--order">
+          <div class="footer__widget">
+            <div class="footer__widget--inner">
+              <a class="footer__widget--logo" href="{{ url_for('main.index') }}" alt="footer-logo">
+                <img src="{{ url_for('static', filename='uploads/general/logo.png') }}" alt="Logo">
+              </a>
+              <p class="footer__widget--desc text-white m-0">
+                {{ config.FOOTER_DESC }}
+              </p>
+              <ul class="footer__widget--social d-flex">
+                {% for key in config.SOCIALS %}
+                  <li class="footer__widget--social__list">
+                    <a class="footer__widget--social__icon" target="_blank" href="{{ config.SOCIALS[key] }}">
+                      <i class="bi-{{ key.lower() }}"></i>
+                      <span class="visually-hidden">{{ key }}</span>
+                    </a>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-2 footer__col--width col-md-4 footer__col--padding">
+          <div class="footer__widget">
+            <h3 class="footer__widget--title text-white">Information</h3>
+            <ul class="footer__widget--menu footer__widget--inner">
+              {% for key in config.FOOTER_LINKS %}
+                <li class="footer__widget--menu__list">
+                  <a class="footer__widget--menu__text text-white" href="{{ config.FOOTER_LINKS[key] }}">
+                    {{ key }}
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-2 footer__col--width col-md-4 footer__col--padding">
+          <div class="footer__widget">
+            <h3 class="footer__widget--title text-white">Categories</h3>
+            <ul class="footer__widget--menu footer__widget--inner">
+              {% for category in categories.all() %}
+                <li class="footer__widget--menu__list">
+                  <a class="footer__widget--menu__text text-white" href="{{ category.url }}">
+                    {{ category.name }}
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-2 footer__col--width col-md-4 footer__col--padding">
+          <div class="footer__widget">
+            <h3 class="footer__widget--title text-white">My Account</h3>
+            <ul class="footer__widget--menu footer__widget--inner">
+              {% if current_user.is_authenticated %}
+                {% for key in config.FOOTER_ACC_LINKS %}
+                  <li class="footer__widget--menu__list">
+                    <a class="footer__widget--menu__text text-white" href="{{ url_for(config.FOOTER_ACC_LINKS[key]) }}">
+                      {{ key }}
+                    </a>
+                  </li>
+                {% endfor %}
+              {% else %}
+                <li class="footer__widget--menu__list">
+                  <a class="footer__widget--menu__text text-white" href="login.html">
+                    Login
+                  </a>
+                </li>
+                <li class="footer__widget--menu__list">
+                  <a class="footer__widget--menu__text text-white" href="login.html">
+                    Register
+                  </a>
+                </li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-5 footer__col--padding footer__col--order">
+          <div class="footer__widget">
+            <h3 class="footer__widget--title text-white">{{ config.NEWSLETTER.title }}</h3>
+            <div class="footer__widget--inner">
+              <p class="footer__widget--desc text-white m-0">
+                {{ config.NEWSLETTER.description }}
+              </p>
+              <div class="newsletter__subscribe">
+                <form class="newsletter__subscribe--form" action="#">
+                  <label>
+                    <input class="newsletter__subscribe--input text-white" placeholder="Email" type="text">
+                  </label>
+                  <button class="newsletter__subscribe--button" type="submit">subscribe</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <div class="row justify-content-between align-items-center">
+        <div class="col-12 col-md-auto">
+          <p class="copyright__content text-white">
+            Developed and Maintained By <a class="copyright__content--link text__primary" href="https://hakimalai.com">
+              Haki Malai
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<button id="scroll__top">
+  <i class="bi bi-arrow-up" style="font-size: 2rem;"></i>
+</button>

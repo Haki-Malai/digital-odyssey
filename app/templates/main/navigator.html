@@ -361,12 +361,12 @@
       <button class="offcanvas__close--btn" data-offcanvas></button>
       <div class="offcanvas__logo">
         <a class="offcanvas__logo_link" href="{{ url_for('main.index') }}">
-          <img src="{{ url_for('static', filename='uploads/general/logo.png') }}" alt="Grocee Logo">
+          <img src="{{ url_for('static', filename='uploads/general/logo.png') }}" alt="Logo">
         </a>
       </div>
       <nav class="offcanvas__menu" aria-label>
         <ul class="offcanvas__menu_ul">
-          {% for key, value in g.config['NAVIGATION'].items() %}
+          {% for key, value in g.config.NAVIGATION.items() %}
             {% if value is mapping %}
               <li class="offcanvas__menu_li">
                 <a class="offcanvas__menu_item">{{ key }}</a>
