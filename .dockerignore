@@ -10,6 +10,9 @@ README.md
 .gitignore
 SECURITY.md
 
+*.map
+*.css
+
 # Development
 .history
 *.sqlite*
