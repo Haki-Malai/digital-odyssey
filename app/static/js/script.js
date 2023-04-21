@@ -27,7 +27,6 @@ var slideUp = (target, time) => {
   const duration = time ? time : 500;
   target.style.transitionProperty = "height, margin, padding";
   target.style.transitionDuration = duration + "ms";
-  target.style.boxSizing = "border-box";
   target.style.height = target.offsetHeight + "px";
   target.offsetHeight;
   target.style.overflow = "hidden";
@@ -51,8 +50,6 @@ var slideDown = (target, time) => {
   const height = target.offsetHeight;
   target.style.overflow = "hidden";
   target.style.height = 0;
-  target.offsetHeight;
-  target.style.boxSizing = "border-box";
   target.style.transitionProperty = "height, margin, padding";
   target.style.transitionDuration = duration + "ms";
   target.style.height = height + "px";

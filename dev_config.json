@@ -1,5 +1,13 @@
 {
     "TITLE": "Flask Boilerplate",
+    "SOCIALS": {
+        "Facebook": "https://www.facebook.com/",
+        "Twitter": "https://twitter.com/",
+        "Instagram": "https://www.instagram.com/",
+        "Pinterest": "https://www.pinterest.com/",
+        "Linkedin": "https://www.linkedin.com/",
+        "Youtube": "https://www.youtube.com/"
+    },
     "NAVIGATION": {
         "Home": "main.index",
         "Shop": "main.index",
@@ -12,6 +20,25 @@
             "Subpage5": "main.index"
         },
         "Contact": "main.index"
+    },
+    "FOOTER_DESC": "Our mission is to make your online shopping experience easy, convenient, and enjoyable. We offer a wide selection of products at competitive prices and ship worldwide. If you have any questions or concerns, please don't hesitate to contact us. Your satisfaction is our top priority.",
+    "FOOTER_LINKS": {
+        "About Us": "main.index",
+        "Contact Us": "main.index",
+        "Privacy Policy": "main.index",
+        "Terms & Conditions": "main.index",
+        "FAQ": "main.index"
+    },
+    "FOOTER_ACC_LINKS": {
+        "My Account": "main.index",
+        "Shopping Cart": "main.index",
+        "Checkout": "main.index",
+        "Compare": "main.index",
+        "Logout": "auth.logout"
+    },
+    "NEWSLETTER": {
+        "title": "Newsletter",
+        "description": "Subscribe to our newsletter and get 10% off your first purchase"
     },
     "ADMIN_NAVIGATION": {
         "Dashboard": "admin.main",
@@ -32,7 +59,7 @@
         "jpeg",
         "gif"
     ],
-    "ELASTICSEARCH_URL": "http://localhost:9200",
+    "ELASTICSEARCH_URL": "",
     "REDIS_URL": "redis://",
     "ITEMS_PER_PAGE": 10,
     "APIFAIRY_TITLE": "Flask Boilerplate",
@@ -56,7 +83,7 @@
     "BORDER_COLOR": "#AEAEBF",
     "BORDER_COLOR_2": "#E4E4E4",
     "BORDER_DARK": "#383434",
-    "BG_GRAY_COLOR": "#F7F8FB",
+    "BG_GRAY_COLOR": "#F7F8FC",
     "GRAY_COLOR": "#FAFBFE",
     "GRAY_COLOR_2": "#F5F5F5",
     "TEXT_GRAY_COLOR": "#555",
