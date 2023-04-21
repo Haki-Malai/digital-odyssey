@@ -7,6 +7,52 @@
 
 Digital Odyssey is an ecommerce web application built using Python Flask framework. The application provides features such as browsing products, adding them to cart, and making orders. The application also uses Elasticsearch for search functionality. There is also a custom CMS provided which is accessible on the /admin page. In this README, we will provide detailed instructions on how to install and run Digital Odyssey. 
 
+## Features
+
+### User
+
+  - [x] Authentication and authorization
+  - [x] Responsive navigation bar
+  - [x] Sliders section
+  - [x] Featured products section
+  - [x] Footer
+  - [x] Cart functionality
+  - [x] Search functionality
+  - [ ] Wishlist functionality
+  - [ ] Products pages
+  - [ ] Checkout functionality
+  - [ ] Orders functionality
+  - [ ] Payments functionality
+  - [ ] Contact us page & more
+
+### Admin
+
+  - [x] Authentication and authorization
+  - [x] Responsive navigation bar
+  - [x] Edit eshop CSS colors
+  - [x] Edit eshop logo
+  - [x] Edit eshop general data
+  - [ ] Edit eshop categories
+  - [ ] Edit eshop products
+  - [ ] Edit sliders
+  - [ ] Create sales
+  - [ ] Handle payments and orders
+  - [ ] Download config JSON file
+  - [ ] Upload config JSON file
+  - [ ] & more
+
+
+### Development
+
+  - [x] Custom CLI commands
+  - [x] SASS compilation
+  - [x] Dockerization
+  - [x] Testing with pytest
+  - [x] Continuous integration with GitHub Actions
+  - [x] Code quality checks with Codacy
+  - [ ] Dockerized development environment
+  - [ ] & more
+
 ## Prerequisites
 Before installing and running Digital Odyssey, you need to have the following prerequisites:
   - Python 3.7 or higher
