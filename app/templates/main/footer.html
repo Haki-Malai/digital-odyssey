@@ -30,7 +30,7 @@
             <ul class="footer__widget--menu footer__widget--inner">
               {% for key in config.FOOTER_LINKS %}
                 <li class="footer__widget--menu__list">
-                  <a class="footer__widget--menu__text text-white" href="{{ config.FOOTER_LINKS[key] }}">
+                  <a class="footer__widget--menu__text text-white" href="{{ url_for(config.FOOTER_LINKS[key]) }}">
                     {{ key }}
                   </a>
                 </li>
@@ -44,7 +44,7 @@
             <ul class="footer__widget--menu footer__widget--inner">
               {% for category in categories.all() %}
                 <li class="footer__widget--menu__list">
-                  <a class="footer__widget--menu__text text-white" href="{{ category.url }}">
+                  <a class="footer__widget--menu__text text-white" href="{{ url_for('main.category', category_id=category.id) }}">
                     {{ category.name }}
                   </a>
                 </li>
