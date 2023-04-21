@@ -24,3 +24,13 @@ class ColorForm(FlaskForm):
     theme_color_3 = StringField()
     white_color = StringField()
     yellow_color = StringField()
+
+
+class GeneralForm(FlaskForm):
+    """General form.
+    """
+    items = ['title', 'footer_desc']
+
+    submit = SubmitField()
+    title = StringField()
+    footer_desc = StringField()
