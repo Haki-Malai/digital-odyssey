@@ -1,0 +1,35 @@
+name: Deploy to SSH Server
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Compose
+        uses: docker/compose-cli@v1.0.17
+        with:
+          compose-version: 2.0.0
+
+      - name: Build and push Docker images
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: user/repo:${{ github.sha }}
+
+      - name: Deploy to SSH Server
+        uses: appleboy/ssh-action@master
+        with:
+          host: example.com
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            docker-compose -f /path/to/docker-compose.yml up -d

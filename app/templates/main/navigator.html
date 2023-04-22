@@ -59,7 +59,7 @@
               {% for key, value in g.config.NAVIGATION.items() %}
                 {% if value is not mapping %}
                   <li class="header__menu--items">
-                    <a class="header__menu--link" href="{{ url_for(valuere) }}">
+                    <a class="header__menu--link" href="{{ url_for(value) }}">
                       {{ key }}
                     </a>
                   </li>
