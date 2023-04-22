@@ -59,7 +59,7 @@
               {% for key, value in g.config.NAVIGATION.items() %}
                 {% if value is not mapping %}
                   <li class="header__menu--items">
-                    <a class="header__menu--link" href="{{ value }}">
+                    <a class="header__menu--link" href="{{ url_for(valuere) }}">
                       {{ key }}
                     </a>
                   </li>
@@ -187,7 +187,11 @@
                           {% if subcategory.products %}
                             {% for product in subcategory.products %}
                               <ul class="categories__submenu--child">
-                                <li class="categories__submenu--child__items"><a class="categories__submenu--child__items--link" href="{{ url_for('main.product', product_id=product.id) }}">{{ product.name }}</a></li>
+                                <li class="categories__submenu--child__items">
+                                  <a class="categories__submenu--child__items--link" href="{{ url_for('main.product', product_id=product.id) }}">
+                                    {{ product.name }}
+                                  </a>
+                                </li>
                               </ul>
                             {% endfor %}
                           {% endif %}
@@ -250,7 +254,11 @@
                       </a>
                       <ul class="header__sub--menu">
                         {% for subkey, subvalue in value.items() %}
-                          <li class="header__sub--menu__items"><a href="{{ url_for(subvalue) }}" class="header__sub--menu__link">{{ subkey }}</a></li>
+                          <li class="header__sub--menu__items">
+                            <a href="{{ url_for(subvalue) }}" class="header__sub--menu__link">
+                              {{ subkey }}
+                            </a>
+                          </li>
                         {% endfor %}
                       </ul>
                     </li>
