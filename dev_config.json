@@ -10,7 +10,7 @@
     },
     "NAVIGATION": {
         "Home": "main.index",
-        "Shop": "main.index",
+        "Shop": "main.products",
         "About": "main.index",
         "Other": {
             "Subpage": "main.index",

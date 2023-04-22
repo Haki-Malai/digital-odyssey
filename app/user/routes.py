@@ -1,11 +1,11 @@
-from flask import g, current_app, flash, redirect, url_for
+from flask import g, current_app, redirect, request
 from flask_login import current_user, login_required
 from apifairy import response
 
 from app import db
 from app.user import bp
 from app.models import Product
-from app.api.schemas import CartSchema, EmptySchema
+from app.api.schemas import CartSchema
 
 cart_schema = CartSchema()
 
@@ -35,14 +35,15 @@ def wishlist() -> dict:
 
 @bp.route('/wishlist/<int:product_id>')
 @login_required
-def wishlist_product(product_id: int) -> dict:
+def add_wishlist(product_id: int) -> str:
     """Add a product to the current user's wishlist.
     :param product_id: the product id
     """
-    product = Product.query.get(product_id)
-    current_user.wishlist.add(product)
-    db.session.commit()
-    return current_user.wishlist.products
+    if Product.query.get(product_id) is not  None:
+        current_user.wishlist.add_product(product_id)
+        db.session.commit()
+
+    return redirect(request.referrer)
 
 
 @bp.route('/cart')
@@ -56,17 +57,16 @@ def cart() -> dict:
 
 @bp.route('/cart/<int:product_id>/<int:quantity>')
 @login_required
-@response(EmptySchema, 200)
-def cart_quantity(product_id: int, quantity:int) -> object:
+def add_cart(product_id: int, quantity:int) -> object:
     """Add or update quantity of product in cart.
     :param product_id: the product id
     :param quantity: the quantity to add
     """
-    if current_user.add_to_cart(product_id, quantity):
-        return {}
+    if Product.query.get(product_id) is not  None:
+        current_user.cart.add_product(product_id, quantity)
+        db.session.commit()
 
-    flash(400, 'There was an error adding the product to the cart')
-    return redirect(url_for('main.index'))
+    return redirect(request.referrer)
 
 
 @bp.route('/checkout')

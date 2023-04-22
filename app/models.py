@@ -310,7 +310,8 @@ class Wishlist(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     user = db.relationship('User', back_populates='wishlist')
-    products = db.relationship('WishlistProduct', back_populates='wishlist')
+    products = db.relationship('WishlistProduct', back_populates='wishlist',
+                               lazy='dynamic')
 
     def __repr__(self) -> str:
         return '<Wishlist %r>' % self.user.username
@@ -319,12 +320,15 @@ class Wishlist(db.Model):
     def quantity(self):
         """Return the number of products in the wishlist.
         """
-        return len(self.products)
+        return self.products.count()
 
     def add_product(self, product_id: int) -> None:
         """Add a product to the wishlist.
         :param product_id: The product id.
         """
+        if self.products.filter_by(product_id=product_id).first():
+            return
+
         wishlist_product = WishlistProduct(wishlist=self,
                                            product_id=product_id)
         db.session.add(wishlist_product)

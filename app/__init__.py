@@ -37,7 +37,12 @@ def create_app(config_name:str = 'default'):
     app.url_map.strict_slashes:bool = False
 
     app.wsgi_app = SassMiddleware(app.wsgi_app, {
-        'app': ('static/sass', 'static/css', '/static/css')
+        'app': {
+            'sass_path': 'static/sass',
+            'css_path': 'static/css',
+            'wsgi_path': '/static/css',
+            'strip_extension': False
+        }
     })
 
     db.init_app(app)

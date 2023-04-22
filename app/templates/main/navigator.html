@@ -37,7 +37,7 @@
               <div class="header__select--categories">
                 <select class="header__select--inner">
                   <option selected="selected">Select Categories</option>
-                  {% for category in categories.all() %}
+                  {% for category in g.categories.all() %}
                     <option value="{{ category.id }}">{{ category.name }}</option>
                   {% endfor %}
                 </select>
@@ -111,7 +111,7 @@
               <li class="header__account--items d-none d-lg-block">
                 <a class="header__account--btn" href="{{ url_for('user.wishlist') }}">
                   <i class="svg__icon bi bi-heart-fill"></i>
-                  <span class="wishlist items__count">{{ current_user.cart.cart_products.all()|length }}</span>
+                  <span class="wishlist items__count">{{ current_user.wishlist.quantity }}</span>
                 </a>
               </li>
             {% else %}
@@ -162,7 +162,7 @@
         <div class="categories__menu">
           <div class="categories__menu--header text-white d-flex align-items-center">
             <i class="categories__list--icon bi bi-list"></i>
-            {% if categories.all() %}
+            {% if g.categories.all() %}
               <span class="categories__menu--title">All Categories</span>
               <i class="categories__arrowdown--icon svg__icon bi bi-chevron-down"></i>
             {% else %}
@@ -172,7 +172,7 @@
           <div class="dropdown__categories--menu">
             <!-- dropdown categories big screen -->
             <ul class="d-none d-lg-block">
-              {% for category in categories.all() %}
+              {% for category in g.categories.all() %}
                 <li class="categories__menu--items">
                   <a class="categories__menu--link" href="{{ url_for('main.category', category_id=category.id) }}">
                     <i class="categories__menu--svgicon bi bi-tag"></i>{{ category.name }}
@@ -205,7 +205,7 @@
             <!-- dropdown categories small screen -->
             <nav class="category__mobile--menu" aria-label>
               <ul class="category__mobile--menu_ul">
-                {% for category in categories.all() %}
+                {% for category in g.categories.all() %}
                   <li class="categories__menu--items">
                     <a class="categories__menu--link" href="{{ url_for('main.category', category_id=category.id) }}">
                       <i class="categories__menu--svgicon bi bi-tag"></i>{{ category.name }}
@@ -268,7 +268,7 @@
                         <i class="menu__arrowdown--icon bi bi-chevron-down"></i>
                       </a>
                       <ul class="header__mega--menu d-flex">
-                        {% for category in categories.all() %}
+                        {% for category in g.categories.all() %}
                           <li class="header__mega--menu__li">
                             <span class="header__mega--subtitle">{{ category.name }}</span>
                             <ul class="header__mega--sub__menu">
@@ -349,7 +349,7 @@
               <li class="offcanvas__menu_li">
                   <a class="offcanvas__menu_item" href="{{ url_for(value) }}">{{ key }}</a>
                   <ul class="offcanvas__sub_menu">
-                    {% for category in categories.all() %}
+                    {% for category in g.categories.all() %}
                       <li class="offcanvas__sub_menu_li">
                         {% if category.subcategories %}
                           <a class="offcanvas__sub_menu_item"
@@ -470,7 +470,7 @@
               <i class="bi bi-heart-fill svg__icon"></i>
             </span>
             <span class="offcanvas__stikcy--toolbar__label">Wishlist</span>
-            <span class="wishlist items__count">{{ current_user.wishlist.products|length }}</span>
+            <span class="wishlist items__count">{{ current_user.wishlist.quantity }}</span>
           </a>
         </li>
       {% else %}
@@ -527,16 +527,16 @@
                 </div>
                 <div class="minicart__text--footer d-flex align-items-center">
                   <div class="quantity__box minicart__quantity">
-                    <button class="quantity__value decrease"
-                      onclick="decreaseQuantity({{ product.id }}, {{ cart_product.quantity }})">-
-                    </button>
+                    <a class="quantity__value decrease"
+                      href="{{ url_for('user.add_cart', product_id=product.id, quantity=cart_product.quantity-1) }}">-
+                    </a>
                       <input readonly class="quantity__number" value="{{ cart_product.quantity }}"/>
-                    <button class="quantity__value increase"
-                      onclick="increaseQuantity({{ product.id }}, {{ cart_product.quantity }})">+
-                    </button>
+                    <a class="quantity__value increase"
+                      href="{{ url_for('user.add_cart', product_id=product.id, quantity=cart_product.quantity+1) }}">+
+                    </a>
                   </div>
-                  <button class="minicart__product--remove remove__button" id="removeButton"
-                    onclick="removeProduct({{ product.id }})">Remove</button>
+                  <a class="minicart__product--remove remove__button" id="removeButton"
+                    href="{{ url_for('user.add_cart', product_id=product.id, quantity=0) }}">Remove</a>
                 </div>
               </div>
             </div>

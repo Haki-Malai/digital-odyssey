@@ -1,3 +1,4 @@
+import math
 from flask import current_app, render_template, request, g, redirect, url_for
 from flask_login import current_user
 
@@ -12,6 +13,7 @@ def before_request() -> None:
     """
     g.search_form = SearchForm()
     g.config = current_app.config
+    g.categories = Category.query
 
 
 @bp.route('/')
@@ -30,7 +32,23 @@ def index() -> str:
 def products() -> str:
     """Get all products.
     """
-    return Product.query.first().name
+    page = request.args.get('page', 1, type=int)
+    
+    products_per_page = 25
+
+    product_query = Product.query
+    products_count = Product.query.count()
+    products = product_query.limit(
+        products_per_page).offset((page - 1) * products_per_page)
+    
+    pages_count = math.ceil(products_count / products_per_page)
+    page = max(min(page, pages_count), 1)
+
+    return render_template('products.html', page=page,
+                           pages_count=pages_count,
+                           products_per_page=products_per_page,
+                           products_count=products_count,
+                           products=products)
 
 
 @bp.route('/product/<int:product_id>')

@@ -569,30 +569,6 @@ offcanvsSidebar(
   ".offcanvas__filter--sidebar"
 );
 
-const updateQuantity = async (productId, quantity=1) => {
-  const response = await fetch(`/cart/${productId}/${quantity}`);
-  if (await response.ok) {
-    window.location.reload();
-  }
-}
-
-const increaseQuantity = async (productId, quantity) => {
-  await updateQuantity(productId, quantity + 1);
-}
-
-const decreaseQuantity = async (productId, quantity) => {
-  if (quantity <= 1) {
-    removeProduct(productId);
-    return
-  }
-  await updateQuantity(productId, quantity - 1);
-}
-
-const removeProduct = async (productId) => {
-  document.getElementById(`minicartProduct${productId}`).remove();
-  await updateQuantity(productId, 0);
-}
-
 // Modal JS
 const openEls = document.querySelectorAll("[data-open]");
 const closeEls = document.querySelectorAll("[data-close]");

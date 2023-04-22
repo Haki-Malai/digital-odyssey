@@ -42,7 +42,7 @@
           <div class="footer__widget">
             <h3 class="footer__widget--title text-white">Categories</h3>
             <ul class="footer__widget--menu footer__widget--inner">
-              {% for category in categories.all() %}
+              {% for category in g.categories.all() %}
                 <li class="footer__widget--menu__list">
                   <a class="footer__widget--menu__text text-white" href="{{ url_for('main.category', category_id=category.id) }}">
                     {{ category.name }}
